@@ -22,24 +22,34 @@
                                          mentio-search="searchUsers(term)"
                                          mentio-select="'@' + item.userName"></mentio-menu>
 
-                            <script type="text/ng-template" id="/user-mentions.tpl">
-                                <style>
-                                    .scrollable-menu {
-                                        height: auto;
-                                        max-height: 300px;
-                                        overflow: auto;
-                                    }
 
-                                    .menu-highlighted {
-                                        font-weight: bold;
-                                    }
-                                </style>
+                            <script type="text/ng-template" id="/user-mentions.tpl">
                                 <ul class="dropdown-menu scrollable-menu" style="display:block">
                                     <li data-mentio-menu-item="item"
                                         data-ng-repeat="item in items">
                                         <a class="text-primary">
                                             <img class="avatar" data-ng-src="/avatar/{{item.userName}}">
                                             <span data-ng-bind-html="item.userName | mentioHighlight:typedTerm:'menu-highlighted' | unsafe"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </script>
+
+                            <mentio-menu mentio-for="'newPut'"
+                                         mentio-trigger-char="':'"
+                                         mentio-typed-text="typedTerm"
+                                         mentio-items="emojis"
+                                         mentio-template-url="/emoji.tpl"
+                                         mentio-search="findEmoji(term)"
+                                         mentio-select="':' + item + ':'"></mentio-menu>
+
+                            <script type="text/ng-template" id="/emoji.tpl">
+                                <ul class="dropdown-menu scrollable-menu" style="display:block">
+                                    <li data-mentio-menu-item="item"
+                                        data-ng-repeat="item in items track by $index">
+                                        <a class="text-primary">
+                                            <img class="emoji" data-ng-src="/vendor/emojify.js/dist/images/basic/{{item}}.png">
+                                            <span data-ng-bind-html="item"></span>
                                         </a>
                                     </li>
                                 </ul>

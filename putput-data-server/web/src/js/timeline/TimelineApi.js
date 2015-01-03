@@ -2,8 +2,8 @@ var emojify = require("emojify.js");
 
 function TimelineApi(http, sce, q) {
     emojify.setConfig({
-       mode: 'data-uri',
-       ignore_emoticons: true
+       ignore_emoticons: false,
+       img_dir: '/vendor/emojify.js/dist/images/basic'
     });
 
     this.transformItemContent = function (item) {
