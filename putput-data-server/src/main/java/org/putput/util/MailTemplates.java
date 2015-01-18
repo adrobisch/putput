@@ -1,44 +1,49 @@
 package org.putput.util;
 
-import org.springframework.util.StreamUtils;
+import com.github.jknack.handlebars.Context;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Template;
+import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MailTemplates {
+
+  Handlebars handlebars = new Handlebars(new ClassPathTemplateLoader("/mails/"));
+
   public static class MailTemplate {
-    String template;
+    Template template;
 
-    Map<String, String> replacements = new HashMap<>();
+    Map<String, Object> data = new HashMap<>();
 
-    protected MailTemplate(String template) {
+    protected MailTemplate(Template template) {
       this.template = template;
     }
 
     public String getText() {
-      String resultText = "" + template;
-      for (Map.Entry<String, String> replace : replacements.entrySet()) {
-        if (replace.getValue() != null) {
-          resultText = resultText.replace("{{" + replace.getKey() + "}}", replace.getValue());
-        }
+      try {
+        return template.apply(Context.newContext(new Object()).data(data));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
       }
-      return resultText;
     }
 
     public MailTemplate replace(String key, String value) {
-      replacements.put(key, value);
+      data.put(key, value);
+      return this;
+    }
+
+    public MailTemplate data(String key, Object value) {
+      data.put(key, value);
       return this;
     }
   }
 
   public MailTemplate create(String templateName) {
-    InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("mails" + File.separatorChar + templateName);
     try {
-      return new MailTemplate(StreamUtils.copyToString(resourceAsStream, Charset.forName("UTF-8")));
+      return new MailTemplate(handlebars.compile(templateName));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

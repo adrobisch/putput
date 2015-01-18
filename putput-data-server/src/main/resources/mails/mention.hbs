@@ -1,0 +1,9 @@
+You have been mentioned in a put (https://putput.org/#/item/{{item.id}}) by @{{item.author.username}} :
+
+{{item.content}}
+
+{{#if referencedItem}}
+which was a response to https://putput.org/#/item/{{referencedItem.id}} :
+
+{{referencedItem.content}}
+{{/if}}
