@@ -1,0 +1,2 @@
+#!/bin/sh
+service putput-data restart

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>PutPut</title>
+    <link href="vendor/angular-loading-bar/build/loading-bar.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body data-ng-app="app" ng-cloak>
+  	<div class="navbar navbar-inverse navbar-fixed-top" data-ng-controller="NavbarController">
+  	  <div class="container-fluid">
+  	    <div class="navbar-header">
+  	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+  	        <span class="icon-bar"></span>
+  	        <span class="icon-bar"></span>
+  	        <span class="icon-bar"></span>
+  	      </button>
+  	      <a class="navbar-brand" href="/#/">PutPut</a>
+  	    </div>
+  	    <div class="navbar-collapse collapse">
+  	      <ul class="nav navbar-nav">
+  	        <li data-ng-class="activeClass('/contacts')" data-ng-click="goto('/contacts')"><a>Contacts</a></li>
+  	      </ul>
+
+  	      <div class="navbar-form navbar-right" data-ng-controller="LoginController">
+  	        <div class="btn-group">
+  	          <button type="button" data-ng-click="logout()" class="btn btn-default"><i class="glyphicon glyphicon-off"></i></button>
+  	          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+  	            <span class="caret"></span>
+  	            <span class="sr-only">Toggle Dropdown</span>
+  	          </button>
+  	          <ul class="dropdown-menu" role="menu">
+  	            <li><a href="#/settings"><i class="glyphicon glyphicon-check"></i> Settings</a></li>
+  	          </ul>
+  	        </div>
+  	      </div>
+  	    </div>
+  	    <!--/.nav-collapse -->
+  	  </div>
+  	</div>
+  	<div class="container-fluid">
+      <div class="alerts">
+        <div class="alert alert-{{alert.type}} animation"
+             data-ng-cloak
+             data-ng-repeat="alert in alerts"
+             data-alert
+             data-type="{{alert.type}}"
+             data-close="alert.close()">
+            <button type="button" class="close" data-ng-click="alert.close()" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <h4>{{ alert.title }}</h4>
+            <span>{{ alert.msg }}</span>
+        </div>
+      </div>
+  	  <div data-ng-view></div>
+  	</div>
+
+    <script src="app.js"></script>
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+  </body>
+</html>

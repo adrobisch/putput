@@ -1,0 +1,41 @@
+.alerts {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 350px;
+  z-index: 10000;
+}
+
+.alerts .alert {
+  position: relative;
+}
+
+.alert.animation.ng-enter {
+  -webkit-animation: enter_sequence 0.2s ease-in; /* Safari/Chrome */
+  animation: enter_sequence 0.2s ease-in; /* IE10+ and Future Browsers */
+}
+
+@-webkit-keyframes enter_sequence {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+@keyframes enter_sequence {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+.alert.animation.ng-leave {
+  -webkit-animation: exit_sequence 0.2s ease-in-out; /* Safari/Chrome */
+  animation: exit_sequence 0.2s ease-in-out; /* IE10+ and Future Browsers */
+}
+
+@-webkit-keyframes exit_sequence {
+  from { opacity:1; }
+  to { opacity:0; right: -100px; }
+}
+
+@keyframes exit_sequence {
+  from { opacity:1; }
+  to { opacity:0; right: -100px; }
+}

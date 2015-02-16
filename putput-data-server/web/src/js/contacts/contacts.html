@@ -1,0 +1,69 @@
+<h3>Your Contacts</h3>
+<div class="row">
+  <div class="col-md-12">
+    <div class="btn-group">
+      <button id="btn-new-contact" type="button" class="btn btn-danger" data-ng-click="toggleForm()"><i class="glyphicon glyphicon-plus"></i> New Contact</button>
+    </div>
+    <div class="btn-group"
+         data-flow-init="uploadConfig"
+         data-flow-files-submitted="$flow.upload()"
+         data-flow-file-success="onUploadCompleted($file, $message)">
+      <button class="btn btn-info" data-flow-btn data-flow-attrs="inputAttributes"><i class="glyphicon glyphicon-upload"></i> Import Contacts (vCard)</button>
+    </div>
+  </div>
+</div>
+
+<div class="row top10" data-ng-show="showCreateForm">
+  <div class="col-md-12">
+    <div class="putput-form">
+      <span class="form-label">New Contact</span>
+      <form class="form-horizontal" data-ng-submit="submitNewContact()">
+        <div class="form-group">
+          <label for="firstname" class="control-label col-md-1">First Name</label>
+          <div class="col-md-5">
+            <input type="text" data-ng-model="newContact.firstName" class="form-control" id="firstname" placeholder="Enter first name">
+          </div>
+          <label for="lastname" class="control-label col-md-1">Last Name</label>
+          <div class="col-md-5">
+            <input type="text" data-ng-model="newContact.lastName" class="form-control" id="lastname" placeholder="Enter last name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email" class="control-label col-md-1">e-Mail</label>
+          <div class="col-md-5">
+            <input type="email" data-ng-model="newContact.email" class="form-control" id="email" placeholder="Enter email">
+          </div>
+          <label for="mobile" class="control-label col-md-1">Mobile</label>
+          <div class="col-md-5">
+            <input type="tel" data-ng-model="newContact.mobilePhone" class="form-control" id="mobile" placeholder="Enter mobile number">
+          </div>
+        </div>
+        <button id="btn-submit-contact" type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div id="contact-table" class="col-md-12 animation" data-ng-show="contacts">
+    <table class="table table-striped">
+      <thead>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Phone</th>
+      <th>e-Mail</th>
+      </thead>
+      <tbody>
+      <tr data-ng-repeat="contact in contacts">
+        <td>{{contact.firstName}}</td>
+        <td>{{contact.lastName}}</td>
+        <td><span class="label label-primary" data-ng-repeat="number in contact.phoneNumbers">{{number.number}} ({{number.type}})</span></td>
+        <td>
+          <span class="label label-info" data-ng-repeat="email in contact.emails">
+            <a data-ng-href="mailto:{{email.address}}" style="color:#ffffff">{{email.address}}</a>
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

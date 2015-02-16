@@ -1,0 +1,20 @@
+@loading-color: #cdcdcd;
+
+#loading-bar {
+  .bar {
+    background: @loading-color;
+  }
+
+  .peg {
+    box-shadow: 0 0 10px @loading-color, 0 0 5px @loading-color;
+  }
+}
+
+#loading-bar-spinner {
+  z-index: 10000;
+
+  .spinner-icon {
+    border-top-color:  @loading-color;
+    border-left-color: @loading-color;
+  }
+}

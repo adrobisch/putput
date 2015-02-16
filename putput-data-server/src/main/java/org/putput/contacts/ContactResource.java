@@ -1,0 +1,49 @@
+package org.putput.contacts;
+
+import org.dozer.DozerBeanMapper;
+import org.putput.api.model.ContactLinks;
+import org.putput.api.model.NewContact;
+import org.putput.api.resource.Contact;
+import org.putput.common.web.BaseResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ContactResource extends BaseResource implements Contact {
+
+  @Autowired
+  ContactService contactService;
+
+  @Autowired
+  DozerBeanMapper beanMapper;
+
+  @Override
+  public PostContactResponse postContact(NewContact newContact) throws Exception {
+    ContactEntity contactEntityToBeCreated = new ContactEntity()
+      .withFirstName(newContact.getFirstName())
+      .withLastName(newContact.getLastName());
+
+    String email = newContact.getEmail();
+    if (email != null && !email.isEmpty()) {
+      contactEntityToBeCreated.getEmails().add(new EMailAddress(EMailAddress.Type.HOME, email));
+    }
+
+    String mobilePhone = newContact.getMobilePhone();
+    if (mobilePhone != null && !mobilePhone.isEmpty()) {
+      contactEntityToBeCreated.getPhoneNumbers().add(new PhoneNumber(PhoneNumber.Type.MOBILE, mobilePhone));
+    }
+
+    ContactEntity newContactEntity = contactService.createContact(user().getUsername(), contactEntityToBeCreated);
+
+    return PostContactResponse.withCreated(link(Contact.class, newContactEntity.getId()).getHref());
+  }
+
+  @Override
+  public GetContactByIdResponse getContactById(String id) throws Exception {
+    org.putput.api.model.Contact contact =
+      beanMapper.map(contactService.getById(id), org.putput.api.model.Contact.class)
+        .withLinks(new ContactLinks().withSelf(link(Contact.class, id)));
+
+    return GetContactByIdResponse.withHaljsonOK(contact);
+  }
+}

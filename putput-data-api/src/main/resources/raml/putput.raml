@@ -1,0 +1,308 @@
+#%RAML 0.8
+
+title: PutPut Contacts API
+baseUri: https://contacts.putput.org
+version: v1
+schemas:
+  - empty: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.Empty",
+        "description": "A empty object",
+        "properties": {
+        }
+      }
+
+  - halLink: |
+      {
+        "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.HalLink",
+        "description": "A HAL link",
+        "properties": {
+          "href":  { "type": "string" },
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "templated": {"type": "boolean"}
+        }
+      }
+
+  - contactListLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.ContactListLinks",
+        "description": "The links of a contact list",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
+
+  - contact: |
+     {  "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "description": "A contact",
+        "properties": {
+            "id" : { "type": "string"},
+            "firstName" : { "type": "string"},
+            "lastName" : { "type": "string"},
+            "additionalNames" : { "type": "string"},
+            "salutation" : { "type": "string"},
+            "dateOfBirth" : { "type": "integer"},
+            "anniversary" : { "type": "integer"},
+            "organisation" : { "type": "string"},
+            "notes" : { "type": "string"},
+            "version" : { "type": "integer"},
+            "contactAddresses" : {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id" : { "type": "string"},
+                  "type" : { "type": "string"},
+                  "street" : { "type": "string"},
+                  "houseNo" : { "type": "string"},
+                  "poBox" : { "type": "string"},
+                  "country" : { "type": "string"},
+                  "postalCode" : { "type": "string"}
+                }
+              }
+            },
+            "phoneNumbers" : {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id" : { "type": "string" },
+                  "type" : { "type": "string"},
+                  "number" : { "type": "string"}
+                }
+              }
+            },
+            "emails" : {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id" : { "type": "string" },
+                  "type" : { "type": "string"},
+                  "address" : { "type": "string"}
+                }
+              }
+            },
+            "internetIdentifiers" : {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id" : { "type": "string" },
+                  "type" : { "type": "string"},
+                  "idValue" : { "type": "string"}
+                }
+              }
+            },
+            "_links": {
+              "$ref": "contactLinks"
+            }
+        }
+     }
+
+  - contactLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.ContactLinks",
+        "description": "The links of a contact",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
+
+  - newContact: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "mobilePhone": { "type": "string" }
+        }
+      }
+
+  - userInfo: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "displayName": {"type": "string"}
+        }
+      }
+
+  - userSettings: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "email": {"type": "string"}
+        }
+      }
+
+  - userSettingsUpdate: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "email": {"type": "string"},
+          "password": {"type": "string"},
+          "passwordRepeat": {"type": "string"}
+        }
+      }
+
+  - serviceDocument: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "description": "The root links of the contact service",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "javaType" : "org.putput.api.model.ServiceDocumentLinks",
+            "properties": {
+              "self" : { "$ref": "halLink"},
+              "contacts" : { "$ref": "halLink"},
+              "contact" : { "$ref": "halLink"},
+              "user" : { "$ref": "halLink"},
+              "user-settings" : { "$ref": "halLink"},
+              "login" : { "$ref": "halLink"},
+              "logout" : { "$ref": "halLink"},
+              "password-reset": { "$ref": "halLink"}
+            }
+          }
+        }
+      }
+
+  - passwordReset: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "description": "A request for a new password",
+        "properties": {
+          "email": {
+            "type": "string",
+            "descrption": "the email of the user requesting a new password"
+          }
+        }
+      }
+
+traits:
+  - halCollection:
+      queryParameters:
+        page:
+          description: The page to retrieve
+          type: number
+      responses:
+        200:
+          body:
+            application/hal+json:
+              schema: |
+                { "$schema": "http://json-schema.org/schema",
+                  "id": "<<id>>",
+                  "type": "object",
+                  "javaType" : "<<collectionJavaType>>",
+                  "description": "A HAL collection",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "<<itemsProperty>>": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "<<itemSchema>>"
+                      }
+                    },
+                    "_links": {
+                      "$ref": "<<collectionLinks>>"
+                    }
+                  }
+                }
+
+/:
+  get:
+    responses:
+      200:
+        body:
+          application/hal+json:
+            schema: serviceDocument
+
+/login:
+  post:
+    body:
+      application/x-www-form-urlencoded:
+        formParameters:
+          username:
+            description: the user trying to login
+            required: true
+            type: string
+          password:
+            description: the password of the user
+            required: true
+            type: string
+
+/logout:
+  post:
+    body:
+      application/json:
+        schema: empty
+
+/contacts:
+  get:
+    is: [ halCollection: { id: contactList, collectionJavaType: org.putput.api.model.ContactList, itemsProperty: contacts, itemSchema: contact, collectionLinks: contactListLinks}]
+  /import:
+    post:
+      body:
+        application/octet-stream:
+        text/vcard:
+      responses:
+        200:
+
+/contact:
+  post:
+    body:
+      application/json:
+        schema: newContact
+    responses:
+      201:
+        headers:
+          Location:
+  /{id}:
+    get:
+      responses:
+        200:
+          body:
+            application/hal+json:
+              schema: contact
+
+/password_request:
+  post:
+    body:
+      application/json:
+        schema: passwordReset
+    responses:
+      204:
+      400:
+        description: "Bad Request, unable to reset password"
+
+/user:
+  /info:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              schema: userInfo
+  /settings:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              schema: userSettings
+    put:
+      body:
+        application/json:
+          schema: userSettingsUpdate
+      responses:
+        204:
