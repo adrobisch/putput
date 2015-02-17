@@ -9,6 +9,8 @@ import ezvcard.property.*;
 import org.putput.contacts.*;
 import org.putput.files.FileService;
 import org.putput.files.PutPutFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,12 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.String.format;
+
 @Component
 public class VCardImporter {
 
   ContactService contactService;
 
   FileService fileService;
+
+  Logger log = LoggerFactory.getLogger(VCardImporter.class);
 
   @Autowired
   public VCardImporter(ContactService contactService, FileService fileService) {
@@ -41,6 +47,9 @@ public class VCardImporter {
     for (VCard vcard : vcards) {
       ContactEntity contactEntity = new ContactEntity();
       mapToContact(vcard, contactEntity, username);
+
+      log.info(format("importing %s as %s", vcard, contactEntity));
+
       contactService.createContact(username, contactEntity);
       importedContactEntities.add(contactEntity);
     }
@@ -98,19 +107,30 @@ public class VCardImporter {
   }
 
   private void setOrganisation(VCard vcard, ContactEntity contactEntity) {
-    contactEntity.withOrganisation(vcard.getOrganization().getValues().stream().reduce("", String::concat));
+    if (vcard.getOrganization() != null) {
+      contactEntity.withOrganisation(vcard.getOrganization().getValues().stream().reduce("", String::concat));
+    }
   }
 
   private void setPhoneNumbers(VCard vcard, ContactEntity contactEntity) {
     for (Telephone number : vcard.getTelephoneNumbers()) {
       if (number.getTypes().isEmpty() || number.getTypes().stream().anyMatch(type -> type == TelephoneType.HOME)) {
-        contactEntity.getPhoneNumbers().add(new PhoneNumber(PhoneNumber.Type.HOME, number.getUri().getNumber()));
+        contactEntity.getPhoneNumbers().add(new PhoneNumber(PhoneNumber.Type.HOME, getNumber(number)));
       } else if (number.getTypes().stream().anyMatch(type -> type == TelephoneType.WORK)) {
-        contactEntity.getPhoneNumbers().add(new PhoneNumber(PhoneNumber.Type.WORK, number.getUri().getNumber()));
+        contactEntity.getPhoneNumbers().add(new PhoneNumber(PhoneNumber.Type.WORK, getNumber(number)));
       } else if (number.getTypes().stream().anyMatch(type -> type == TelephoneType.CELL)) {
-        contactEntity.getPhoneNumbers().add(new PhoneNumber(PhoneNumber.Type.MOBILE, number.getUri().getNumber()));
+        contactEntity.getPhoneNumbers().add(new PhoneNumber(PhoneNumber.Type.MOBILE, getNumber(number)));
       }
     }
+  }
+
+  private String getNumber(Telephone number) {
+    if (number.getText() != null && !number.getText().isEmpty()) {
+      return number.getText();
+    } else if (number.getUri() != null) {
+      return number.getUri().getNumber();
+    }
+    throw new IllegalArgumentException("Number should be set as text or in URI");
   }
 
   private void setEmail(VCard vcard, ContactEntity contactEntity) {
@@ -127,7 +147,9 @@ public class VCardImporter {
     String titleString = vcard.getTitles().stream().map(Title::getValue).reduce("", String::concat);
 
     contactEntity.withSalutation(titleString);
-    contactEntity.withFirstName(vcard.getStructuredName().getGiven());
-    contactEntity.withLastName(vcard.getStructuredName().getFamily());
+    if (vcard.getStructuredName() != null) {
+      contactEntity.withFirstName(vcard.getStructuredName().getGiven());
+      contactEntity.withLastName(vcard.getStructuredName().getFamily());
+    }
   }
 }
