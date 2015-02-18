@@ -64,7 +64,8 @@ public class PutPutFile {
   @Override
   public String toString() {
     return "PutPutFile{" +
-      "path='" + path + '\'' +
+      "id='" + id + '\'' +
+      ", path='" + path + '\'' +
       ", type='" + type + '\'' +
       '}';
   }

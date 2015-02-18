@@ -137,6 +137,11 @@ public class ContactEntity {
     return this;
   }
 
+  public ContactEntity withAnniversary(Long anniversary) {
+    this.anniversary = anniversary;
+    return this;
+  }
+
   public UserEntity getUser() {
     return user;
   }

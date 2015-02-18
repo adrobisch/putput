@@ -50,9 +50,9 @@ public class Contact {
     @JsonProperty("salutation")
     private String salutation;
     @JsonProperty("dateOfBirth")
-    private Integer dateOfBirth;
+    private Double dateOfBirth;
     @JsonProperty("anniversary")
-    private Integer anniversary;
+    private Double anniversary;
     @JsonProperty("organisation")
     private String organisation;
     @JsonProperty("notes")
@@ -207,7 +207,7 @@ public class Contact {
      *     The dateOfBirth
      */
     @JsonProperty("dateOfBirth")
-    public Integer getDateOfBirth() {
+    public Double getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -217,11 +217,11 @@ public class Contact {
      *     The dateOfBirth
      */
     @JsonProperty("dateOfBirth")
-    public void setDateOfBirth(Integer dateOfBirth) {
+    public void setDateOfBirth(Double dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Contact withDateOfBirth(Integer dateOfBirth) {
+    public Contact withDateOfBirth(Double dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
         return this;
     }
@@ -232,7 +232,7 @@ public class Contact {
      *     The anniversary
      */
     @JsonProperty("anniversary")
-    public Integer getAnniversary() {
+    public Double getAnniversary() {
         return anniversary;
     }
 
@@ -242,11 +242,11 @@ public class Contact {
      *     The anniversary
      */
     @JsonProperty("anniversary")
-    public void setAnniversary(Integer anniversary) {
+    public void setAnniversary(Double anniversary) {
         this.anniversary = anniversary;
     }
 
-    public Contact withAnniversary(Integer anniversary) {
+    public Contact withAnniversary(Double anniversary) {
         this.anniversary = anniversary;
         return this;
     }

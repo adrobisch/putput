@@ -6,28 +6,55 @@ import javax.persistence.*;
 @Table(name = "PP_CONTACT_PHONE")
 public class PhoneNumber {
 
-  public static enum Type {
-    MOBILE,
-    HOME,
-    WORK,
-    FAX_WORK,
-    FAX_HOME,
-    PAGER,
-    CUSTOM,
-    OTHER,
-    CALLBACK,
-    CAR,
-    COMPANY_MAIN,
-    ISDN,
-    MAIN,
-    OTHER_FAX,
-    RADIO,
-    TELEX,
-    TTY_TDD,
-    WORK_MOBILE,
-    WORK_PAGER,
-    ASSISTANT,
-    MMS
+  public static class Type {
+    String name;
+
+    public String name() {
+      return name;
+    }
+
+    public Type(String name) {
+      this.name = name;
+    }
+
+    public static Type MOBILE = new Type("MOBILE");
+    public static Type HOME = new Type("HOME");
+    public static Type WORK = new Type("WORK");
+    public static Type FAX_WORK = new Type("FAX_WORK");
+    public static Type FAX_HOME = new Type("FAX_HOME");
+    public static Type PAGER = new Type("PAGER");
+    public static Type CUSTOM = new Type("CUSTOM");
+    public static Type OTHER = new Type("OTHER");
+    public static Type CALLBACK = new Type("CALLBACK");
+    public static Type CAR = new Type("CAR");
+    public static Type COMPANY_MAIN = new Type("COMPANY_MAIN");
+    public static Type ISDN = new Type("ISDN");
+    public static Type MAIN = new Type("MAIN");
+    public static Type OTHER_FAX = new Type("OTHER_FAX");
+    public static Type RADIO = new Type("RADIO");
+    public static Type TELEX = new Type("TELEX");
+    public static Type TTY_TDD = new Type("TTY_TDD");
+    public static Type WORK_MOBILE = new Type("WORK_MOBILE");
+    public static Type WORK_PAGER = new Type("WORK_PAGER");
+    public static Type ASSISTANT = new Type("ASSISTANT");
+    public static Type MMS = new Type("MMS");
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+
+      Type type = (Type) o;
+
+      if (name != null ? !name.equals(type.name) : type.name != null) return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return name != null ? name.hashCode() : 0;
+    }
   }
 
   @Id

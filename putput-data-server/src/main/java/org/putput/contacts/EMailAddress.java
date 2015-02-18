@@ -9,10 +9,39 @@ import javax.persistence.Table;
 @Table(name = "PP_CONTACT_EMAIL")
 public class EMailAddress {
 
-  public enum Type {
-    HOME,
-    WORK,
-    MOBILE
+  public static class Type {
+
+    String name;
+
+    public Type(String name) {
+      this.name = name;
+    }
+
+    public String name() {
+      return name;
+    }
+
+    public static Type HOME = new Type("HOME");
+    public static Type WORK = new Type("WORK");
+    public static Type MOBILE = new Type("MOBILE");
+    public static Type OTHER = new Type("OTHER");
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+
+      Type type = (Type) o;
+
+      if (name != null ? !name.equals(type.name) : type.name != null) return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return name != null ? name.hashCode() : 0;
+    }
   }
 
   @Id
