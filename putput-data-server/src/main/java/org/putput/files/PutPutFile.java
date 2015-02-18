@@ -43,13 +43,9 @@ public class PutPutFile {
     return path;
   }
 
-  public PutPutFile withData(byte[] data) {
-    try {
-      this.data = new String(data, "UTF-8");
-      return this;
-    } catch (UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
-    }
+  public PutPutFile withData(String base64Data) {
+    this.data = base64Data;
+    return this;
   }
 
   public PutPutFile withPath(String path) {

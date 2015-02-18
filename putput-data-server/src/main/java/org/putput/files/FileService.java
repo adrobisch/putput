@@ -1,5 +1,6 @@
 package org.putput.files;
 
+import ezvcard.util.org.apache.commons.codec.binary.Base64;
 import org.putput.common.UuidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class FileService {
   public PutPutFile saveUserFile(String username, Optional<String> filename, String mimeType, InputStream inputStream, long size) {
     PutPutFile file = new PutPutFile(mimeType)
       .withId(uuidService.uuid())
-      .withData(getData(inputStream));
+      .withData(getBase64Data(inputStream));
 
     if (filename.isPresent()) {
       String filePath = String.format("/%s/%s", username, filename);
@@ -32,9 +33,9 @@ public class FileService {
     return fileRepository.save(file);
   }
 
-  private byte[] getData(InputStream inputStream) {
+  private String getBase64Data(InputStream inputStream) {
     try {
-      return StreamUtils.copyToByteArray(inputStream);
+      return Base64.encodeBase64String(StreamUtils.copyToByteArray(inputStream));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
