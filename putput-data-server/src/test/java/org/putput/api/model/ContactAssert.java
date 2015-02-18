@@ -87,7 +87,7 @@ public class ContactAssert extends AbstractAssert<ContactAssert, Contact> {
     String assertjErrorMessage = "\nExpected anniversary of:\n  <%s>\nto be:\n  <%s>\nbut was:\n  <%s>";
     
     // null safe check
-    Integer actualAnniversary = actual.getAnniversary();
+    Double actualAnniversary = actual.getAnniversary();
     if (!Objects.areEqual(actualAnniversary, anniversary)) {
       failWithMessage(assertjErrorMessage, actual, anniversary, actualAnniversary);
     }
@@ -152,7 +152,7 @@ public class ContactAssert extends AbstractAssert<ContactAssert, Contact> {
     String assertjErrorMessage = "\nExpected dateOfBirth of:\n  <%s>\nto be:\n  <%s>\nbut was:\n  <%s>";
     
     // null safe check
-    Integer actualDateOfBirth = actual.getDateOfBirth();
+    Double actualDateOfBirth = actual.getDateOfBirth();
     if (!Objects.areEqual(actualDateOfBirth, dateOfBirth)) {
       failWithMessage(assertjErrorMessage, actual, dateOfBirth, actualDateOfBirth);
     }
