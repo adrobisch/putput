@@ -1,8 +1,10 @@
 package org.putput.contacts;
 
 import org.dozer.DozerBeanMapper;
+import org.putput.api.model.ContactLinks;
 import org.putput.api.model.ContactList;
 import org.putput.api.model.ContactListLinks;
+import org.putput.api.resource.Contact;
 import org.putput.api.resource.Contacts;
 import org.putput.common.web.BaseResource;
 import org.putput.contacts.vcard.ImportResult;
@@ -33,6 +35,9 @@ public class ContactsResource extends BaseResource implements Contacts {
   @Override
   public GetContactsResponse getContacts(BigDecimal page) throws Exception {
     ContactList contactList = beanMapper.map(contactService.getByUserName(user().getUsername()), ContactList.class);
+    contactList.getContacts().forEach( contact -> {
+      contact.withLinks(new ContactLinks().withSelf(link(Contact.class, contact.getId())));
+    });
     return GetContactsResponse.withHaljsonOK(contactList.withLinks(new ContactListLinks().withSelf(link(Contacts.class))));
   }
 

@@ -53,4 +53,12 @@ public class ContactService {
   public ContactEntity getById(String id) {
     return contactRepository.findOne(id);
   }
+
+  public void deleteById(String id) {
+    contactRepository.delete(id);
+  }
+
+  public void update(ContactEntity updatedContact) {
+    contactRepository.save(updatedContact);
+  }
 }

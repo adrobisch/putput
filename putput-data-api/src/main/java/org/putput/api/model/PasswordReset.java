@@ -23,12 +23,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 })
 public class PasswordReset {
 
+    /**
+     * the email of the user requesting a new password
+     * 
+     */
     @JsonProperty("email")
     private String email;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
+     * the email of the user requesting a new password
      * 
      * @return
      *     The email
@@ -39,6 +44,7 @@ public class PasswordReset {
     }
 
     /**
+     * the email of the user requesting a new password
      * 
      * @param email
      *     The email

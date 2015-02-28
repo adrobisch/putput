@@ -10,6 +10,11 @@ function ContactsApi(http, api) {
       return http.get(contactsLink);
     });
   };
+
+  this.delete = function(contact) {
+    console.log("deleting", contact);
+    return http.delete(contact["_links"]["self"].href);
+  }
 }
 
 ContactsApi.$inject = ["$http", "api"];

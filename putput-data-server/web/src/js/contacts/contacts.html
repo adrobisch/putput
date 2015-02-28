@@ -47,6 +47,7 @@
   <div id="contact-table" class="col-md-12 animation" data-ng-show="contacts">
     <table class="table table-striped">
       <thead>
+      <th></th>
       <th>First Name</th>
       <th>Last Name</th>
       <th>Phone</th>
@@ -54,6 +55,7 @@
       </thead>
       <tbody>
       <tr data-ng-repeat="contact in contacts">
+        <td><span data-ng-click="delete(contact)"><i class="btn btn-default glyphicon glyphicon-minus"></i></span></td>
         <td>{{contact.firstName}}</td>
         <td>{{contact.lastName}}</td>
         <td><span class="label label-primary" data-ng-repeat="number in contact.phoneNumbers">{{number.number}} ({{number.type}})</span></td>

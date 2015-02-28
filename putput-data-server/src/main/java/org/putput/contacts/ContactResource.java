@@ -46,4 +46,16 @@ public class ContactResource extends BaseResource implements Contact {
 
     return GetContactByIdResponse.withHaljsonOK(contact);
   }
+
+  @Override
+  public PutContactByIdResponse putContactById(String id, org.putput.api.model.Contact updatedContact) throws Exception {
+    contactService.update(beanMapper.map(updatedContact, ContactEntity.class));
+    return PutContactByIdResponse.withOK();
+  }
+
+  @Override
+  public DeleteContactByIdResponse deleteContactById(String id) throws Exception {
+    contactService.deleteById(id);
+    return DeleteContactByIdResponse.withOK();
+  }
 }

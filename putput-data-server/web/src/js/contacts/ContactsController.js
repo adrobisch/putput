@@ -27,6 +27,10 @@ var ContactsController =  function(scope, contacts) {
     });
   };
 
+  scope.delete = function (contact) {
+    contacts.delete(contact).success(scope.loadContacts);
+  };
+
   scope.init = scope.loadContacts;
 
   scope.init();
