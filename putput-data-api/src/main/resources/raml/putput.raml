@@ -127,7 +127,37 @@ schemas:
           "mobilePhone": { "type": "string" }
         }
       }
-
+  - note: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "id": {"type": "string"},
+          "shortText": {"type": "string"},
+          "content": {"type": "string"},
+          "version": {"type": "integer"},
+          "_links": {
+            "$ref": "noteLinks"
+          }
+        }
+      }
+  - noteLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.NoteLinks",
+        "description": "The links of a note",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
+  - noteListLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.NoteListLinks",
+        "description": "The links of a note list",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
   - userInfo: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -284,6 +314,36 @@ traits:
     delete:
       responses:
         200:
+
+/note:
+  post:
+    body:
+      application/json:
+        schema: note
+    responses:
+      201:
+        headers:
+          Location:
+  /{id}:
+    get:
+      responses:
+        200:
+          body:
+            application/hal+json:
+              schema: note
+    put:
+      body:
+        application/json:
+          schema: note
+      responses:
+        200:
+    delete:
+      responses:
+        200:
+
+/notes:
+  get:
+    is: [ halCollection: { id: noteList, collectionJavaType: org.putput.api.model.NoteList, itemsProperty: notes, itemSchema: note, collectionLinks: noteListLinks}]
 
 /password_request:
   post:
