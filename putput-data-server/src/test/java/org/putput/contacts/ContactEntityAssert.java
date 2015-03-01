@@ -74,40 +74,40 @@ public class ContactEntityAssert extends AbstractAssert<ContactEntityAssert, Con
   }
 
   /**
-   * Verifies that the actual ContactEntity's contactAddressEntities contains the given ContactAddressEntity elements.
-   * @param contactAddressEntities the given elements that should be contained in actual ContactEntity's contactAddressEntities.
+   * Verifies that the actual ContactEntity's contactAddresses contains the given ContactAddressEntity elements.
+   * @param contactAddressEntities the given elements that should be contained in actual ContactEntity's contactAddresses.
    * @return this assertion object.
-   * @throws AssertionError if the actual ContactEntity's contactAddressEntities does not contain all given ContactAddressEntity elements.
+   * @throws AssertionError if the actual ContactEntity's contactAddresses does not contain all given ContactAddressEntity elements.
    */
   public ContactEntityAssert hasContactAddressEntities(ContactAddressEntity... contactAddressEntities) {
     // check that actual ContactEntity we want to make assertions on is not null.
     isNotNull();
 
     // check that given ContactAddressEntity varargs is not null.
-    if (contactAddressEntities == null) throw new AssertionError("Expecting contactAddressEntities parameter not to be null.");
+    if (contactAddressEntities == null) throw new AssertionError("Expecting contactAddresses parameter not to be null.");
     
     // check with standard error message, to set another message call: info.overridingErrorMessage("my error message");
-    Iterables.instance().assertContains(info, actual.getContactAddressEntities(), contactAddressEntities);
+    Iterables.instance().assertContains(info, actual.getContactAddresses(), contactAddressEntities);
 
     // return the current assertion for method chaining
     return this;
   }
 
   /**
-   * Verifies that the actual ContactEntity has no contactAddressEntities.
+   * Verifies that the actual ContactEntity has no contactAddresses.
    * @return this assertion object.
-   * @throws AssertionError if the actual ContactEntity's contactAddressEntities is not empty.
+   * @throws AssertionError if the actual ContactEntity's contactAddresses is not empty.
    */
   public ContactEntityAssert hasNoContactAddressEntities() {
     // check that actual ContactEntity we want to make assertions on is not null.
     isNotNull();
 
     // we override the default error message with a more explicit one
-    String assertjErrorMessage = "\nExpected :\n  <%s>\nnot to have contactAddressEntities but had :\n  <%s>";
+    String assertjErrorMessage = "\nExpected :\n  <%s>\nnot to have contactAddresses but had :\n  <%s>";
     
     // check
-    if (actual.getContactAddressEntities().iterator().hasNext()) {
-      failWithMessage(assertjErrorMessage, actual, actual.getContactAddressEntities());
+    if (actual.getContactAddresses().iterator().hasNext()) {
+      failWithMessage(assertjErrorMessage, actual, actual.getContactAddresses());
     }
     
     // return the current assertion for method chaining

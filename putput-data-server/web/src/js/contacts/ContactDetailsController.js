@@ -40,6 +40,15 @@ var ContactDetailsController =  function(scope, routeParams, contacts, alert) {
     }
   };
 
+  scope.addNewAddress = function () {
+    scope.contact.contactAddresses.push({
+      "city" : "City",
+      "postalCode" : "Postal Code",
+      "street" : "Street",
+      "type" : "HOME"
+    });
+  };
+
   scope.remove = function (array, index) {
     array.splice(index, 1);
   };

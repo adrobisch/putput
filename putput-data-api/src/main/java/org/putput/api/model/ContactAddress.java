@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "houseNo",
     "poBox",
     "country",
+    "city",
     "postalCode"
 })
 public class ContactAddress {
@@ -36,6 +37,8 @@ public class ContactAddress {
     private String poBox;
     @JsonProperty("country")
     private String country;
+    @JsonProperty("city")
+    private String city;
     @JsonProperty("postalCode")
     private String postalCode;
     @JsonIgnore
@@ -188,6 +191,31 @@ public class ContactAddress {
 
     public ContactAddress withCountry(String country) {
         this.country = country;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The city
+     */
+    @JsonProperty("city")
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * 
+     * @param city
+     *     The city
+     */
+    @JsonProperty("city")
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public ContactAddress withCity(String city) {
+        this.city = city;
         return this;
     }
 

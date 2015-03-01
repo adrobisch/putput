@@ -107,7 +107,7 @@ public class VCardImporter {
         contactAddressEntity.withType(ContactAddressEntity.Type.OTHER);
       }
 
-      contactEntity.getContactAddressEntities().add(contactAddressEntity);
+      contactEntity.getContactAddresses().add(contactAddressEntity);
     }
   }
 

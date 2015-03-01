@@ -49,7 +49,7 @@ public class ContactEntity {
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "_CONTACT_ID")
-  Set<ContactAddressEntity> contactAddressEntities = new HashSet<>();
+  Set<ContactAddressEntity> contactAddresses = new HashSet<>();
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "_CONTACT_ID")
@@ -163,8 +163,8 @@ public class ContactEntity {
     return phoneNumbers;
   }
 
-  public Set<ContactAddressEntity> getContactAddressEntities() {
-    return contactAddressEntities;
+  public Set<ContactAddressEntity> getContactAddresses() {
+    return contactAddresses;
   }
 
   public Set<InternetIdentifier> getInternetIdentifiers() {
@@ -223,8 +223,8 @@ public class ContactEntity {
     this.version = version;
   }
 
-  public void setContactAddressEntities(Set<ContactAddressEntity> contactAddressEntities) {
-    this.contactAddressEntities = contactAddressEntities;
+  public void setContactAddresses(Set<ContactAddressEntity> contactAddresses) {
+    this.contactAddresses = contactAddresses;
   }
 
   public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {

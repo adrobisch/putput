@@ -35,7 +35,7 @@ public class ContactService {
     contactEntity.getEmails().stream().filter(number -> number.getId() == null)
       .forEach(email -> email.withId(uuidService.uuid()));
 
-    contactEntity.getContactAddressEntities().stream().filter(address -> address.getId() == null)
+    contactEntity.getContactAddresses().stream().filter(address -> address.getId() == null)
       .forEach(address -> address.withId(uuidService.uuid()));
 
     return contactEntity;
