@@ -87,6 +87,18 @@ public class PhoneNumber {
     return number;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public void setNumber(String number) {
+    this.number = number;
+  }
+
   public PhoneNumber withId(String id) {
     this.id = id;
     return this;

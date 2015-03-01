@@ -113,6 +113,38 @@ public class ContactAddressEntity {
     return this;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public void setStreet(String street) {
+    this.street = street;
+  }
+
+  public void setHouseNo(String houseNo) {
+    this.houseNo = houseNo;
+  }
+
+  public void setPoBox(String poBox) {
+    this.poBox = poBox;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
+  }
+
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

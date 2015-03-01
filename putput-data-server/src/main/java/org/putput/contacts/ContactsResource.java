@@ -1,6 +1,6 @@
 package org.putput.contacts;
 
-import org.dozer.DozerBeanMapper;
+import ma.glasnost.orika.MapperFacade;
 import org.putput.api.model.ContactLinks;
 import org.putput.api.model.ContactList;
 import org.putput.api.model.ContactListLinks;
@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 public class ContactsResource extends BaseResource implements Contacts {
 
   @Autowired
-  DozerBeanMapper beanMapper;
+  MapperFacade beanMapper;
 
   @Autowired
   ContactService contactService;

@@ -1,6 +1,7 @@
 package org.putput.config;
 
-import org.dozer.DozerBeanMapper;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 public class DozerConfiguration {
 
   @Bean
-  DozerBeanMapper dozerBeanMapper() {
-    return new DozerBeanMapper();
+  MapperFacade beanMapper() {
+    return new DefaultMapperFactory.Builder().build().getMapperFacade();
   }
 
 }

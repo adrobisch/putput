@@ -18,8 +18,8 @@ var app = angular.module('app', [
 
 app.service('api', require('./common/ApiService'));
 app.service('auth', require('./common/AuthenticationApi'));
-app.service('contacts', require('./common/ContactsApi'));
-app.service('users', require('./common/UsersApi'));
+app.service('contacts', require('./contacts/ContactsApi'));
+app.service('users', require('./user/UsersApi'));
 app.service('$alert', require('./common/AlertService'));
 
 app.factory('authInterceptor', require('./common/AuthInterceptor'));

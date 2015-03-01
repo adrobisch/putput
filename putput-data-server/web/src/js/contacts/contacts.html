@@ -1,4 +1,6 @@
-<h3>Your Contacts</h3>
+<div class="row">
+    <h3>Your Contacts</h3>
+</div>
 <div class="row">
   <div class="col-md-12">
     <div class="btn-group">
@@ -44,8 +46,8 @@
   </div>
 </div>
 <div class="row">
-  <div id="contact-table" class="col-md-12 animation" data-ng-show="contacts">
-    <table class="table table-striped">
+  <div id="contact-table" class="animation" data-ng-show="contacts">
+    <table class="table table-striped col-md-12">
       <thead>
       <th></th>
       <th>First Name</th>
@@ -55,14 +57,27 @@
       </thead>
       <tbody>
       <tr data-ng-repeat="contact in contacts">
-        <td><span data-ng-click="delete(contact)"><i class="btn btn-default glyphicon glyphicon-minus"></i></span></td>
+        <td>
+            <span data-ng-click="delete(contact)">
+                <i class="btn btn-default glyphicon glyphicon-trash"></i>
+            </span>
+            <a href="btn btn-default" data-ng-href="#/contact/{{contact.id}}">
+                <i class="btn btn-default glyphicon glyphicon-edit"></i>
+            </a>
+        </td>
         <td>{{contact.firstName}}</td>
         <td>{{contact.lastName}}</td>
-        <td><span class="label label-primary" data-ng-repeat="number in contact.phoneNumbers">{{number.number}} ({{number.type}})</span></td>
+        <td class="col-md1">
+            <div class="label label-primary" data-ng-repeat="number in contact.phoneNumbers">
+                <span>{{number.number}} ({{number.type}})</span> <br>
+            </div>
+        </td>
         <td>
-          <span class="label label-info" data-ng-repeat="email in contact.emails">
-            <a data-ng-href="mailto:{{email.address}}" style="color:#ffffff">{{email.address}}</a>
-          </span>
+          <div class="label label-info" data-ng-repeat="email in contact.emails">
+            <span>
+                <a data-ng-href="mailto:{{email.address}}" style="color:#ffffff">{{email.address}}</a>
+            </span> <br>
+          </div>
         </td>
       </tr>
       </tbody>

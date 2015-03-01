@@ -4,8 +4,8 @@ import org.putput.files.PutPutFile;
 import org.putput.users.UserEntity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "PP_CONTACT")
@@ -49,26 +49,26 @@ public class ContactEntity {
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "_CONTACT_ID")
-  List<ContactAddressEntity> contactAddressEntities = new ArrayList<>();
+  Set<ContactAddressEntity> contactAddressEntities = new HashSet<>();
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "_CONTACT_ID")
-  List<PhoneNumber> phoneNumbers = new ArrayList<>();
+  Set<PhoneNumber> phoneNumbers = new HashSet<>();
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "_CONTACT_ID")
-  List<InternetIdentifier> internetIdentifiers = new ArrayList<>();
+  Set<InternetIdentifier> internetIdentifiers = new HashSet<>();
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "_CONTACT_ID")
-  List<EMailAddress> emails = new ArrayList<>();
+  Set<EMailAddress> emails = new HashSet<>();
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
     name="PP_CONTACT_IMAGE",
     joinColumns={@JoinColumn(name="_CONTACT_ID", referencedColumnName="_ID")},
     inverseJoinColumns={@JoinColumn(name="_FILE_ID", referencedColumnName="_ID")})
-  List<PutPutFile> photos = new ArrayList<>();
+  Set<PutPutFile> photos = new HashSet<>();
 
   public String getId() {
     return id;
@@ -159,23 +159,87 @@ public class ContactEntity {
     return notes;
   }
 
-  public List<PhoneNumber> getPhoneNumbers() {
+  public Set<PhoneNumber> getPhoneNumbers() {
     return phoneNumbers;
   }
 
-  public List<ContactAddressEntity> getContactAddressEntities() {
+  public Set<ContactAddressEntity> getContactAddressEntities() {
     return contactAddressEntities;
   }
 
-  public List<InternetIdentifier> getInternetIdentifiers() {
+  public Set<InternetIdentifier> getInternetIdentifiers() {
     return internetIdentifiers;
   }
 
-  public List<EMailAddress> getEmails() {
+  public Set<EMailAddress> getEmails() {
     return emails;
   }
 
-  public List<PutPutFile> getPhotos() {
+  public Set<PutPutFile> getPhotos() {
     return photos;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public void setAdditionalNames(String additionalNames) {
+    this.additionalNames = additionalNames;
+  }
+
+  public void setSalutation(String salutation) {
+    this.salutation = salutation;
+  }
+
+  public void setDateOfBirth(Long dateOfBirth) {
+    this.dateOfBirth = dateOfBirth;
+  }
+
+  public void setAnniversary(Long anniversary) {
+    this.anniversary = anniversary;
+  }
+
+  public void setOrganisation(String organisation) {
+    this.organisation = organisation;
+  }
+
+  public void setNotes(String notes) {
+    this.notes = notes;
+  }
+
+  public void setUser(UserEntity user) {
+    this.user = user;
+  }
+
+  public void setVersion(Long version) {
+    this.version = version;
+  }
+
+  public void setContactAddressEntities(Set<ContactAddressEntity> contactAddressEntities) {
+    this.contactAddressEntities = contactAddressEntities;
+  }
+
+  public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
+    this.phoneNumbers = phoneNumbers;
+  }
+
+  public void setInternetIdentifiers(Set<InternetIdentifier> internetIdentifiers) {
+    this.internetIdentifiers = internetIdentifiers;
+  }
+
+  public void setEmails(Set<EMailAddress> emails) {
+    this.emails = emails;
+  }
+
+  public void setPhotos(Set<PutPutFile> photos) {
+    this.photos = photos;
   }
 }

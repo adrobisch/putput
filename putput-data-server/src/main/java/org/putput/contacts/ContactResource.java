@@ -1,6 +1,6 @@
 package org.putput.contacts;
 
-import org.dozer.DozerBeanMapper;
+import ma.glasnost.orika.MapperFacade;
 import org.putput.api.model.ContactLinks;
 import org.putput.api.model.NewContact;
 import org.putput.api.resource.Contact;
@@ -15,7 +15,7 @@ public class ContactResource extends BaseResource implements Contact {
   ContactService contactService;
 
   @Autowired
-  DozerBeanMapper beanMapper;
+  MapperFacade beanMapper;
 
   @Override
   public PostContactResponse postContact(NewContact newContact) throws Exception {

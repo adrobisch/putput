@@ -79,6 +79,18 @@ public class EMailAddress {
     return address;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

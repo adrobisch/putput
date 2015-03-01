@@ -1,6 +1,5 @@
 package org.putput.contacts;
 
-import org.putput.api.model.Contact;
 import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
 import org.putput.common.UuidService;
@@ -22,7 +21,11 @@ public class ContactService {
   @Transactional
   public ContactEntity createContact(String userName, ContactEntity contactEntity) {
     UserEntity user = userRepository.findByUsername(userName);
+    saveContact(withIds(contactEntity.withUser(user)));
+    return contactEntity;
+  }
 
+  private ContactEntity withIds(ContactEntity contactEntity) {
     contactEntity.getInternetIdentifiers().stream().filter(id -> id.getId() == null)
       .forEach(id -> id.withId(uuidService.uuid()));
 
@@ -35,7 +38,6 @@ public class ContactService {
     contactEntity.getContactAddressEntities().stream().filter(address -> address.getId() == null)
       .forEach(address -> address.withId(uuidService.uuid()));
 
-    saveContact(contactEntity.withUser(user));
     return contactEntity;
   }
 
@@ -59,6 +61,6 @@ public class ContactService {
   }
 
   public void update(ContactEntity updatedContact) {
-    contactRepository.save(updatedContact);
+    contactRepository.save(withIds(updatedContact));
   }
 }

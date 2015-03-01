@@ -48,6 +48,18 @@ public class InternetIdentifier {
     return idValue;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public void setIdValue(String idValue) {
+    this.idValue = idValue;
+  }
+
   public InternetIdentifier withId(String id) {
     this.id = id;
     return this;
