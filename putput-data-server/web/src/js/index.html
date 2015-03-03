@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>PutPut</title>
     <link href="vendor/angular-loading-bar/build/loading-bar.min.css" rel="stylesheet">
@@ -17,11 +18,12 @@
   	        <span class="icon-bar"></span>
   	        <span class="icon-bar"></span>
   	      </button>
-  	      <a class="navbar-brand" href="/#/">PutPut</a>
+  	      <a class="navbar-brand" href="/#/"><i class="glyphicon glyphicon-tower"></i> PutPut</a>
   	    </div>
   	    <div class="navbar-collapse collapse">
   	      <ul class="nav navbar-nav">
-  	        <li data-ng-class="activeClass('/contacts')" data-ng-click="goto('/contacts')"><a>Contacts</a></li>
+  	        <li data-ng-class="activeClass('/contacts')" data-ng-click="goto('/contacts')"><a><i class="glyphicon glyphicon-list-alt"></i> Contacts</a></li>
+  	        <li data-ng-class="activeClass('/notes')" data-ng-click="goto('/notes')"><a><i class="glyphicon glyphicon-book"></i> Notes</a></li>
   	      </ul>
 
   	      <div class="navbar-form navbar-right" data-ng-controller="LoginController">

@@ -12,6 +12,7 @@ var app = angular.module('app', [
   require('./home/HomeModule').name,
   require('./navbar/NavbarModule').name,
   require('./contacts/ContactsModule').name,
+  require('./note/NotesModule').name,
   require('./user/SettingsModule').name,
   require('./user/PasswordResetModule').name
 ]);

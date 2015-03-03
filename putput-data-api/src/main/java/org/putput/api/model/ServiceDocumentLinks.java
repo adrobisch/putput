@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
     "self",
+    "notes",
+    "note",
     "contacts",
     "contact",
     "user",
@@ -31,6 +33,18 @@ public class ServiceDocumentLinks {
      */
     @JsonProperty("self")
     private HalLink self;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("notes")
+    private HalLink notes;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("note")
+    private HalLink note;
     /**
      * A HAL link
      * 
@@ -100,6 +114,60 @@ public class ServiceDocumentLinks {
 
     public ServiceDocumentLinks withSelf(HalLink self) {
         this.self = self;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The notes
+     */
+    @JsonProperty("notes")
+    public HalLink getNotes() {
+        return notes;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param notes
+     *     The notes
+     */
+    @JsonProperty("notes")
+    public void setNotes(HalLink notes) {
+        this.notes = notes;
+    }
+
+    public ServiceDocumentLinks withNotes(HalLink notes) {
+        this.notes = notes;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The note
+     */
+    @JsonProperty("note")
+    public HalLink getNote() {
+        return note;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param note
+     *     The note
+     */
+    @JsonProperty("note")
+    public void setNote(HalLink note) {
+        this.note = note;
+    }
+
+    public ServiceDocumentLinks withNote(HalLink note) {
+        this.note = note;
         return this;
     }
 

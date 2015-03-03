@@ -1,7 +1,7 @@
 function ContactsApi(http, api) {
   this.create = function(newContact) {
     return api.withLink("contact", function (contactLink){
-      return http.post(contactLink, newContact);
+      return http.post(contactLink.replace("{id}", ''), newContact);
     });
   };
 

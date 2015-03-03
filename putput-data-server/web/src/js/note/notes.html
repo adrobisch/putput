@@ -1,0 +1,35 @@
+<div class="row">
+    <h1>Notes</h1>
+</div>
+
+<div class="row" data-ng-init="init()">
+    <form>
+        <div class="form-group">
+            <label for="shortText">Short Text</label>
+            <input type="text"
+                   class="form-control"
+                   id="shortText"
+                   placeholder="enter a short description or title of the content..."
+                   data-ng-model="newNote.shortText" >
+        </div>
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea id="content"
+                      class="form-control"
+                      rows="5"
+                      data-ng-model="newNote.content"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success" data-ng-click="createNote()">Submit</button>
+    </form>
+</div>
+
+<div class="animation row" data-ng-show="notesList.notes">
+    <h3>Your Notes</h3>
+
+    <div class="note-list col-md-2" data-ng-repeat="note in notesList.notes">
+      <div class="tile tile-blue" data-ng-click="edit(note.id)">
+          <p>{{note.shortText | limitTo: 30}}</p>
+          <p>{{note.content | limitTo: 30}}...</p>
+      </div>
+    </div>
+</div>
