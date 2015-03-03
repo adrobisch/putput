@@ -58,7 +58,7 @@
       <tbody>
       <tr data-ng-repeat="contact in contacts">
         <td>
-            <span data-ng-click="delete(contact)">
+            <span data-ng-click="delete(contact)" data-ng-confirm-click="Are you sure you want to delete {{contact.id}}?">
                 <i class="btn btn-default glyphicon glyphicon-trash"></i>
             </span>
             <a href="btn btn-default" data-ng-href="#/contact/{{contact.id}}">
