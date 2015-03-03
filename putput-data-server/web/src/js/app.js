@@ -2,8 +2,10 @@
 var fs = require("fs");
 
 var angular = require('angular');
+var angularHotKeys = require('angular-hotkeys');
 
 var app = angular.module('app', [
+  "cfp.hotkeys",
   require("angular-route").name,
   require("angular-animate").name,
   require("ng-flow").name,
@@ -22,6 +24,7 @@ app.service('auth', require('./common/AuthenticationApi'));
 app.service('contacts', require('./contacts/ContactsApi'));
 app.service('users', require('./user/UsersApi'));
 app.service('$alert', require('./common/AlertService'));
+app.service('shortcut', require('./common/ShortcutService'));
 
 app.factory('authInterceptor', require('./common/AuthInterceptor'));
 

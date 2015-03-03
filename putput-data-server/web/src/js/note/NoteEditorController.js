@@ -1,4 +1,4 @@
-var NoteEditorController =  function(scope, routeParams, notes, alert, location, markdown) {
+var NoteEditorController =  function(scope, routeParams, notes, alert, location, markdown, shortcut) {
   scope.previewToggle = true;
 
   scope.getNote = function () {
@@ -31,9 +31,13 @@ var NoteEditorController =  function(scope, routeParams, notes, alert, location,
     });
   };
 
-  scope.init = scope.getNote;
+  scope.init = function () {
+    shortcut.add('ctrl+s', scope.updateNote, scope);
+
+    scope.getNote();
+  };
 };
 
-NoteEditorController.$inject = ['$scope', '$routeParams', 'notes', '$alert', '$location', 'markdown'];
+NoteEditorController.$inject = ['$scope', '$routeParams', 'notes', '$alert', '$location', 'markdown', 'shortcut'];
 
 module.exports = NoteEditorController;

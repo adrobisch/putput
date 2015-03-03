@@ -39,6 +39,7 @@
     "ng-flow": "./lib/ng-flow.js"
   },
   "dependencies": {
-    "marked": "0.3.3"
+    "marked": "0.3.3",
+    "angular-hotkeys": "1.4.5"
   }
 }
