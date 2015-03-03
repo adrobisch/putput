@@ -4,11 +4,11 @@ var fs = require("fs");
 var angular = require('angular');
 var NotesController = require("./NotesController");
 var NoteEditorController = require("./NoteEditorController");
+var NoteViewController = require("./NoteViewController");
 var notesModule = angular.module('notes', []);
 
 notesModule.service("notes", require('./NotesApi'));
-
-notesModule.controller("NotesController", NotesController);
+notesModule.service("markdown", require('./MarkdownService'));
 
 notesModule.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/notes', {
@@ -17,6 +17,9 @@ notesModule.config(['$routeProvider', function($routeProvider) {
   }).when('/note/:id', {
     controller: NoteEditorController,
     template: fs.readFileSync(__dirname + '/note_editor.html', 'utf-8')
+  }).when('/note/view/:id', {
+    controller: NoteViewController,
+    template: fs.readFileSync(__dirname + '/note_view.html', 'utf-8')
   });
 }]);
 

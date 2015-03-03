@@ -1,8 +1,8 @@
-<div class="animation row" data-ng-init="init()" data-ng-show="note">
-    <h1>Note Editor</h1>
+<div class="animation row col-md-6" data-ng-init="init()" data-ng-show="note">
+    <h2>Note Editor</h2>
     <form>
         <div class="form-group">
-            <label for="shortText">Short Text</label>
+            <label for="shortText">Title</label>
             <input type="text"
                    class="form-control"
                    id="shortText"
@@ -13,9 +13,35 @@
             <label for="content">Content</label>
             <textarea id="content"
                       class="form-control"
-                      rows="5"
+                      rows="12"
                       data-ng-model="note.content"></textarea>
         </div>
-        <button type="submit" class="btn btn-success" data-ng-click="updateNote()">Update</button>
+        <div class="form-group">
+            <button type="submit"
+                    class="btn btn-success"
+                    data-ng-click="updateNote()">
+                <i class="glyphicon glyphicon-ok-sign"></i> Update</button>
+
+            <button type="button"
+                    class="btn btn-danger"
+                    data-ng-click="deleteNote()"
+                    data-ng-confirm-click="Sure you want to delete this note?">
+                <i class="glyphicon glyphicon-trash"></i> Delete</button>
+
+            <button type="button"
+                    class="btn btn-default"
+                    data-ng-click="viewNote()">
+                <i class="glyphicon glyphicon-eye-open"></i> View</button>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" data-ng-model="previewToggle"> Enable Preview?</input>
+        </div>
     </form>
+</div>
+
+<div data-ng-switch data-on="previewToggle">
+    <div class="animation row col-md-6 left5" data-ng-switch-when="true" data-ng-show="note">
+        <h2>Preview</h2>
+        <div id="preview" data-ng-show="previewToggle" data-ng-bind-html="preview()"></div>
+    </div>
 </div>

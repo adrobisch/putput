@@ -1,4 +1,6 @@
-var NoteEditorController =  function(scope, routeParams, notes, alert) {
+var NoteEditorController =  function(scope, routeParams, notes, alert, location, markdown) {
+  scope.previewToggle = true;
+
   scope.getNote = function () {
     notes.get(routeParams.id).success(function (response) {
       scope.note = response.data;
@@ -6,14 +8,32 @@ var NoteEditorController =  function(scope, routeParams, notes, alert) {
   };
 
   scope.updateNote = function () {
-    notes.update(scope.note).success(function (){
-      alert.info("Update", "Successful!");
+    return notes.update(scope.note).success(function (){
+      alert.info("Note", "Updated successfully!", 1000);
+    });
+  };
+
+  scope.preview = function () {
+    if (scope.note) {
+      return markdown.render(scope.note.content);
+    }
+  };
+
+  scope.viewNote = function () {
+    scope.updateNote().success(function () {
+      location.path("/note/view/" + scope.note.id);
+    });
+  };
+
+  scope.deleteNote = function () {
+    notes.delete(scope.note).success(function () {
+        location.path("/notes");
     });
   };
 
   scope.init = scope.getNote;
 };
 
-NoteEditorController.$inject = ['$scope', '$routeParams', 'notes', '$alert'];
+NoteEditorController.$inject = ['$scope', '$routeParams', 'notes', '$alert', '$location', 'markdown'];
 
 module.exports = NoteEditorController;

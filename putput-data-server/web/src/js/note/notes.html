@@ -5,7 +5,7 @@
 <div class="row" data-ng-init="init()">
     <form>
         <div class="form-group">
-            <label for="shortText">Short Text</label>
+            <label for="shortText">Title</label>
             <input type="text"
                    class="form-control"
                    id="shortText"
@@ -16,7 +16,7 @@
             <label for="content">Content</label>
             <textarea id="content"
                       class="form-control"
-                      rows="5"
+                      rows="3"
                       data-ng-model="newNote.content"></textarea>
         </div>
         <button type="submit" class="btn btn-success" data-ng-click="createNote()">Submit</button>
