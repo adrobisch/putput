@@ -15,7 +15,7 @@ public class NoteEntity extends BaseEntity {
   @Column(name = "_SHORT_TEXT")
   String shortText;
 
-  @Column(name = "_CONTENT")
+  @Column(name = "_CONTENT", columnDefinition = "CLOB")
   String content;
 
   @ManyToOne
