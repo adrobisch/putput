@@ -1,5 +1,3 @@
-var asciidoctor = require('asciidoctor');
-
 var NoteEditorController =  function(scope, routeParams, notes, alert) {
   scope.getNote = function () {
     notes.get(routeParams.id).success(function (response) {

@@ -35,8 +35,7 @@
     "angular-route": "./lib/angular-route.js",
     "angular-loading-bar": "./lib/angular-loading-bar.js",
     "angular-animate": "./lib/angular-animate.js",
-    "ng-flow": "./lib/ng-flow.js",
-    "asciidoctor": "./lib/asciidoctor.js"
+    "ng-flow": "./lib/ng-flow.js"
   },
   "dependencies": {
     "jquery": "^2.1.1"
