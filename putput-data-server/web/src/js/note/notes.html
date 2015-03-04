@@ -27,7 +27,7 @@
     <h3>Your Notes</h3>
 
     <div data-ng-repeat="note in notesList.notes">
-      <div class="right15 tile tile-blue col-xs-2 col-md-2" data-ng-click="edit(note.id)">
+      <div class="right15 top15 tile tile-blue col-xs-2 col-md-2" data-ng-click="edit(note.id)">
           <p><strong>{{note.shortText | limitTo: 30}}</strong></p>
           <p>{{note.content | limitTo: 30}}...</p>
       </div>
