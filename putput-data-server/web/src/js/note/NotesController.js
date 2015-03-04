@@ -1,4 +1,4 @@
-var NotesController =  function(scope, notes, location) {
+var NotesController =  function(scope, notes, location, shortcut, alerts) {
   scope.newNote = {};
   scope.notesList = {};
 
@@ -14,6 +14,9 @@ var NotesController =  function(scope, notes, location) {
       notes.getByUri(location, function (note) {
         scope.edit(note.data.id);
       });
+    }).error(function (e) {
+      console.log(e);
+      alerts.error("Error", "Unable to create note!")
     });
   };
 
@@ -21,9 +24,12 @@ var NotesController =  function(scope, notes, location) {
     location.path("/note/" + noteId);
   };
 
-  scope.init = scope.getNotes;
+  scope.init = function () {
+    shortcut.add('ctrl+s', scope.createNote, scope);
+    scope.getNotes();
+  };
 };
 
-NotesController.$inject = ['$scope', 'notes', '$location'];
+NotesController.$inject = ['$scope', 'notes', '$location', 'shortcut', '$alert'];
 
 module.exports = NotesController;

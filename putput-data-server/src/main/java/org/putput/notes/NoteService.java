@@ -27,7 +27,7 @@ public class NoteService {
     NoteEntity newNote = new NoteEntity();
     newNote.setId(uuidService.uuid());
     newNote.setShortText(shortText);
-    newNote.setContent(content);
+    newNote.setContent(content == null ? "" : content);
     newNote.setUser(userRepository.findByUsername(username));
 
     noteRepository.save(newNote);

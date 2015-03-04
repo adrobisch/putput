@@ -26,9 +26,9 @@
 <div class="animation row" data-ng-show="notesList.notes">
     <h3>Your Notes</h3>
 
-    <div class="note-list col-md-2" data-ng-repeat="note in notesList.notes">
-      <div class="tile tile-blue" data-ng-click="edit(note.id)">
-          <p>{{note.shortText | limitTo: 30}}</p>
+    <div data-ng-repeat="note in notesList.notes">
+      <div class="right15 tile tile-blue col-xs-2 col-md-2" data-ng-click="edit(note.id)">
+          <p><strong>{{note.shortText | limitTo: 30}}</strong></p>
           <p>{{note.content | limitTo: 30}}...</p>
       </div>
     </div>

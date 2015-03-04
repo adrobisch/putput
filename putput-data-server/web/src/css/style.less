@@ -5,6 +5,11 @@
 @import "animation";
 @import "variables-override.less";
 
+.row {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .top5 { margin-top:5px; }
 .top7 { margin-top:7px; }
 .top10 { margin-top:10px; }
@@ -13,24 +18,16 @@
 .top30 { margin-top:30px; }
 
 .left5 { margin-left: 5px; }
+.left15 { margin-left: 15px; }
+
+.right15 { margin-right: 15px; }
 
 .tile {
   cursor: pointer;
   font-size: large;
-  width: 150px;
-  height: 150px;
+  width: 130px;
+  height: 130px;
   padding: 15px;
-  margin: 0;
-}
-
-.note-list {
-  margin: 0;
-  padding: 10px;
-}
-
-.note-list .tile:not(:first-of-type) {
-  margin-left: 10px;
-  margin-top: 10px;
 }
 
 .tile.tile-blue {

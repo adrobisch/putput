@@ -11,7 +11,7 @@ var ShortcutService = function (hotkeys) {
 
       currentHotkeys.add({
         combo: combo,
-        allowIn: ['TEXTAREA'],
+        allowIn: ['TEXTAREA', 'INPUT'],
         callback: callback
       });
     }
