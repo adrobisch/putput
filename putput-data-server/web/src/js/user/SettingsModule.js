@@ -1,6 +1,5 @@
 'use strict';
 
-var fs = require("fs");
 var angular = require('angular');
 var SettingsController = require("./SettingsController");
 
@@ -9,7 +8,7 @@ var settingsModule = angular.module('user-settings', []);
 settingsModule.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/settings', {
     controller: SettingsController,
-    template: fs.readFileSync(__dirname + '/user_settings.html', 'utf-8')
+    template: require('./user_settings.html')
   });
 }]);
 

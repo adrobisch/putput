@@ -1,15 +1,19 @@
 'use strict';
-var fs = require("fs");
 
-var angular = require('angular');
-var angularHotKeys = require('angular-hotkeys');
+var jQuery = window.jQuery = require("jquery");
+var flow = window.Flow = require("flow.js/dist/flow");
+var angular = window.angular = require('angular');
+
+require("ng-flow/dist/ng-flow");
+require('angular-hotkeys');
+require('bootstrap');
 
 var app = angular.module('app', [
   "cfp.hotkeys",
-  require("angular-route").name,
-  require("angular-animate").name,
-  require("ng-flow").name,
-  require("angular-loading-bar").name,
+  "flow",
+  require("angular-route"),
+  require("angular-animate"),
+  require("angular-loading-bar"),
   require('./login/LoginModule').name,
   require('./home/HomeModule').name,
   require('./navbar/NavbarModule').name,

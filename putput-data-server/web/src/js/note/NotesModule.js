@@ -1,6 +1,5 @@
 'use strict';
 
-var fs = require("fs");
 var angular = require('angular');
 var NotesController = require("./NotesController");
 var NoteEditorController = require("./NoteEditorController");
@@ -13,13 +12,13 @@ notesModule.service("markdown", require('./MarkdownService'));
 notesModule.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/notes', {
     controller: NotesController,
-    template: fs.readFileSync(__dirname + '/notes.html', 'utf-8')
+    template: require('./notes.html')
   }).when('/note/:id', {
     controller: NoteEditorController,
-    template: fs.readFileSync(__dirname + '/note_editor.html', 'utf-8')
+    template: require('./note_editor.html')
   }).when('/note/view/:id', {
     controller: NoteViewController,
-    template: fs.readFileSync(__dirname + '/note_view.html', 'utf-8')
+    template: require('./note_view.html')
   });
 }]);
 

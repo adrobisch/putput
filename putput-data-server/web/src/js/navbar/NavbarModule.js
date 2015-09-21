@@ -1,6 +1,5 @@
 'use strict';
 
-var fs = require("fs");
 var angular = require('angular');
 var NavbarController = require("./NavbarController");
 

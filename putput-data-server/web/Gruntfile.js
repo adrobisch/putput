@@ -2,34 +2,14 @@ var _ = require('lodash');
 
 module.exports = function (grunt) {
 
-  function browserify(extraOptions) {
-    var options = {
-      browserifyOptions: {
-        builtins: [ 'fs' ],
-        commondir: false,
-        detectGlobals: false,
-        insertGlobalVars: []
-      },
-      transform: [ 'brfs' ]
-    };
-
-    var config = {
-      options: _.merge(options, extraOptions),
-      files: {
-        '<%= config.dist %>/app.js': [ '<%= config.sources %>/app.js' ]
-      }
-    };
-
-    return config;
-  }
-
   // any of [ 'PhantomJS', 'Chrome', 'Firefox', 'IE']
   var TEST_BROWSERS = ((process.env.TEST_BROWSERS || '').replace(/^\s+|\s+$/, '') || 'PhantomJS').split(/\s*,\s*/g);
 
   require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
 
-  grunt.loadNpmTasks('grunt-contrib-less');
+  var mainFile = "app.js";
+  var webPackConfig = require("./webPackConfig.js")("./src/js/" + mainFile, "<%= config.dist %>", mainFile);
 
   grunt.initConfig({
 
@@ -41,7 +21,7 @@ module.exports = function (grunt) {
       dist: '../target/classes/web',
       assets: 'assets',
       tests: 'test',
-      bower_components: 'bower_components'
+      node_modules: 'node_modules'
     },
 
     jshint: {
@@ -57,7 +37,7 @@ module.exports = function (grunt) {
         options: {
           paths: [
             "<%= config.css %>",
-            "<%= config.bower_components %>/bootstrap/less"
+            "<%= config.node_modules %>/bootstrap/less"
           ],
           cleancss: true
         },
@@ -85,10 +65,6 @@ module.exports = function (grunt) {
       unit: {
         browsers: TEST_BROWSERS
       }
-    },
-    browserify: {
-      app: browserify({}),
-      watch: browserify({ watch: true })
     },
     uglify: {
       dist: {
@@ -120,10 +96,10 @@ module.exports = function (grunt) {
             ],
             dest: '<%= config.dist %>'
           },
-          // bower dist folders
+          // dist folders
           {
             expand: true,
-            cwd: '<%= config.bower_components %>',
+            cwd: '<%= config.node_modules %>',
             src: [
               '**/*.min.js',
               '**/*.min.css',
@@ -136,6 +112,14 @@ module.exports = function (grunt) {
 
         ]
       }
+    },
+
+    webpack: {
+      build: webPackConfig,
+      watch: _.merge({
+        failOnError: false // don't report error to grunt if webpack find errors
+        // Use this if webpack errors are tolerable and grunt should continue
+      }, webPackConfig)
     },
 
     watch: {
@@ -156,14 +140,13 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('test', 'karma:single');
-  grunt.registerTask('build', [ 'less', 'browserify:app', 'copy' ]);
+  grunt.registerTask('test', 'jshint', 'karma:single');
+  grunt.registerTask('build', [ 'less', 'webpack:build', 'copy' ]);
   grunt.registerTask('dist', [ 'build', 'uglify' ]);
   grunt.registerTask('rebuild', [
     'build',
-    'browserify:watch',
     'watch'
   ]);
 
-  grunt.registerTask('default', [ 'jshint', 'test', 'build', 'uglify' ]);
+  grunt.registerTask('default', ['build']);
 };
