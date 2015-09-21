@@ -19,14 +19,14 @@ var app = angular.module('app', [
   require('./navbar/NavbarModule').name,
   require('./contacts/ContactsModule').name,
   require('./note/NotesModule').name,
+  require('./user/UsersModule').name,
   require('./user/SettingsModule').name,
-  require('./user/PasswordResetModule').name
+  require('./user/PasswordResetModule').name,
+  require('./file/FilesModule').name
 ]);
 
 app.service('api', require('./common/ApiService'));
 app.service('auth', require('./common/AuthenticationApi'));
-app.service('contacts', require('./contacts/ContactsApi'));
-app.service('users', require('./user/UsersApi'));
 app.service('$alert', require('./common/AlertService'));
 app.service('shortcut', require('./common/ShortcutService'));
 

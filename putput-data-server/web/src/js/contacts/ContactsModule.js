@@ -5,6 +5,7 @@ var ContactsController = require("./ContactsController");
 var ContactDetailsController = require("./ContactDetailsController");
 
 var contactsModule = angular.module('contacts', []);
+contactsModule.service('contacts', require('./ContactsApi'));
 
 contactsModule.controller("ContactsController", ContactsController);
 
