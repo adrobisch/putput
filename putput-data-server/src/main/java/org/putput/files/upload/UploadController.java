@@ -1,53 +1,60 @@
 package org.putput.files.upload;
 
+import org.putput.common.web.BaseResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Optional.ofNullable;
 
-@RestController
-public class UploadController {
+@Controller
+@Path("/upload")
+public class UploadController extends BaseResource {
 
     @Autowired
     UploadService uploadService;
 
-    @RequestMapping(value = "/api/upload", method = RequestMethod.POST)
-    public ResponseEntity<?> postChunk(HttpServletRequest request) throws IOException {
-        UploadRequest uploadRequest = uploadedFile(request);
+    @POST
+    public Response postChunk() throws IOException {
+        UploadRequest uploadRequest = uploadedFile(httpServletRequest);
 
         if (!uploadRequest.vaild()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid upload parameters.");
+            return Response.status(HttpStatus.BAD_REQUEST.value()).entity("Invalid upload parameters.").build();
         }
 
-        if (!uploadService.upload(uploadRequest, request.getInputStream())) {
-            return ResponseEntity.ok("Uploading...");
+        Optional<File> completelyUploadedFile = uploadService.upload(uploadRequest, httpServletRequest.getInputStream());
+        
+        if (!completelyUploadedFile.isPresent()) {
+            return Response.ok("Uploading...").build();
         } else {
-            return ResponseEntity.created(new File(uploadRequest.getPath()).toURI()).build();
+            return Response.created(completelyUploadedFile.get().toURI()).build();
         }
     }
 
-    @RequestMapping(value = "/api/upload", method = RequestMethod.GET)
-    public ResponseEntity<?> getUploadInfo(HttpServletRequest request) {
-        UploadRequest uploadRequest = uploadedFile(request);
+    @GET
+    public Response getUploadInfo() {
+        UploadRequest uploadRequest = uploadedFile(httpServletRequest);
 
         if (uploadService.isChunkUploaded(uploadRequest)) {
-            return ResponseEntity.ok("Uploaded.");
+            return Response.ok("Uploaded.").build();
         } else {
-            return ResponseEntity.notFound().build();
+            return Response.status(404).build();
         }
     }
 
     UploadRequest uploadedFile(HttpServletRequest request) {
         int resumableChunkNumber = parseInt(ofNullable(request.getParameter("flowChunkNumber")).orElse("-1"));
+        int totalChunks = parseInt(ofNullable(request.getParameter("flowTotalChunks")).orElse("-1"));
         int resumableChunkSize = parseInt(ofNullable(request.getParameter("flowChunkSize")).orElse("-1"));
         long resumableTotalSize = parseInt(ofNullable(request.getParameter("flowTotalSize")).orElse("-1"));
 
@@ -57,12 +64,14 @@ public class UploadController {
 
         UploadRequest uploadRequest = new UploadRequest();
 
-        uploadRequest.resumableChunkSize = resumableChunkSize;
-        uploadRequest.resumableTotalSize = resumableTotalSize;
-        uploadRequest.resumableIdentifier = resumableIdentifier;
-        uploadRequest.resumableFilename = resumableFilename;
-        uploadRequest.resumableRelativePath = resumableRelativePath;
-        uploadRequest.resumableChunkNumber = resumableChunkNumber;
+        uploadRequest.setResumableChunkSize(resumableChunkSize);
+        uploadRequest.setResumableTotalSize(resumableTotalSize);
+        uploadRequest.setResumableIdentifier(resumableIdentifier);
+        uploadRequest.setResumableFilename(resumableFilename);
+        uploadRequest.setResumableRelativePath(resumableRelativePath);
+        uploadRequest.setResumableChunkNumber(resumableChunkNumber);
+        uploadRequest.setContentLength(request.getContentLength());
+        uploadRequest.setTotalChunks(totalChunks);
 
         return uploadRequest;
     }

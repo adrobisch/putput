@@ -175,20 +175,14 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <nodeVersion>v0.10.18</nodeVersion>
-                            <npmVersion>1.3.8</npmVersion>
+                            <nodeVersion>v4.1.0</nodeVersion>
+                            <npmVersion>3.3.4</npmVersion>
                         </configuration>
                     </execution>
                     <execution>
                         <id>npm install</id>
                         <goals>
                             <goal>npm</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>bower install</id>
-                        <goals>
-                            <goal>bower</goal>
                         </goals>
                     </execution>
                     <execution>

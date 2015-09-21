@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {TestApp.class, IntegrationTestConfiguration.class})
+@SpringApplicationConfiguration(classes = {TestPutPutApp.class, IntegrationTestConfiguration.class})
 @ActiveProfiles("integration")
 @WebAppConfiguration
 @IntegrationTest("server.port:0")

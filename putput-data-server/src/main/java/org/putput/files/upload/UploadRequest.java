@@ -4,14 +4,15 @@ import org.springframework.util.StringUtils;
 
 public class UploadRequest {
   private long contentLength;
-  public int resumableChunkSize;
-  public long resumableTotalSize;
-  public String resumableIdentifier;
-  public String resumableFilename;
-  public String resumableRelativePath;
-  public int resumableChunkNumber;
+  private int resumableChunkSize;
+  private long resumableTotalSize;
+  private String resumableIdentifier;
+  private String resumableFilename;
+  private String resumableRelativePath;
+  private int resumableChunkNumber;
+  private int totalChunks;
 
-  public String path;
+  private String path;
 
   public boolean vaild() {
     if (resumableChunkSize < 0 || resumableTotalSize < 0
@@ -50,5 +51,49 @@ public class UploadRequest {
 
   public void setResumableChunkNumber(int resumableChunkNumber) {
     this.resumableChunkNumber = resumableChunkNumber;
+  }
+
+  public int getResumableChunkSize() {
+    return resumableChunkSize;
+  }
+
+  public void setResumableChunkSize(int resumableChunkSize) {
+    this.resumableChunkSize = resumableChunkSize;
+  }
+
+  public long getResumableTotalSize() {
+    return resumableTotalSize;
+  }
+
+  public void setResumableTotalSize(long resumableTotalSize) {
+    this.resumableTotalSize = resumableTotalSize;
+  }
+
+  public void setResumableIdentifier(String resumableIdentifier) {
+    this.resumableIdentifier = resumableIdentifier;
+  }
+
+  public void setResumableFilename(String resumableFilename) {
+    this.resumableFilename = resumableFilename;
+  }
+
+  public String getResumableRelativePath() {
+    return resumableRelativePath;
+  }
+
+  public void setResumableRelativePath(String resumableRelativePath) {
+    this.resumableRelativePath = resumableRelativePath;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
+  }
+
+  public int getTotalChunks() {
+    return totalChunks;
+  }
+
+  public void setTotalChunks(int totalChunks) {
+    this.totalChunks = totalChunks;
   }
 }

@@ -22,7 +22,7 @@ public class BaseResource {
   Boolean httpsEnabled = null;
 
   @Context
-  HttpServletRequest httpServletRequest;
+  protected HttpServletRequest httpServletRequest;
 
   protected HalLink link(Class<?> targetResource, String... paths) {
     return new HalLink().withHref(uriInfo.getBaseUriBuilder().segment(PathHelper.getPathFromResource(targetResource))

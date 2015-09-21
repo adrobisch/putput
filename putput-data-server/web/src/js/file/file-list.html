@@ -1,3 +1,19 @@
 <div>
     <p>Files</p>
+    <div data-flow-init
+         data-flow-files-submitted="$flow.upload()"
+         data-flow-file-success="$file.msg = $message">
+
+        <input type="file" data-flow-btn/>
+        Input OR Other element as upload button
+        <span class="btn" data-flow-btn>Upload File</span>
+
+        <table>
+            <tr data-ng-repeat="file in $flow.files">
+                <td>{{$index+1}}</td>
+                <td>{{file.name}}</td>
+                <td>{{file.msg}}</td>
+            </tr>
+        </table>
+    </div>
 </div>

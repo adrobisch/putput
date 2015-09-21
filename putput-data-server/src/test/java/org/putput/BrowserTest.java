@@ -17,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {TestApp.class, IntegrationTestConfiguration.class})
+@SpringApplicationConfiguration(classes = {TestPutPutApp.class, IntegrationTestConfiguration.class})
 @ActiveProfiles("integration")
 @WebIntegrationTest("server.port:0")
 public abstract class BrowserTest extends FluentTest {
