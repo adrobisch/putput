@@ -50,7 +50,7 @@
             <column name="_CONTACT_ID" type="varchar(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="_FILE_ID" type="varchar(40)">
+            <column name="_IMAGE_ID" type="varchar(40)">
                 <constraints nullable="false"/>
             </column>
             <column name="_VERSION" type="bigint" defaultValueNumeric="0">
@@ -71,7 +71,7 @@
                                  referencedColumnNames="_ID"/>
 
         <addForeignKeyConstraint baseTableName="PP_CONTACT_IMAGE"
-                                 baseColumnNames="_FILE_ID"
+                                 baseColumnNames="_IMAGE_ID"
                                  constraintName="FK_CONTACT_IMAGE_FILE"
                                  referencedTableName="PP_IMAGE"
                                  referencedColumnNames="_ID"/>

@@ -67,7 +67,7 @@ public class ContactEntity {
   @JoinTable(
     name="PP_CONTACT_IMAGE",
     joinColumns={@JoinColumn(name="_CONTACT_ID", referencedColumnName="_ID")},
-    inverseJoinColumns={@JoinColumn(name="_FILE_ID", referencedColumnName="_ID")})
+    inverseJoinColumns={@JoinColumn(name="_IMAGE_ID", referencedColumnName="_ID")})
   Set<PutPutImage> photos = new HashSet<>();
 
   public String getId() {
