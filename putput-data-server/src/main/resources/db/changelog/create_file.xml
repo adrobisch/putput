@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="create_file.xml">
+
+    <changeSet id="1" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_FILE" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_FILE">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>            
+            <column name="_STORAGE_CONFIG_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_STORAGE_CONTAINER_REFERENCE" type="varchar(1024)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_STORAGE_REFERENCE" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_OWNER_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_PARENT_ID" type="varchar(40)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_IMAGE_ID" type="varchar(40)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_IS_DIRECTORY" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_NAME" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_MIME_TYPE" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_SIZE" type="bigint" defaultValueNumeric="-1">
+                <constraints nullable="false" />
+            </column>            
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_STORAGE" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_STORAGE">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_OWNER_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_TYPE" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_IS_DEFAULT" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_STORAGE_PARAMETER" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_STORAGE_PARAMETER">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_STORAGE_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_KEY" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_VALUE" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

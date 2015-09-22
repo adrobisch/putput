@@ -160,6 +160,42 @@ schemas:
           "self" : { "$ref": "halLink"}
         }
       }
+  - file: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "id": {"type": "string"},
+          "parentId": {"type": "string"},
+          "storageId": {"type": "string"},
+          "isDirectory": {"type": "boolean"},
+          "name": {"type": "string"},
+          "mimeType": {"type": "string"},
+          "created": {"type": "number"},
+          "updated": {"type": "number"},
+          "version": {"type": "integer"},
+          "_links": {
+            "$ref": "fileLinks"
+          }
+        }
+      }
+  - fileLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.FileLinks",
+        "description": "The links of a file",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
+  - fileListLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.FileListLinks",
+        "description": "The links of a file list",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }      
   - userInfo: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -198,6 +234,8 @@ schemas:
               "self" : { "$ref": "halLink"},
               "notes" : { "$ref": "halLink"},
               "note" : { "$ref": "halLink"},
+              "files" : { "$ref": "halLink"},
+              "file" : { "$ref": "halLink"},
               "contacts" : { "$ref": "halLink"},
               "contact" : { "$ref": "halLink"},
               "user" : { "$ref": "halLink"},
@@ -348,6 +386,26 @@ traits:
 /notes:
   get:
     is: [ halCollection: { id: noteList, collectionJavaType: org.putput.api.model.NoteList, itemsProperty: notes, itemSchema: note, collectionLinks: noteListLinks}]
+
+/file:
+  /{id}:
+    get:
+      responses:
+        200:
+          body:
+            application/hal+json:
+              schema: file
+    delete:
+      responses:
+        200:
+    /content:
+      get:
+        responses:
+          200:
+
+/files:
+  get:
+    is: [ halCollection: { id: noteList, collectionJavaType: org.putput.api.model.FileList, itemsProperty: files, itemSchema: file, collectionLinks: fileListLinks}]
 
 /password_request:
   post:

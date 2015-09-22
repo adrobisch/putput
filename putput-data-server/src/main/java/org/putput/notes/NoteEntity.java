@@ -8,10 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "PP_NOTE")
 public class NoteEntity extends BaseEntity {
-  @Id
-  @Column(name = "_ID")
-  String id;
-
   @Column(name = "_SHORT_TEXT")
   String shortText;
 
@@ -21,18 +17,6 @@ public class NoteEntity extends BaseEntity {
   @ManyToOne
   @JoinColumn(name = "_OWNER_ID")
   UserEntity user;
-
-  @Version
-  @Column(name = "_VERSION")
-  Long version;
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
 
   public String getShortText() {
     return shortText;
@@ -56,13 +40,5 @@ public class NoteEntity extends BaseEntity {
 
   public void setUser(UserEntity user) {
     this.user = user;
-  }
-
-  public Long getVersion() {
-    return version;
-  }
-
-  public void setVersion(Long version) {
-    this.version = version;
   }
 }

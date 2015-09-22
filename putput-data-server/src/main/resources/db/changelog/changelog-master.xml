@@ -11,5 +11,6 @@
     <include file="db/changelog/create_contact.xml" />
     <include file="db/changelog/create_image.xml" />
     <include file="db/changelog/create_note.xml" />
+    <include file="db/changelog/create_file.xml" />
 
 </databaseChangeLog>

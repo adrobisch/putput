@@ -27,20 +27,21 @@ public class UploadRepository {
 
   void requireUploadDir() {
     File uploadDir = new File(getUploadBaseDir());
-    if (!uploadDir.isDirectory()) {
+
+    if (uploadDir.exists() && !uploadDir.isDirectory()) {
       throw new IllegalArgumentException("upload dir not properly specified, should be directory: " + uploadDir.getAbsolutePath());
     }
-
+    
     if (!uploadDir.exists()) {
       try {
         if (!uploadDir.mkdirs()) {
           throw new IllegalStateException("unable to mkdirs: " + uploadDir);
         }
       } catch (Exception e) {
-        throw new RuntimeException("upload directory did not exits and can't be created: " + uploadDir, e);
+        throw new RuntimeException("upload directory did not exist and can't be created: " + uploadDir, e);
       }
     }
-    
+
     if (!uploadDir.canWrite()) {
       throw new IllegalStateException("upload dir is not writable: " + uploadDir);      
     }
@@ -88,7 +89,7 @@ public class UploadRepository {
     String finalPath = tempFile.getAbsolutePath().substring(0, tempFile.getAbsolutePath().length() - TEMP_SUFFIX.length());
     File finalFile = new File(finalPath);
     if (!tempFile.renameTo(finalFile)) {
-      throw new IllegalStateException("unable to remove temp file to final file: " + tempFilePath);
+      throw new IllegalStateException("unable to rename temp file to final file: " + tempFilePath);
     }
     return finalFile;
   }
@@ -118,7 +119,7 @@ public class UploadRepository {
   }
 
   protected String getUploadBaseDir() {
-    return environment.getProperty("upload.base.dir", "/var/putput/files");
+    return environment.getProperty("uploads.base.dir", "/var/putput/uploads");
   }
 
 }

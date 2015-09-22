@@ -1,6 +1,8 @@
 package org.putput.files.upload;
 
+import org.putput.api.resource.File;
 import org.putput.common.web.BaseResource;
+import org.putput.files.PutPutFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -10,8 +12,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
-import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
@@ -19,7 +24,7 @@ import static java.util.Optional.ofNullable;
 
 @Controller
 @Path("/upload")
-public class UploadController extends BaseResource {
+public class UploadResource extends BaseResource {
 
     @Autowired
     UploadService uploadService;
@@ -32,12 +37,20 @@ public class UploadController extends BaseResource {
             return Response.status(HttpStatus.BAD_REQUEST.value()).entity("Invalid upload parameters.").build();
         }
 
-        Optional<File> completelyUploadedFile = uploadService.upload(uploadRequest, httpServletRequest.getInputStream());
+        Optional<PutPutFile> completelyUploadedFile = uploadService.upload(user().getUsername(), uploadRequest, httpServletRequest.getInputStream());
         
         if (!completelyUploadedFile.isPresent()) {
             return Response.ok("Uploading...").build();
         } else {
-            return Response.created(completelyUploadedFile.get().toURI()).build();
+            return Response.created(toUri(link(File.class, completelyUploadedFile.get().getId()).getHref())).build();
+        }
+    }
+
+    private URI toUri(String href) {
+        try {
+            return new URL(href).toURI();
+        } catch (URISyntaxException | MalformedURLException e) {
+            throw new RuntimeException(e);
         }
     }
 

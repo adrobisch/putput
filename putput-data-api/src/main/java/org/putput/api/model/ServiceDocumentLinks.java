@@ -17,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "self",
     "notes",
     "note",
+    "files",
+    "file",
     "contacts",
     "contact",
     "user",
@@ -45,6 +47,18 @@ public class ServiceDocumentLinks {
      */
     @JsonProperty("note")
     private HalLink note;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("files")
+    private HalLink files;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("file")
+    private HalLink file;
     /**
      * A HAL link
      * 
@@ -168,6 +182,60 @@ public class ServiceDocumentLinks {
 
     public ServiceDocumentLinks withNote(HalLink note) {
         this.note = note;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The files
+     */
+    @JsonProperty("files")
+    public HalLink getFiles() {
+        return files;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param files
+     *     The files
+     */
+    @JsonProperty("files")
+    public void setFiles(HalLink files) {
+        this.files = files;
+    }
+
+    public ServiceDocumentLinks withFiles(HalLink files) {
+        this.files = files;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The file
+     */
+    @JsonProperty("file")
+    public HalLink getFile() {
+        return file;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param file
+     *     The file
+     */
+    @JsonProperty("file")
+    public void setFile(HalLink file) {
+        this.file = file;
+    }
+
+    public ServiceDocumentLinks withFile(HalLink file) {
+        this.file = file;
         return this;
     }
 

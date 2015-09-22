@@ -1,94 +1,145 @@
 package org.putput.files;
 
+import org.putput.common.persistence.BaseEntity;
+import org.putput.images.PutPutImage;
+import org.putput.users.UserEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.Optional;
 
 @Entity
-@Table(name = "PP_IMAGE")
-public class PutPutFile {
+@Table(name = "PP_FILE")
+public class PutPutFile extends BaseEntity {
 
-  @Id
-  @Column(name = "_ID")
-  String id;
+  @ManyToOne
+  @JoinColumn(name = "_OWNER_ID")
+  UserEntity user;
+  
+  @OneToOne
+  @JoinColumn(name = "_STORAGE_CONFIG_ID")
+  StorageConfiguration storageConfiguration;
 
-  @Column(name = "_PATH")
-  String path;
+  @OneToOne
+  @JoinColumn(name = "_PARENT_ID")          
+  PutPutFile parent;
 
   @Column(name = "_NAME")
-  String name;
+  String name;  
+  
+  @Column(name = "_STORAGE_REFERENCE")
+  String storageReference;  
+  
+  @Column(name = "_STORAGE_CONTAINER_REFERENCE")
+  String storageContainerReference;
 
-  @Column(name = "_TYPE")
-  String type;
+  @Column(name = "_IS_DIRECTORY")
+  int isDirectory;
 
-  @Column(name = "_STORAGE_ID")
-  String storageId;
+  @Column(name = "_MIME_TYPE")
+  String mimeType;
 
   @Column(name = "_SIZE")
   Long size;
 
-  @Column(name = "_CREATED")
-  Long created;
-
-  @Column(name = "_UPDATED")
-  Long updated;
+  @OneToOne
+  @JoinColumn(name = "_IMAGE_ID")
+  PutPutImage previewImage;
 
   public PutPutFile() {
   }
 
-  public PutPutFile(String type) {
-    this.type = type;
+  public UserEntity getUser() {
+    return user;
   }
 
-  public String getId() {
-    return id;
+  public StorageConfiguration getStorageConfiguration() {
+    return storageConfiguration;
   }
 
-  public PutPutFile withId(String id) {
-    this.id = id;
+  public Optional<PutPutFile> getParent() {
+    return Optional.ofNullable(parent);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public boolean isDirectory() {
+    return isDirectory == 1;
+  }
+
+  public String getMimeType() {
+    return mimeType;
+  }
+
+  public Long getSize() {
+    return size;
+  }
+
+  public PutPutFile setUser(UserEntity user) {
+    this.user = user;
     return this;
   }
 
-  public String getPath() {
-    return path;
-  }
-
-  public PutPutFile withPath(String path) {
-    this.path = path;
+  public PutPutFile setStorageConfiguration(StorageConfiguration storageConfiguration) {
+    this.storageConfiguration = storageConfiguration;
     return this;
   }
 
-  public String getType() {
-    return type;
+  public PutPutFile setParent(PutPutFile parent) {
+    this.parent = parent;
+    return this;
   }
 
-  @Override
-  public String toString() {
-    return "PutPutFile{" +
-      "id='" + id + '\'' +
-      ", path='" + path + '\'' +
-      ", type='" + type + '\'' +
-      '}';
+  public PutPutFile setName(String name) {
+    this.name = name;
+    return this;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    PutPutFile that = (PutPutFile) o;
-
-    if (path != null ? !path.equals(that.path) : that.path != null) return false;
-    if (type != null ? !type.equals(that.type) : that.type != null) return false;
-
-    return true;
+  public PutPutFile setIsDirectory(int isDirectory) {
+    this.isDirectory = isDirectory;
+    return this;
   }
 
-  @Override
-  public int hashCode() {
-    int result = path != null ? path.hashCode() : 0;
-    result = 31 * result + (type != null ? type.hashCode() : 0);
-    return result;
+  public PutPutFile setMimeType(String mimeType) {
+    this.mimeType = mimeType;
+    return this;
+  }
+
+  public PutPutFile setSize(Long size) {
+    this.size = size;
+    return this;
+  }
+
+  public PutPutImage getPreviewImage() {
+    return previewImage;
+  }
+
+  public PutPutFile setPreviewImage(PutPutImage previewImage) {
+    this.previewImage = previewImage;
+    return this;
+  }
+
+  public String getStorageReference() {
+    return storageReference;
+  }
+
+  public PutPutFile setStorageReference(String storageReference) {
+    this.storageReference = storageReference;
+    return this;
+  }
+
+  public String getStorageContainerReference() {
+    return storageContainerReference;
+  }
+
+  public PutPutFile setStorageContainerReference(String storageContainerReference) {
+    this.storageContainerReference = storageContainerReference;
+    return this;
   }
 }
