@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="create_contact.xml">
+
+    <changeSet id="1" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_CONTACT" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_CONTACT">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_OWNER_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_FIRST_NAME" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_LAST_NAME" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_ADDITIONAL_NAMES" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_SALUTATION" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_DATE_OF_BIRTH" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_ANNIVERSARY" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_ORGANISATION" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_NOTES" type="varchar(4000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_PASSWORD_HASH" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <insert tableName="PP_CONTACT">
+            <column name="_ID" value="1" />
+            <column name="_OWNER_ID" value="1" />
+            <column name="_FIRST_NAME" value="John" />
+            <column name="_LAST_NAME" value="Foo" />
+        </insert>
+
+        <insert tableName="PP_CONTACT">
+            <column name="_ID" value="2" />
+            <column name="_OWNER_ID" value="1" />
+            <column name="_FIRST_NAME" value="Andreas" />
+            <column name="_LAST_NAME" value="Drobisch" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="2" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_CONTACT_ADDRESS" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_CONTACT_ADDRESS">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_TYPE" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_CONTACT_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_STREET" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_HOUSE_NO" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_PO_BOX" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_CITY" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_COUNTRY" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_POSTAL_CODE" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_ORGANISATION" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_NOTES" type="varchar(4000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_PASSWORD_HASH" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="PP_CONTACT_ADDRESS"
+                                 baseColumnNames="_CONTACT_ID"
+                                 constraintName="FK_CONTACT_ADDRESS"
+                                 referencedTableName="PP_CONTACT"
+                                 referencedColumnNames="_ID"/>
+    </changeSet>
+
+    <changeSet id="3" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_CONTACT_INTERNET_ID" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_CONTACT_INTERNET_ID">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_TYPE" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_CONTACT_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_ID_VALUE" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="PP_CONTACT_INTERNET_ID"
+                                 baseColumnNames="_CONTACT_ID"
+                                 constraintName="FK_CONTACT_INET_ID"
+                                 referencedTableName="PP_CONTACT"
+                                 referencedColumnNames="_ID"/>
+    </changeSet>
+
+    <changeSet id="4" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_CONTACT_PHONE" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_CONTACT_PHONE">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_TYPE" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_CONTACT_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_NUMBER" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="PP_CONTACT_PHONE"
+                                 baseColumnNames="_CONTACT_ID"
+                                 constraintName="FK_CONTACT_PHONE"
+                                 referencedTableName="PP_CONTACT"
+                                 referencedColumnNames="_ID"/>
+
+        <insert tableName="PP_CONTACT_PHONE">
+            <column name="_ID" value="1" />
+            <column name="_CONTACT_ID" value="1" />
+            <column name="_TYPE" value="MOBILE" />
+            <column name="_NUMBER" value="017112312346" />
+        </insert>
+
+        <insert tableName="PP_CONTACT_PHONE">
+            <column name="_ID" value="2" />
+            <column name="_CONTACT_ID" value="2" />
+            <column name="_TYPE" value="MOBILE" />
+            <column name="_NUMBER" value="+49 171 123 12345" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="5" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_CONTACT_EMAIL" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_CONTACT_EMAIL">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_TYPE" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_CONTACT_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_ADDRESS" type="varchar(512)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="PP_CONTACT_EMAIL"
+                                 baseColumnNames="_CONTACT_ID"
+                                 constraintName="FK_CONTACT_MAIL"
+                                 referencedTableName="PP_CONTACT"
+                                 referencedColumnNames="_ID"/>
+
+        <insert tableName="PP_CONTACT_EMAIL">
+            <column name="_ID" value="1" />
+            <column name="_CONTACT_ID" value="1" />
+            <column name="_TYPE" value="HOME" />
+            <column name="_ADDRESS" value="john@foo.com" />
+        </insert>
+
+        <insert tableName="PP_CONTACT_EMAIL">
+            <column name="_ID" value="2" />
+            <column name="_CONTACT_ID" value="2" />
+            <column name="_TYPE" value="HOME" />
+            <column name="_ADDRESS" value="andreas@drobisch.com" />
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

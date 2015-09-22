@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="create_file.xml">
+
+    <changeSet id="1" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_FILE" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_FILE">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_PATH" type="varchar(1024)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_DATA" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_TYPE" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_CONTACT_IMAGE" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_CONTACT_IMAGE">
+            <column name="_CONTACT_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_FILE_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="PP_CONTACT_IMAGE"
+                                 baseColumnNames="_CONTACT_ID"
+                                 constraintName="FK_CONTACT_IMAGE"
+                                 referencedTableName="PP_CONTACT"
+                                 referencedColumnNames="_ID"/>
+
+        <addForeignKeyConstraint baseTableName="PP_CONTACT_IMAGE"
+                                 baseColumnNames="_FILE_ID"
+                                 constraintName="FK_CONTACT_IMAGE_FILE"
+                                 referencedTableName="PP_FILE"
+                                 referencedColumnNames="_ID"/>
+    </changeSet>
+
+</databaseChangeLog>
