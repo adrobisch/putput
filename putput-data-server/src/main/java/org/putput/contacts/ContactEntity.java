@@ -1,6 +1,6 @@
 package org.putput.contacts;
 
-import org.putput.files.PutPutImage;
+import org.putput.images.PutPutImage;
 import org.putput.users.UserEntity;
 
 import javax.persistence.*;

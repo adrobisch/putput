@@ -1,4 +1,4 @@
-package org.putput.files;
+package org.putput.images;
 
 import ezvcard.util.org.apache.commons.codec.binary.Base64;
 import org.putput.common.UuidService;
@@ -12,15 +12,15 @@ import java.io.InputStream;
 import java.util.Optional;
 
 @Service
-public class FileService {
+public class ImageService {
   @Autowired
   UuidService uuidService;
 
   @Autowired
-  FileRepository fileRepository;
+  ImageRepository imageRepository;
 
   @Transactional
-  public PutPutImage saveUserFile(String username, Optional<String> filename, String mimeType, InputStream inputStream, long size) {
+  public PutPutImage saveUserImage(String username, Optional<String> filename, String mimeType, InputStream inputStream, long size) {
     PutPutImage file = new PutPutImage(mimeType)
       .withId(uuidService.uuid())
       .withData(getBase64Data(inputStream));
@@ -30,7 +30,7 @@ public class FileService {
       file.withPath(filePath);
     }
 
-    return fileRepository.save(file);
+    return imageRepository.save(file);
   }
 
   private String getBase64Data(InputStream inputStream) {

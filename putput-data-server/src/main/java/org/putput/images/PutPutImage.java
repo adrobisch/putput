@@ -1,4 +1,4 @@
-package org.putput.files;
+package org.putput.images;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -7,8 +7,8 @@ import ezvcard.parameter.EmailType;
 import ezvcard.parameter.TelephoneType;
 import ezvcard.property.*;
 import org.putput.contacts.*;
-import org.putput.files.FileService;
-import org.putput.files.PutPutImage;
+import org.putput.images.ImageService;
+import org.putput.images.PutPutImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +31,14 @@ public class VCardImporter {
 
   ContactService contactService;
 
-  FileService fileService;
+  ImageService imageService;
 
   Logger log = LoggerFactory.getLogger(VCardImporter.class);
 
   @Autowired
-  public VCardImporter(ContactService contactService, FileService fileService) {
+  public VCardImporter(ContactService contactService, ImageService imageService) {
     this.contactService = contactService;
-    this.fileService = fileService;
+    this.imageService = imageService;
   }
 
   @Transactional
@@ -114,11 +114,11 @@ public class VCardImporter {
   private void addPhotos(String username, VCard vcard, ContactEntity contactEntity) {
     for (Photo photo : vcard.getPhotos()) {
       if (photo.getData() != null) {
-        PutPutImage photoFile = fileService.saveUserFile(username,
-          Optional.<String>empty(),
-          photo.getContentType().getMediaType(),
-          new ByteArrayInputStream(photo.getData()),
-          photo.getData().length);
+        PutPutImage photoFile = imageService.saveUserImage(username,
+                Optional.<String>empty(),
+                photo.getContentType().getMediaType(),
+                new ByteArrayInputStream(photo.getData()),
+                photo.getData().length);
 
         contactEntity.getPhotos().add(photoFile);
       }

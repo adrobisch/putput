@@ -3,8 +3,8 @@ package org.putput.contacts.vcard;
 import org.junit.Test;
 import org.putput.SpringTest;
 import org.putput.contacts.*;
-import org.putput.files.FileService;
-import org.putput.files.PutPutImage;
+import org.putput.images.ImageService;
+import org.putput.images.PutPutImage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -18,12 +18,12 @@ public class VCardImporterTest extends SpringTest {
   ContactService contactService;
 
   @Autowired
-  FileService fileService;
+  ImageService imageService;
 
   @Test
   public void shouldImportVCard() throws Exception {
 
-    ImportResult importResult = new VCardImporter(contactService, fileService).importVCard(new FileInputStream(file("erika.vcf")), "user");
+    ImportResult importResult = new VCardImporter(contactService, imageService).importVCard(new FileInputStream(file("erika.vcf")), "user");
 
     assertThat(importResult.getImportedContactEntities())
       .hasSize(1);
