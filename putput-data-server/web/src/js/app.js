@@ -39,11 +39,12 @@ app.config(['$httpProvider', function ($httpProvider) {
 app.config(['flowFactoryProvider', function (flowFactoryProvider) {
   flowFactoryProvider.defaults = {
     target: '/api/upload',
+    chunkSize: 131072,
     uploadMethod: 'POST',
     permanentErrors: [401, 500, 501],
     maxChunkRetries: 0,
     chunkRetryInterval: 5000,
-    simultaneousUploads: 4,
+    simultaneousUploads: 3,
     method: 'octet'
   };
   flowFactoryProvider.on('catchAll', function (event) {
