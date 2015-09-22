@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.putput.SpringTest;
 import org.putput.contacts.*;
 import org.putput.files.FileService;
-import org.putput.files.PutPutFile;
+import org.putput.files.PutPutImage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class VCardImporterTest extends SpringTest {
       .hasLastName("Mustermann")
       .hasOrganisation("Wikipedia")
       .hasSalutation("Oberleutnant")
-      .hasPhotos(new PutPutFile("image/jpg"))
+      .hasPhotos(new PutPutImage("image/jpg"))
       .hasContactAddressEntities(new ContactAddressEntity()
           .withCity("Köln")
           .withStreet("Heidestraße 17")

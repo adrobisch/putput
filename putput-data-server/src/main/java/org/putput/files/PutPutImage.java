@@ -4,11 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.UnsupportedEncodingException;
 
 @Entity
-@Table(name = "PP_FILE")
-public class PutPutFile {
+@Table(name = "PP_IMAGE")
+public class PutPutImage {
 
   @Id
   @Column(name = "_ID")
@@ -23,10 +22,10 @@ public class PutPutFile {
   @Column(name = "_TYPE")
   String type;
 
-  public PutPutFile() {
+  public PutPutImage() {
   }
 
-  public PutPutFile(String type) {
+  public PutPutImage(String type) {
     this.type = type;
   }
 
@@ -34,7 +33,7 @@ public class PutPutFile {
     return id;
   }
 
-  public PutPutFile withId(String id) {
+  public PutPutImage withId(String id) {
     this.id = id;
     return this;
   }
@@ -43,12 +42,12 @@ public class PutPutFile {
     return path;
   }
 
-  public PutPutFile withData(String base64Data) {
+  public PutPutImage withData(String base64Data) {
     this.data = base64Data;
     return this;
   }
 
-  public PutPutFile withPath(String path) {
+  public PutPutImage withPath(String path) {
     this.path = path;
     return this;
   }
@@ -71,7 +70,7 @@ public class PutPutFile {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    PutPutFile that = (PutPutFile) o;
+    PutPutImage that = (PutPutImage) o;
 
     if (path != null ? !path.equals(that.path) : that.path != null) return false;
     if (type != null ? !type.equals(that.type) : that.type != null) return false;

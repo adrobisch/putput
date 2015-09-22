@@ -5,16 +5,16 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
-        logicalFilePath="create_file.xml">
+        logicalFilePath="create_image.xml">
 
     <changeSet id="1" author="adrobisch">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="PP_FILE" />
+                <tableExists tableName="PP_IMAGE" />
             </not>
         </preConditions>
 
-        <createTable tableName="PP_FILE">
+        <createTable tableName="PP_IMAGE">
             <column name="_ID" type="varchar(40)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -73,7 +73,7 @@
         <addForeignKeyConstraint baseTableName="PP_CONTACT_IMAGE"
                                  baseColumnNames="_FILE_ID"
                                  constraintName="FK_CONTACT_IMAGE_FILE"
-                                 referencedTableName="PP_FILE"
+                                 referencedTableName="PP_IMAGE"
                                  referencedColumnNames="_ID"/>
     </changeSet>
 

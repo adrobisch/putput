@@ -1,6 +1,6 @@
 package org.putput.contacts;
 
-import org.putput.files.PutPutFile;
+import org.putput.files.PutPutImage;
 import org.putput.users.UserEntity;
 
 import javax.persistence.*;
@@ -68,7 +68,7 @@ public class ContactEntity {
     name="PP_CONTACT_IMAGE",
     joinColumns={@JoinColumn(name="_CONTACT_ID", referencedColumnName="_ID")},
     inverseJoinColumns={@JoinColumn(name="_FILE_ID", referencedColumnName="_ID")})
-  Set<PutPutFile> photos = new HashSet<>();
+  Set<PutPutImage> photos = new HashSet<>();
 
   public String getId() {
     return id;
@@ -175,7 +175,7 @@ public class ContactEntity {
     return emails;
   }
 
-  public Set<PutPutFile> getPhotos() {
+  public Set<PutPutImage> getPhotos() {
     return photos;
   }
 
@@ -239,7 +239,7 @@ public class ContactEntity {
     this.emails = emails;
   }
 
-  public void setPhotos(Set<PutPutFile> photos) {
+  public void setPhotos(Set<PutPutImage> photos) {
     this.photos = photos;
   }
 }

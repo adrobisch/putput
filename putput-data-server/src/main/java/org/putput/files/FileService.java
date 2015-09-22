@@ -20,8 +20,8 @@ public class FileService {
   FileRepository fileRepository;
 
   @Transactional
-  public PutPutFile saveUserFile(String username, Optional<String> filename, String mimeType, InputStream inputStream, long size) {
-    PutPutFile file = new PutPutFile(mimeType)
+  public PutPutImage saveUserFile(String username, Optional<String> filename, String mimeType, InputStream inputStream, long size) {
+    PutPutImage file = new PutPutImage(mimeType)
       .withId(uuidService.uuid())
       .withData(getBase64Data(inputStream));
 

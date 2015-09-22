@@ -8,7 +8,7 @@ import ezvcard.parameter.TelephoneType;
 import ezvcard.property.*;
 import org.putput.contacts.*;
 import org.putput.files.FileService;
-import org.putput.files.PutPutFile;
+import org.putput.files.PutPutImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +114,7 @@ public class VCardImporter {
   private void addPhotos(String username, VCard vcard, ContactEntity contactEntity) {
     for (Photo photo : vcard.getPhotos()) {
       if (photo.getData() != null) {
-        PutPutFile photoFile = fileService.saveUserFile(username,
+        PutPutImage photoFile = fileService.saveUserFile(username,
           Optional.<String>empty(),
           photo.getContentType().getMediaType(),
           new ByteArrayInputStream(photo.getData()),
