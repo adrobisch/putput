@@ -85,6 +85,7 @@ public class UploadResource extends BaseResource {
         uploadRequest.setResumableChunkNumber(resumableChunkNumber);
         uploadRequest.setContentLength(request.getContentLength());
         uploadRequest.setTotalChunks(totalChunks);
+        uploadRequest.setUploadFolder(user().getUsername());
 
         return uploadRequest;
     }

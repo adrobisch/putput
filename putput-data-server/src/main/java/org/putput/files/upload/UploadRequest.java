@@ -3,6 +3,8 @@ package org.putput.files.upload;
 import org.springframework.util.StringUtils;
 
 public class UploadRequest {
+  private String uploadFolder;
+  private String path;
   private long contentLength;
   private int resumableChunkSize;
   private long resumableTotalSize;
@@ -11,8 +13,6 @@ public class UploadRequest {
   private String resumableRelativePath;
   private int resumableChunkNumber;
   private int totalChunks;
-
-  private String path;
 
   public boolean vaild() {
     if (resumableChunkSize < 0 || resumableTotalSize < 0
@@ -95,5 +95,13 @@ public class UploadRequest {
 
   public void setTotalChunks(int totalChunks) {
     this.totalChunks = totalChunks;
+  }
+
+  public String getUploadFolder() {
+    return uploadFolder;
+  }
+
+  public void setUploadFolder(String uploadFolder) {
+    this.uploadFolder = uploadFolder;
   }
 }

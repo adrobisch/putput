@@ -22,13 +22,11 @@ public class UploadService {
   }
 
   public synchronized Optional<PutPutFile> upload(String username, UploadRequest uploadRequest, InputStream dataStream) {
-    String fileName = uploadRequest.getResumableFilename();
-    
-    uploadRepository.writeChunk(Optional.ofNullable(uploadRequest.getPath()), fileName, dataStream, uploadRequest.getContentLength(), uploadRequest.getResumableChunkSize(), uploadRequest.getResumableChunkNumber());
-    uploadRepository.markUploaded(uploadRequest.getResumableIdentifier(), uploadRequest.getResumableChunkNumber());
+    uploadRepository.writeChunk(uploadRequest, dataStream);
+    uploadRepository.markUploaded(uploadRequest);
 
     if (isUploadFinished(uploadRequest)) {
-      File completedFile = uploadRepository.complete(uploadRequest.getResumableIdentifier(), fileName);
+      File completedFile = uploadRepository.complete(uploadRequest);
       
       PutPutFile newFile = fileService.createUserFileFromSource(username,
               completedFile,
@@ -41,12 +39,12 @@ public class UploadService {
   }
 
   public boolean isChunkUploaded(UploadRequest uploadRequest) {
-    return uploadRepository.chunkExists(uploadRequest.getResumableIdentifier(), uploadRequest.getResumableChunkNumber());
+    return uploadRepository.chunkExists(uploadRequest);
   }
 
   public boolean isUploadFinished(UploadRequest uploadRequest) {
-    for (int i = 1; i < uploadRequest.getTotalChunks() + 1; i++) {
-      if (!uploadRepository.chunkExists(uploadRequest.getResumableIdentifier(), i)) {
+    for (int chunkIndex = 1; chunkIndex < uploadRequest.getTotalChunks() + 1; chunkIndex++) {
+      if (!uploadRepository.chunkExists(uploadRequest, chunkIndex)) {
         return false;
       }
     }

@@ -4,6 +4,7 @@ import com.j256.simplemagic.ContentInfoUtil;
 import org.putput.common.UuidService;
 import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
+import org.putput.util.FileHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static org.putput.util.FileHelper.requireExistingDir;
 
 @Service
 @Transactional
@@ -116,7 +119,7 @@ public class FileService {
     private Supplier<? extends StorageConfiguration> newDefaultStorage(UserEntity user) {
         return () -> {
             StorageConfiguration newDefaultStorageConfiguration = createNewDefaultConfiguration(user);
-            StorageParameter baseDirParameter = createBaseDirParameter(newDefaultStorageConfiguration);
+            StorageParameter baseDirParameter = createBaseDirParameter(user.getUsername(), newDefaultStorageConfiguration);
             
             newDefaultStorageConfiguration.getStorageParameters().put(FileSystemStorage.baseDirKey, baseDirParameter);
             
@@ -124,10 +127,10 @@ public class FileService {
         };
     }
 
-    private StorageParameter createBaseDirParameter(StorageConfiguration newDefaultStorageConfiguration) {
+    private StorageParameter createBaseDirParameter(String username, StorageConfiguration newDefaultStorageConfiguration) {
         StorageParameter baseDirParameter = new StorageParameter()
                 .setKey(FileSystemStorage.baseDirKey)
-                .setValue(getFilesBaseDir());
+                .setValue(requireExistingDir(getFilesDir(username)).getAbsolutePath());
 
         baseDirParameter.setId(uuidService.uuid());
         baseDirParameter.setStorageConfiguration(newDefaultStorageConfiguration);
@@ -145,7 +148,7 @@ public class FileService {
         return storageConfigurationRepository.save(newDefaultStorageConfiguration);
     }
 
-    String getFilesBaseDir() {
-        return environment.getProperty("files.base.dir", "/var/putput/files");
+    String getFilesDir(String username) {
+        return environment.getProperty("files.base.dir", "/var/putput/files") + File.separatorChar + username;
     }
 }

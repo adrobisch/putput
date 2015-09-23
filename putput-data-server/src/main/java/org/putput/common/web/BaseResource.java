@@ -2,7 +2,7 @@ package org.putput.common.web;
 
 import org.putput.api.model.HalLink;
 import org.putput.config.PutPutConfiguration;
-import org.putput.util.PathHelper;
+import org.putput.util.FileHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +25,7 @@ public class BaseResource {
   protected HttpServletRequest httpServletRequest;
 
   protected HalLink link(Class<?> targetResource, String... paths) {
-    return new HalLink().withHref(uriInfo.getBaseUriBuilder().segment(PathHelper.getPathFromResource(targetResource))
+    return new HalLink().withHref(uriInfo.getBaseUriBuilder().segment(FileHelper.getPathFromResource(targetResource))
       .scheme(getProtocol())
       .segment(paths).toTemplate());
   }

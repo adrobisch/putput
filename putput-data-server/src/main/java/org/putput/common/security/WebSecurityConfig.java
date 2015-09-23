@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.RememberMeServices;
@@ -24,7 +22,7 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.putput.util.PathHelper.getPathFromResource;
+import static org.putput.util.FileHelper.getPathFromResource;
 
 @Configuration
 @EnableWebMvcSecurity

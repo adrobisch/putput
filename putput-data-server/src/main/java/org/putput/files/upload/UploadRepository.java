@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 
+import static org.putput.util.FileHelper.requireExistingDir;
+
 @Repository
 public class UploadRepository {
 
@@ -22,86 +24,77 @@ public class UploadRepository {
   @Autowired
   public UploadRepository(Environment environment) {
     this.environment = environment;
-    requireUploadDir();
-  }
-
-  void requireUploadDir() {
-    File uploadDir = new File(getUploadBaseDir());
-
-    if (uploadDir.exists() && !uploadDir.isDirectory()) {
-      throw new IllegalArgumentException("upload dir not properly specified, should be directory: " + uploadDir.getAbsolutePath());
-    }
-    
-    if (!uploadDir.exists()) {
-      try {
-        if (!uploadDir.mkdirs()) {
-          throw new IllegalStateException("unable to mkdirs: " + uploadDir);
-        }
-      } catch (Exception e) {
-        throw new RuntimeException("upload directory did not exist and can't be created: " + uploadDir, e);
-      }
-    }
-
-    if (!uploadDir.canWrite()) {
-      throw new IllegalStateException("upload dir is not writable: " + uploadDir);      
-    }
+    requireExistingDir(getBaseDir());
   }
 
   private HashMap<String, HashSet<ChunkNumber>> uploadedChunksById = new HashMap<String, HashSet<ChunkNumber>>();
 
-  public void markUploaded(String uploadId, int chunkNumber) {
-    getOrCreateUpload(uploadId).add(new ChunkNumber(chunkNumber));
+  public void markUploaded(UploadRequest upload) {
+    getOrCreateUpload(upload).add(new ChunkNumber(upload.getResumableChunkNumber()));
   }
 
-  private HashSet<ChunkNumber> getOrCreateUpload(String uploadId) {
-    if(!uploadedChunksById.containsKey(uploadId)) {
-      uploadedChunksById.put(uploadId, new HashSet<>());
+  private HashSet<ChunkNumber> getOrCreateUpload(UploadRequest uploadRequest) {
+    String uploadKey = uploadKey(uploadRequest);
+    if(!uploadedChunksById.containsKey(uploadKey)) {
+      uploadedChunksById.put(uploadKey, new HashSet<>());
     }
-    return uploadedChunksById.get(uploadId);
+    return uploadedChunksById.get(uploadKey);
   }
 
-  public boolean chunkExists(String uploadIdentifier, int chunkNumber) {
-    return getOrCreateUpload(uploadIdentifier).contains(new ChunkNumber(chunkNumber));
+  public boolean chunkExists(UploadRequest uploadRequest) {
+    return chunkExists(uploadRequest, uploadRequest.getResumableChunkNumber());
   }
 
-  public synchronized void remove(String uploadId) {
-    if (uploadedChunksById.containsKey(uploadId)) {
-      uploadedChunksById.remove(uploadId);
+  public boolean chunkExists(UploadRequest uploadRequest, int chunkIndex) {
+    ChunkNumber chunkNumber = new ChunkNumber(chunkIndex);
+    return getOrCreateUpload(uploadRequest).contains(chunkNumber);
+  }
+
+  public synchronized void remove(String uploadKey) {
+    if (uploadedChunksById.containsKey(uploadKey)) {
+      uploadedChunksById.remove(uploadKey);
     }
   }
 
-  public void writeChunk(Optional<String> path, String uploadedFileName, InputStream dataStream, long streamSize, int resumableChunkSize, int resumableChunkNumber) {
+  public void writeChunk(UploadRequest uploadRequest, InputStream dataStream) {
     try {
-      RandomAccessFile raf = getRandomAccessFileAtPosition(path.orElse("") + uploadedFileName, resumableChunkSize, resumableChunkNumber);
-      writeBytes(streamSize, raf, dataStream);
+      RandomAccessFile raf = getRandomAccessFileAtPosition(uploadRequest.getUploadFolder(),
+              Optional.ofNullable(uploadRequest.getPath()).orElse("") + uploadRequest.getResumableFilename(),
+              uploadRequest.getResumableChunkSize(),
+              uploadRequest.getResumableChunkNumber());
+
+      writeBytes(uploadRequest.getContentLength(), raf, dataStream);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public File complete(String uploadIdentifier, String fileName) {
-    remove(uploadIdentifier);
-    return removeTempSuffix(getTempFilePath(fileName));
+  public File complete(UploadRequest uploadRequest) {
+    remove(uploadKey(uploadRequest));
+    return removeTempSuffix(getTempFile(uploadRequest.getUploadFolder(), uploadRequest.getResumableFilename()));
   }
 
-  File removeTempSuffix(String tempFilePath) {
-    File tempFile = new File(tempFilePath);
+  private String uploadKey(UploadRequest uploadRequest) {
+    return uploadRequest.getUploadFolder() + uploadRequest.getResumableIdentifier();
+  }
+
+  File removeTempSuffix(File tempFile) {
     String finalPath = tempFile.getAbsolutePath().substring(0, tempFile.getAbsolutePath().length() - TEMP_SUFFIX.length());
     File finalFile = new File(finalPath);
     if (!tempFile.renameTo(finalFile)) {
-      throw new IllegalStateException("unable to rename temp file to final file: " + tempFilePath);
+      throw new IllegalStateException("unable to rename temp file to final file: " + tempFile.getAbsolutePath());
     }
     return finalFile;
   }
 
-  private RandomAccessFile getRandomAccessFileAtPosition(String fileName, int resumableChunkSize, int resumableChunkNumber) throws IOException {
-    RandomAccessFile raf = new RandomAccessFile(getTempFilePath(fileName), "rw");
-    raf.seek((resumableChunkNumber - 1) * resumableChunkSize);
+  private RandomAccessFile getRandomAccessFileAtPosition(String username, String fileName, int chunkSize, int chunkNumber) throws IOException {
+    RandomAccessFile raf = new RandomAccessFile(getTempFile(username, fileName), "rw");
+    raf.seek((chunkNumber - 1) * chunkSize);
     return raf;
   }
 
-  private String getTempFilePath(String fileName) {
-    return getUploadBaseDir() + File.separatorChar + fileName + TEMP_SUFFIX;
+  private File getTempFile(String username, String fileName) {
+    return new File(requireExistingDir(getUploadDir(username)), fileName + TEMP_SUFFIX);
   }
 
   private void writeBytes(long length, RandomAccessFile raf, InputStream is) throws IOException {
@@ -118,7 +111,11 @@ public class UploadRepository {
     raf.close();
   }
 
-  protected String getUploadBaseDir() {
+  protected String getUploadDir(String username) {
+    return getBaseDir() + File.separatorChar + username;
+  }
+
+  private String getBaseDir() {
     return environment.getProperty("uploads.base.dir", "/var/putput/uploads");
   }
 
