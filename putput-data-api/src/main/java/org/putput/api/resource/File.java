@@ -6,7 +6,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 
 @Path("file")
 public interface File {
@@ -43,14 +45,21 @@ public interface File {
 
     /**
      * 
+     * @param disposition
+     *     A flag to signal that that a content disposition header should be added
      * @param id
      *     
      */
     @GET
     @Path("{id}/content")
+    @Produces({
+        "application/octet-stream"
+    })
     File.GetFileByIdContentResponse getFileByIdContent(
         @PathParam("id")
-        String id)
+        String id,
+        @QueryParam("disposition")
+        Boolean disposition)
         throws Exception
     ;
 
@@ -85,8 +94,29 @@ public interface File {
         /**
          * 
          */
-        public static File.GetFileByIdContentResponse withOK() {
-            Response.ResponseBuilder responseBuilder = Response.status(200);
+        public static File.GetFileByIdContentResponse withNotFound() {
+            Response.ResponseBuilder responseBuilder = Response.status(404);
+            return new File.GetFileByIdContentResponse(responseBuilder.build());
+        }
+
+        /**
+         * 
+         */
+        public static File.GetFileByIdContentResponse withForbidden() {
+            Response.ResponseBuilder responseBuilder = Response.status(403);
+            return new File.GetFileByIdContentResponse(responseBuilder.build());
+        }
+
+        /**
+         * 
+         * @param contentDisposition
+         *     
+         * @param entity
+         *     
+         */
+        public static File.GetFileByIdContentResponse withOctetstreamOK(String contentDisposition, StreamingOutput entity) {
+            Response.ResponseBuilder responseBuilder = Response.status(200).header("Content-Type", "application/octet-stream").header("Content-Disposition", contentDisposition);
+            responseBuilder.entity(entity);
             return new File.GetFileByIdContentResponse(responseBuilder.build());
         }
 
@@ -99,6 +129,14 @@ public interface File {
 
         private GetFileByIdResponse(Response delegate) {
             super(delegate);
+        }
+
+        /**
+         * 
+         */
+        public static File.GetFileByIdResponse withNotFound() {
+            Response.ResponseBuilder responseBuilder = Response.status(404);
+            return new File.GetFileByIdResponse(responseBuilder.build());
         }
 
         /**

@@ -55,8 +55,8 @@ public abstract class BaseEntity {
     return created;
   }
 
-  public Optional<Long> getUpdated() {
-    return Optional.ofNullable(updated);
+  public Long getUpdated() {
+    return updated;
   }
 
   public Date getCreatedDate() {

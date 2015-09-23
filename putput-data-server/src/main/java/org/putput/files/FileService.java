@@ -112,6 +112,16 @@ public class FileService {
         return fileRepository.findByUser(username);   
     }
 
+    public Optional<PutPutFile> getUserFile(String id) {
+        // todo: check permission
+        return Optional.ofNullable(fileRepository.findOne(id));
+    }
+
+    public void deleteUserFile(String id) {
+        // todo: check permission
+        fileRepository.delete(id);
+    }
+
     public StorageConfiguration getOrCreateDefaultStorageConfig(UserEntity user) {
         return storageConfigurationRepository.findDefaultByUser(user.getUsername()).orElseGet(newDefaultStorage(user));
     }

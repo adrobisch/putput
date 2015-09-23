@@ -391,6 +391,7 @@ traits:
   /{id}:
     get:
       responses:
+        404:
         200:
           body:
             application/hal+json:
@@ -400,9 +401,20 @@ traits:
         200:
     /content:
       get:
+        queryParameters:
+          disposition:
+            description: A flag to signal that that a content disposition header should be added
+            type: boolean
+            required: false
         responses:
+          404:
+          403:
           200:
-
+            headers:
+              Content-Disposition:
+                required: false
+            body:
+              application/octet-stream:
 /files:
   get:
     is: [ halCollection: { id: noteList, collectionJavaType: org.putput.api.model.FileList, itemsProperty: files, itemSchema: file, collectionLinks: fileListLinks}]

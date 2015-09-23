@@ -20,7 +20,9 @@ public class ApiResource extends BaseResource implements Root {
       .withNotes(link(Notes.class))
       .withNote(link(Note.class, "{id}").withTemplated(true))
       .withContacts(link(Contacts.class))
-      .withContact(link(Contact.class, "{id}").withTemplated(true));
+      .withContact(link(Contact.class, "{id}").withTemplated(true))
+      .withFile(link(File.class, "{id}"))
+      .withFiles(link(Files.class));
 
     ServiceDocument serviceDocument = new ServiceDocument()
       .withLinks(serviceDocumentLinks);

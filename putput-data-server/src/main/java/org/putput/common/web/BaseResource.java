@@ -1,8 +1,6 @@
 package org.putput.common.web;
 
-import org.putput.api.model.HalLink;
 import org.putput.config.PutPutConfiguration;
-import org.putput.util.FileHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-public class BaseResource {
+public class BaseResource implements HalSupport {
   @Context
   UriInfo uriInfo;
 
@@ -24,13 +22,13 @@ public class BaseResource {
   @Context
   protected HttpServletRequest httpServletRequest;
 
-  protected HalLink link(Class<?> targetResource, String... paths) {
-    return new HalLink().withHref(uriInfo.getBaseUriBuilder().segment(FileHelper.getPathFromResource(targetResource))
-      .scheme(getProtocol())
-      .segment(paths).toTemplate());
+  @Override
+  public UriInfo getUriInfo() {
+    return uriInfo;
   }
 
-  private String getProtocol() {
+  @Override
+  public String getProtocol() {
     String protocolHeader = httpServletRequest.getHeader("X-Forwarded-Proto");
     return protocolHeader == null ? defaultProtocol() : protocolHeader;
   }
@@ -43,7 +41,7 @@ public class BaseResource {
     }
   }
 
-  Boolean isHttpsEnabled() {
+  public Boolean isHttpsEnabled() {
     if (httpsEnabled == null) {
       httpsEnabled = environment.getProperty(PutPutConfiguration.HTTPS_ENABLED, Boolean.class, false);
     }
