@@ -125,8 +125,8 @@ public class PutPutFile extends BaseEntity {
     return this;
   }
 
-  public String getStorageReference() {
-    return storageReference;
+  public Optional<String> getStorageReference() {
+    return Optional.ofNullable(storageReference);
   }
 
   public PutPutFile setStorageReference(String storageReference) {
@@ -134,8 +134,8 @@ public class PutPutFile extends BaseEntity {
     return this;
   }
 
-  public String getStorageContainerReference() {
-    return storageContainerReference;
+  public Optional<String> getStorageContainerReference() {
+    return Optional.ofNullable(storageContainerReference);
   }
 
   public PutPutFile setStorageContainerReference(String storageContainerReference) {

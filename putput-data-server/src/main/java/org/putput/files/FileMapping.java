@@ -20,6 +20,9 @@ public interface FileMapping extends HalSupport {
                 .withCreated(putputFile.getCreated().doubleValue())
                 .withUpdated(Optional.ofNullable(putputFile.getUpdated()).map(Long::doubleValue).orElse(null))
                 .withVersion(putputFile.getVersion().intValue())
-                .withLinks(new FileLinks().withSelf(link(org.putput.api.resource.File.class, putputFile.getId())));
+                .withLinks(new FileLinks()
+                        .withSelf(link(org.putput.api.resource.File.class, putputFile.getId()))
+                        .withContent(link(org.putput.api.resource.File.class, putputFile.getId(), "content"))
+                );
     }
 }

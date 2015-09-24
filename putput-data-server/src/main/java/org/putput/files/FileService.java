@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -92,7 +93,8 @@ public class FileService {
 
     public Optional<String> getMimeType(File file) {
         try {
-            return Optional.ofNullable(new ContentInfoUtil().findMatch(file).getMimeType());
+            return Optional.ofNullable(new ContentInfoUtil().findMatch(file))
+                    .flatMap(contentMatch -> Optional.ofNullable(contentMatch.getMimeType()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -113,12 +115,22 @@ public class FileService {
     }
 
     public Optional<PutPutFile> getUserFile(String id) {
-        // todo: check permission
         return Optional.ofNullable(fileRepository.findOne(id));
+    }
+    
+    public Optional<InputStream> getFileContent(String id) {
+        return Optional.ofNullable(fileRepository.findOne(id))
+                .flatMap(file -> Optional.of(getFileContentFromStorage(file)));    
+    }
+
+    InputStream getFileContentFromStorage(PutPutFile file) {
+        return storages.getStorage(file.getStorageConfiguration()).getContent(
+                file.getStorageContainerReference(), 
+                file.getStorageReference().get()
+        );
     }
 
     public void deleteUserFile(String id) {
-        // todo: check permission
         fileRepository.delete(id);
     }
 

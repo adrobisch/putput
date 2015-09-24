@@ -1,6 +1,6 @@
 var FileListController =  function(scope, files) {
 
-  scope.fileUploaded = function (file) {
+  scope.fileUploaded = function () {
     scope.loadFiles();
   };
 
@@ -8,6 +8,14 @@ var FileListController =  function(scope, files) {
     files.list().success(function (result) {
       scope.files = result.data.files;
     });
+  };
+  
+  scope.download = function (file) {
+    window.location.href = scope.downloadUrl(file);
+  };
+  
+  scope.downloadUrl = function (file) {
+    return file._links["content"].href;
   };
 
 };

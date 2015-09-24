@@ -5,7 +5,9 @@ import java.util.Optional;
 
 public interface Storage {
     String store(String name, Optional<String> containerReference, InputStream dataStream);
+
     StorageConfiguration getStorageConfiguration();
+    InputStream getContent(Optional<String> storageContainerReference, String storageReference);
 
     enum Type {
         FILE_SYSTEM("fs");

@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-    "self"
+    "self",
+    "content"
 })
 public class FileLinks {
 
@@ -29,6 +30,12 @@ public class FileLinks {
      */
     @JsonProperty("self")
     private HalLink self;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("content")
+    private HalLink content;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -56,6 +63,33 @@ public class FileLinks {
 
     public FileLinks withSelf(HalLink self) {
         this.self = self;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The content
+     */
+    @JsonProperty("content")
+    public HalLink getContent() {
+        return content;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param content
+     *     The content
+     */
+    @JsonProperty("content")
+    public void setContent(HalLink content) {
+        this.content = content;
+    }
+
+    public FileLinks withContent(HalLink content) {
+        this.content = content;
         return this;
     }
 

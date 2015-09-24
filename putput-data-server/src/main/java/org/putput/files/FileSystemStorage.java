@@ -3,6 +3,8 @@ package org.putput.files;
 import org.springframework.util.StreamUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,5 +38,18 @@ public class FileSystemStorage implements Storage {
     @Override
     public StorageConfiguration getStorageConfiguration() {
         return configuration;
+    }
+
+    @Override
+    public InputStream getContent(Optional<String> containerReference, String storageReference) {
+        if (containerReference.isPresent()) {
+            throw new UnsupportedOperationException("get file from parent path not supported yet");
+        }
+
+        try {
+            return new FileInputStream(new File(baseDir, storageReference));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

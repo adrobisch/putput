@@ -11,9 +11,14 @@
                     <span>{{$index+1}}</span>
                     <span>{{file.name}}</span>
                     <span>{{file.msg}}</span>
-                    <div class="progress progress-striped" ng-class="{active: file.isUploading()}">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ng-style="{width: (file.progress() * 100) + '%'}" style="width: 100%;">
-                            <span class="">{{file.progress()*100}}% Complete</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped"
+                             data-ng-class="{active: file.isUploading()}"
+                             role="progressbar" 
+                             aria-valuenow="100" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100" data-ng-style="{width: (file.progress() * 100) + '%'}" style="width: 100%;">
+                            <span class="">{{file.progress()*100 | number:0}}% Complete</span>
                         </div>
                     </div>
                 </div>
@@ -21,7 +26,9 @@
         </div>
     </div>
     <div class="animation row">
-        <div class="top5 left5 file tile tile-blue col-xs-2 col-md-2" data-ng-repeat="file in files">
+        <div class="top5 left5 file tile tile-blue col-xs-2 col-md-2" 
+             data-ng-repeat="file in files"
+             data-ng-click="download(file)"   >
             <div class="file-title">
                 <i data-ng-class="{'glyphicon glyphicon-folder-close': file.isDirectory, 'glyphicon glyphicon-file': !file.isDirectory}"></i>
                 <span>{{file.name}}</span>

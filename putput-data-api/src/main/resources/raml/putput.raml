@@ -184,7 +184,8 @@ schemas:
         "javaType" : "org.putput.api.model.FileLinks",
         "description": "The links of a file",
         "properties": {
-          "self" : { "$ref": "halLink"}
+          "self" : { "$ref": "halLink"},
+          "content" : { "$ref": "halLink"}
         }
       }
   - fileListLinks: |
@@ -403,7 +404,7 @@ traits:
       get:
         queryParameters:
           disposition:
-            description: A flag to signal that that a content disposition header should be added
+            description: A flag to signal that that a content disposition attachment header should be added
             type: boolean
             required: false
         responses:
