@@ -4,7 +4,6 @@ import com.j256.simplemagic.ContentInfoUtil;
 import org.putput.common.UuidService;
 import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
-import org.putput.util.FileHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -63,13 +62,13 @@ public class FileService {
         String fileName = sourceFile.getName();
 
         Storage defaultStorage = getDefaultStorage(user);
-        String storageReference = defaultStorage.store(fileName, Optional.<String>empty(), fileStream(sourceFile));
+        StorageReference storageReference = defaultStorage.store(fileName, Optional.<String>empty(), fileStream(sourceFile));
 
         PutPutFile putPutFile = new PutPutFile();
         putPutFile.setUser(user);
         putPutFile.setId(uuidService.uuid());
         putPutFile.setName(fileName);
-        putPutFile.setStorageReference(storageReference);
+        putPutFile.setStorageReference(storageReference.getId());
         putPutFile.setIsDirectory(0);
         putPutFile.setMimeType(getMimeType(sourceFile).orElse("application/octet-stream"));
         putPutFile.setSize(size);

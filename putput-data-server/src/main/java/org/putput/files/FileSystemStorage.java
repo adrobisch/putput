@@ -22,14 +22,14 @@ public class FileSystemStorage implements Storage {
     }
 
     @Override
-    public String store(String name, Optional<String> containerReference, InputStream input) {
+    public StorageReference store(String name, Optional<String> containerReference, InputStream input) {
         if (containerReference.isPresent()) {
             throw new UnsupportedOperationException("saving file with parent path not supported yet");
         }
 
         try {
             StreamUtils.copy(input, new FileOutputStream(new File(baseDir, name)));
-            return name;
+            return new StorageReference().setContentReference(name);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

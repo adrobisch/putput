@@ -46,7 +46,7 @@ public interface File {
     /**
      * 
      * @param disposition
-     *     A flag to signal that that a content disposition header should be added
+     *     A flag to signal that that a content disposition attachment header should be added
      * @param id
      *     
      */
