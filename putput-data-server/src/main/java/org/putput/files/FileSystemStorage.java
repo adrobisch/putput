@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +28,11 @@ public class FileSystemStorage implements Storage {
                              MimeTypes mimeTypes) {
         this.configuration = configuration;
         this.mimeTypes = mimeTypes;
-        this.baseDir = new File(configuration.getStorageParameters().get(baseDirKey).getValue());
+        this.baseDir = createBaseDir(configuration);
+    }
+
+    protected File createBaseDir(StorageConfiguration configuration) {
+        return new File(configuration.getStorageParameters().get(baseDirKey).getValue());
     }
 
     @Override
@@ -72,7 +78,7 @@ public class FileSystemStorage implements Storage {
                 .orElse(folderList(new File(baseDir, containerReference.get().getName())));
     }
 
-    private List<StorageReference> folderList(File file) {
+    protected List<StorageReference> folderList(File file) {
         File[] children = file.listFiles();
 
         if (children == null) {
@@ -83,15 +89,18 @@ public class FileSystemStorage implements Storage {
                 .stream()
                 .map(child -> {
                     String parentPathOrNull = Optional.ofNullable(child.getParentFile())
-                            .map(parent -> parent.getAbsoluteFile().getAbsolutePath()).orElse(null);
+                            .map(parent -> {
+                                Path pathAbsolute = Paths.get(parent.getAbsolutePath());
+                                Path pathBase = Paths.get(baseDir.getAbsolutePath());
+                                return pathBase.relativize(pathAbsolute).toFile().getPath();
+                            }).orElse(null);
 
                     return new StorageReference()
-                            .setMimeType(mimeTypes.getMimeType(child).orElse("application/octet-stream"))
+                            .setMimeType(mimeTypes.getMimeType(child).orElse(null))
                             .setSize(file.length())
                             .setContainerReference(parentPathOrNull)
                             .setDirectory(child.isDirectory())
                             .setName(child.getName());
-                })
-                .collect(Collectors.toList());
+                }).collect(Collectors.toList());
     }
 }
