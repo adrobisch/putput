@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseEntity<T> {
   @Id
   @Column(name = "_ID")
   String id;
@@ -39,8 +39,9 @@ public abstract class BaseEntity {
     return id;
   }
 
-  public void setId(String id) {
+  public T setId(String id) {
     this.id = id;
+    return (T) this;
   }
 
   public Long getVersion() {

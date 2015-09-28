@@ -32,6 +32,7 @@ public class FileService {
     Environment environment;
     Storages storages;
     UuidService uuidService;
+    MimeTypes mimeTypes;
 
     @Autowired
     public FileService(FileRepository fileRepository, 
@@ -40,7 +41,8 @@ public class FileService {
                        UserRepository userRepository, 
                        Environment environment,
                        Storages storages,
-                       UuidService uuidService) {
+                       UuidService uuidService,
+                       MimeTypes mimeTypes) {
         this.fileRepository = fileRepository;
         this.storageConfigurationRepository = storageConfigurationRepository;
         this.storageParameterRepository = storageParameterRepository;
@@ -48,6 +50,7 @@ public class FileService {
         this.environment = environment;
         this.storages = storages;
         this.uuidService = uuidService;
+        this.mimeTypes = mimeTypes;
     }
 
     public PutPutFile createUserFileFromSource(String username,
@@ -68,9 +71,9 @@ public class FileService {
         putPutFile.setUser(user);
         putPutFile.setId(uuidService.uuid());
         putPutFile.setName(fileName);
-        putPutFile.setStorageReference(storageReference.getId());
+        putPutFile.setStorageReference(storageReference.getName());
         putPutFile.setIsDirectory(0);
-        putPutFile.setMimeType(getMimeType(sourceFile).orElse("application/octet-stream"));
+        putPutFile.setMimeType(mimeTypes.getMimeType(sourceFile).orElse("application/octet-stream"));
         putPutFile.setSize(size);
         putPutFile.setParent(parentId.flatMap(toFileEntity()).orElse(null));
         putPutFile.setStorageConfiguration(defaultStorage.getStorageConfiguration());
@@ -88,15 +91,6 @@ public class FileService {
 
     private Storage getDefaultStorage(UserEntity user) {
         return storages.getStorage(getOrCreateDefaultStorageConfig(user));
-    }
-
-    public Optional<String> getMimeType(File file) {
-        try {
-            return Optional.ofNullable(new ContentInfoUtil().findMatch(file))
-                    .flatMap(contentMatch -> Optional.ofNullable(contentMatch.getMimeType()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     Function<? super String, Optional<PutPutFile>> toFileEntity() {

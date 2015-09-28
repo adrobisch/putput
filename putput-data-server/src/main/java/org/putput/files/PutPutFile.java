@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "PP_FILE")
-public class PutPutFile extends BaseEntity {
+public class PutPutFile extends BaseEntity<PutPutFile> {
 
   @ManyToOne
   @JoinColumn(name = "_OWNER_ID")

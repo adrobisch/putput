@@ -8,7 +8,7 @@ public interface Storage {
     StorageConfiguration getStorageConfiguration();
     StorageReference store(String name, Optional<String> containerReference, InputStream dataStream);
     InputStream getContent(Optional<String> storageContainerReference, String storageReference);
-    List<StorageReference> list(Optional<String> containerReference);
+    List<StorageReference> list(Optional<StorageReference> containerReference);
 
     enum Type {
         FILE_SYSTEM("fs");

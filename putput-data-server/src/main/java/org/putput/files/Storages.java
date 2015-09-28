@@ -7,7 +7,7 @@ public class Storages {
     
     public Storage getStorage(StorageConfiguration configuration) {
         if (Storage.Type.FILE_SYSTEM.code().equalsIgnoreCase(configuration.getType())) {
-            return new FileSystemStorage(configuration);
+            return new FileSystemStorage(configuration, new MimeTypes());
         }
         throw new RuntimeException("unknown storage type");
     }
