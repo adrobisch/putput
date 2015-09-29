@@ -72,6 +72,7 @@ public class FileService {
         putPutFile.setId(uuidService.uuid());
         putPutFile.setName(fileName);
         putPutFile.setStorageReference(storageReference.getName());
+        putPutFile.setStorageContainerReference(storageReference.getContainerReference().get());
         putPutFile.setIsDirectory(0);
         putPutFile.setMimeType(mimeTypes.getMimeType(sourceFile).orElse("application/octet-stream"));
         putPutFile.setSize(size);

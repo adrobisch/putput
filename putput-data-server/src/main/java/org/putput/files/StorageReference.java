@@ -48,8 +48,8 @@ public class StorageReference {
         return this;
     }
 
-    public String getMimeType() {
-        return mimeType;
+    public Optional<String> getMimeType() {
+        return Optional.ofNullable(mimeType);
     }
 
     public StorageReference setMimeType(String mimeType) {

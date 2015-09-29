@@ -12,7 +12,7 @@ public class MimeTypes {
 
     public Optional<String> getMimeType(File file) {
         if (file.isDirectory()) {
-            return Optional.empty();
+            return Optional.of("text/directory");
         }
 
         try {

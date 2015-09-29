@@ -63,17 +63,17 @@ public class FileSystemSync {
     Consumer<StorageReference> syncFile(Storage storage) {
         return storageReference -> {
             Optional<PutPutFile> existingFile = Optional.ofNullable(fileRepository.findByFullReference(storageReference.getName(),
-                    storageReference.getContainerReference().orElse(null)));
+                    storageReference.getContainerReference().get()));
 
             if (!existingFile.isPresent()) {
                 PutPutFile newFile = new PutPutFile()
                         .setId(uuidService.uuid())
                         .setUser(storage.getStorageConfiguration().getUser())
                         .setStorageConfiguration(storage.getStorageConfiguration())
-                        .setMimeType(storageReference.getMimeType())
+                        .setMimeType(storageReference.getMimeType().orElse("application/octet-stream"))
                         .setName(storageReference.getName())
                         .setStorageReference(storageReference.getName())
-                        .setStorageContainerReference(storageReference.getContainerReference().orElse(null))
+                        .setStorageContainerReference(storageReference.getContainerReference().get())
                         .setIsDirectory(storageReference.isDirectory() ? 1 : 0)
                         .setSize(storageReference.getSize());
 

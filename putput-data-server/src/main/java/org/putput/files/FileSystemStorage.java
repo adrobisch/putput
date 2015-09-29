@@ -13,12 +13,14 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
 public class FileSystemStorage implements Storage {
     public static final String baseDirKey = "base.dir";
+    public static final String slash = "/";
 
     final File baseDir;
     final StorageConfiguration configuration;
@@ -44,7 +46,7 @@ public class FileSystemStorage implements Storage {
         try {
             StreamUtils.copy(input, new FileOutputStream(new File(baseDir, name)));
             return new StorageReference()
-                    .setContainerReference(containerReference.orElse(null))
+                    .setContainerReference(containerReference.orElse(slash))
                     .setName(name);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -59,7 +61,9 @@ public class FileSystemStorage implements Storage {
     @Override
     public InputStream getContent(Optional<String> containerReference, String storageReference) {
         try {
-            File folder = containerReference.map(containerRef -> new File(containerRef)).orElse(baseDir);
+            File folder = containerReference
+                    .map(containerRef -> new File(baseDir, containerRef))
+                    .orElse(baseDir);
             return new FileInputStream(new File(folder, storageReference));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -88,19 +92,28 @@ public class FileSystemStorage implements Storage {
         return asList(children)
                 .stream()
                 .map(child -> {
-                    String parentPathOrNull = Optional.ofNullable(child.getParentFile())
-                            .map(parent -> {
-                                Path pathAbsolute = Paths.get(parent.getAbsolutePath());
-                                Path pathBase = Paths.get(baseDir.getAbsolutePath());
-                                return pathBase.relativize(pathAbsolute).toFile().getPath();
-                            }).orElse(null);
+                    String parentPathOrSlash = Optional.ofNullable(child.getParentFile())
+                            .flatMap(toParentPath()).orElse(slash);
 
                     return new StorageReference()
                             .setMimeType(mimeTypes.getMimeType(child).orElse(null))
                             .setSize(file.length())
-                            .setContainerReference(parentPathOrNull)
+                            .setContainerReference(parentPathOrSlash)
                             .setDirectory(child.isDirectory())
                             .setName(child.getName());
                 }).collect(Collectors.toList());
+    }
+
+    private Function<File, Optional<String>> toParentPath() {
+        return parent -> {
+            Path pathAbsolute = Paths.get(parent.getAbsolutePath());
+            Path pathBase = Paths.get(baseDir.getAbsolutePath());
+            String relativePath = pathBase.relativize(pathAbsolute).toFile().getPath();
+            if (relativePath.isEmpty()) {
+                return Optional.empty();
+            } else {
+                return Optional.of(relativePath);
+            }
+        };
     }
 }
