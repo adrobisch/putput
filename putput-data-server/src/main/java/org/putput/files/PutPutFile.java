@@ -46,6 +46,12 @@ public class PutPutFile extends BaseEntity<PutPutFile> {
   @Column(name = "_SIZE")
   Long size;
 
+  @Column(name = "_MD5")
+  String md5Hash;
+
+  @Column(name = "_FILE_CREATED")
+  Long fileCreated;
+
   @OneToOne
   @JoinColumn(name = "_IMAGE_ID")
   PutPutImage previewImage;
@@ -140,6 +146,24 @@ public class PutPutFile extends BaseEntity<PutPutFile> {
 
   public PutPutFile setStorageContainerReference(String storageContainerReference) {
     this.storageContainerReference = storageContainerReference;
+    return this;
+  }
+
+  public Optional<String> getMd5Hash() {
+    return Optional.ofNullable(md5Hash);
+  }
+
+  public PutPutFile setMd5Hash(String md5Hash) {
+    this.md5Hash = md5Hash;
+    return this;
+  }
+
+  public Long getFileCreated() {
+    return fileCreated;
+  }
+
+  public PutPutFile setFileCreated(Long fileCreated) {
+    this.fileCreated = fileCreated;
     return this;
   }
 }

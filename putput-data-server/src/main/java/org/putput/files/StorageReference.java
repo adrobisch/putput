@@ -2,7 +2,7 @@ package org.putput.files;
 
 import java.util.Optional;
 
-public class StorageReference {
+public class StorageReference<Self extends StorageReference> {
     String name;
     String mimeType;
     String containerReference;
@@ -16,45 +16,49 @@ public class StorageReference {
         return name;
     }
 
-    public StorageReference setName(String name) {
+    public Self setName(String name) {
         this.name = name;
-        return this;
+        return self();
+    }
+
+    private Self self() {
+        return (Self) this;
     }
 
     public Optional<String> getContainerReference() {
         return Optional.ofNullable(containerReference);
     }
 
-    public StorageReference setContainerReference(String containerReference) {
+    public Self setContainerReference(String containerReference) {
         this.containerReference = containerReference;
-        return this;
+        return self();
     }
 
     public boolean isDirectory() {
         return isDirectory;
     }
 
-    public StorageReference setDirectory(boolean isDirectory) {
+    public Self setDirectory(boolean isDirectory) {
         this.isDirectory = isDirectory;
-        return this;
+        return self();
     }
 
     public long getSize() {
         return size;
     }
 
-    public StorageReference setSize(long size) {
+    public Self setSize(long size) {
         this.size = size;
-        return this;
+        return self();
     }
 
     public Optional<String> getMimeType() {
         return Optional.ofNullable(mimeType);
     }
 
-    public StorageReference setMimeType(String mimeType) {
+    public Self setMimeType(String mimeType) {
         this.mimeType = mimeType;
-        return this;
+        return self();
     }
 
     @Override

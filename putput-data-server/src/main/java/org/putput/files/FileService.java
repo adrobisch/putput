@@ -1,6 +1,5 @@
 package org.putput.files;
 
-import com.j256.simplemagic.ContentInfoUtil;
 import org.putput.common.UuidService;
 import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
@@ -14,6 +13,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -55,8 +59,7 @@ public class FileService {
 
     public PutPutFile createUserFileFromSource(String username,
                                                File sourceFile,
-                                               Optional<String> parentId,
-                                               long size) {
+                                               Optional<String> parentId) {
         if (sourceFile.isDirectory()) {
             throw new IllegalArgumentException("unable to create file from folder");
         }
@@ -67,19 +70,55 @@ public class FileService {
         Storage defaultStorage = getDefaultStorage(user);
         StorageReference storageReference = defaultStorage.store(fileName, Optional.<String>empty(), fileStream(sourceFile));
 
+        PutPutFile putPutFile = createPutPutFile(sourceFile,
+                parentId,
+                user,
+                fileName,
+                defaultStorage,
+                storageReference);
+
+        return fileRepository.save(putPutFile);
+    }
+
+
+
+    public PutPutFile createPutPutFile(File sourceFile, Optional<String> parentId, UserEntity user, String fileName, Storage defaultStorage, StorageReference<?> storageReference) {
         PutPutFile putPutFile = new PutPutFile();
         putPutFile.setUser(user);
         putPutFile.setId(uuidService.uuid());
         putPutFile.setName(fileName);
         putPutFile.setStorageReference(storageReference.getName());
         putPutFile.setStorageContainerReference(storageReference.getContainerReference().get());
-        putPutFile.setIsDirectory(0);
+        putPutFile.setIsDirectory(storageReference.isDirectory() ? 1 : 0);
         putPutFile.setMimeType(mimeTypes.getMimeType(sourceFile).orElse("application/octet-stream"));
-        putPutFile.setSize(size);
+        putPutFile.setSize(sourceFile.length());
+        putPutFile.setMd5Hash(md5(sourceFile));
         putPutFile.setParent(parentId.flatMap(toFileEntity()).orElse(null));
         putPutFile.setStorageConfiguration(defaultStorage.getStorageConfiguration());
-        
-        return fileRepository.save(putPutFile);
+        putPutFile.setFileCreated(createdTime(sourceFile));
+        return putPutFile;
+    }
+
+    private Long createdTime(File sourceFile) {
+        Path p = Paths.get(sourceFile.getAbsolutePath());
+        try {
+            BasicFileAttributes view = Files.getFileAttributeView(p, BasicFileAttributeView.class)
+                    .readAttributes();
+            return view.creationTime().toMillis();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String md5(File sourceFile) {
+        try {
+            if (sourceFile.isDirectory()) {
+                return null;
+            }
+            return org.apache.commons.codec.digest.DigestUtils.md5Hex(fileStream(sourceFile));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     FileInputStream fileStream(File sourceFile) {

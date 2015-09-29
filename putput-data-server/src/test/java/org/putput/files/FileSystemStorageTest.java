@@ -29,18 +29,18 @@ public class FileSystemStorageTest {
         given(mimeTypes.getMimeType(subFolder)).willReturn(Optional.<String>empty());
 
         // when:
-        List<StorageReference> list = storage.folderList(folder);
+        List<FileSystemReference> list = storage.folderList(folder);
         
         // then:
         assertThat(list)
                 .hasSize(2)
-                .contains(new StorageReference()
+                .contains(new FileSystemReference()
                         .setName("aFile")
                         .setContainerReference("test/sub")
                         .setDirectory(false)
                         .setMimeType("application/octet-stream")
                         .setSize(0))
-                .contains(new StorageReference()
+                .contains(new FileSystemReference()
                         .setName("aSubFolder")
                         .setContainerReference("test/sub")
                         .setMimeType(null)

@@ -4,11 +4,11 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
-public interface Storage {
+public interface Storage<T extends StorageReference> {
     StorageConfiguration getStorageConfiguration();
-    StorageReference store(String name, Optional<String> containerReference, InputStream dataStream);
-    InputStream getContent(Optional<String> storageContainerReference, String storageReference);
-    List<StorageReference> list(Optional<StorageReference> containerReference);
+    T store(String name, Optional<String> containerReference, InputStream dataStream);
+    List<T> list(Optional<T> containerReference);
+    InputStream getContent(Optional<String> storageContainerReference, String name);
 
     enum Type {
         FILE_SYSTEM("fs");

@@ -30,8 +30,7 @@ public class UploadService {
       
       PutPutFile newFile = fileService.createUserFileFromSource(username,
               completedFile,
-              Optional.<String>empty(),
-              uploadRequest.getResumableTotalSize());
+              Optional.<String>empty());
       
       return Optional.of(newFile);
     }

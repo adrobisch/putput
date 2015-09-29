@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="add_metadata_to_file.xml">
+
+    <changeSet id="1" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="PP_FILE" columnName="_MD5" />
+            </not>
+        </preConditions>
+
+        <addColumn tableName="PP_FILE">
+            <column name="_MD5" type="varchar(32)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
+
+    <changeSet id="2" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="PP_FILE" columnName="_FILE_CREATED" />
+            </not>
+        </preConditions>
+
+        <addColumn tableName="PP_FILE">
+            <column name="_FILE_CREATED" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -21,16 +21,19 @@ public class FileSystemSync {
     Storages storages;
     StorageConfigurationRepository storageConfigurationRepository;
     FileRepository fileRepository;
+    private final FileService fileService;
     private final UuidService uuidService;
 
     @Autowired
     public FileSystemSync(Storages storages,
                           StorageConfigurationRepository storageConfigurationRepository,
                           FileRepository fileRepository,
+                          FileService fileService,
                           UuidService uuidService) {
         this.storages = storages;
         this.storageConfigurationRepository = storageConfigurationRepository;
         this.fileRepository = fileRepository;
+        this.fileService = fileService;
         this.uuidService = uuidService;
     }
 
@@ -60,22 +63,20 @@ public class FileSystemSync {
         }
     }
 
-    Consumer<StorageReference> syncFile(Storage storage) {
+    Consumer<StorageReference<?>> syncFile(Storage storage) {
         return storageReference -> {
             Optional<PutPutFile> existingFile = Optional.ofNullable(fileRepository.findByFullReference(storageReference.getName(),
                     storageReference.getContainerReference().get()));
 
+            FileSystemReference fileRef = (FileSystemReference) storageReference;
+
             if (!existingFile.isPresent()) {
-                PutPutFile newFile = new PutPutFile()
-                        .setId(uuidService.uuid())
-                        .setUser(storage.getStorageConfiguration().getUser())
-                        .setStorageConfiguration(storage.getStorageConfiguration())
-                        .setMimeType(storageReference.getMimeType().orElse("application/octet-stream"))
-                        .setName(storageReference.getName())
-                        .setStorageReference(storageReference.getName())
-                        .setStorageContainerReference(storageReference.getContainerReference().get())
-                        .setIsDirectory(storageReference.isDirectory() ? 1 : 0)
-                        .setSize(storageReference.getSize());
+                PutPutFile newFile = fileService.createPutPutFile(fileRef.toFile(),
+                        Optional.<String>empty(),
+                        storage.getStorageConfiguration().getUser(),
+                        storageReference.getName(),
+                        storage,
+                        storageReference);
 
                 fileRepository.save(newFile);
 

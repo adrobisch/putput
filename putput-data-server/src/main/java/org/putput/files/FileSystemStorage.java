@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
-public class FileSystemStorage implements Storage {
+public class FileSystemStorage implements Storage<FileSystemReference> {
     public static final String baseDirKey = "base.dir";
     public static final String slash = "/";
 
@@ -38,19 +38,31 @@ public class FileSystemStorage implements Storage {
     }
 
     @Override
-    public StorageReference store(String name, Optional<String> containerReference, InputStream input) {
+    public FileSystemReference store(String name, Optional<String> containerReference, InputStream input) {
         if (containerReference.isPresent()) {
             throw new UnsupportedOperationException("saving file with parent path not supported yet");
         }
 
         try {
-            StreamUtils.copy(input, new FileOutputStream(new File(baseDir, name)));
-            return new StorageReference()
-                    .setContainerReference(containerReference.orElse(slash))
-                    .setName(name);
+            File file = new File(baseDir, name);
+            StreamUtils.copy(input, new FileOutputStream(file));
+            return fileRef(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private FileSystemReference fileRef(File file) {
+        String parentPathOrSlash = Optional.ofNullable(file.getParentFile())
+                .flatMap(toParentPath()).orElse(slash);
+
+        return new FileSystemReference()
+                .setAbsolutePath(file.getAbsolutePath())
+                .setMimeType(mimeTypes.getMimeType(file).orElse(null))
+                .setSize(file.length())
+                .setContainerReference(parentPathOrSlash)
+                .setDirectory(file.isDirectory())
+                .setName(file.getName());
     }
 
     @Override
@@ -71,7 +83,7 @@ public class FileSystemStorage implements Storage {
     }
 
     @Override
-    public List<StorageReference> list(Optional<StorageReference> containerReference) {
+    public List<FileSystemReference> list(Optional<FileSystemReference> containerReference) {
         if (!containerReference.isPresent()) {
             return folderList(baseDir);
         }
@@ -82,7 +94,7 @@ public class FileSystemStorage implements Storage {
                 .orElse(folderList(new File(baseDir, containerReference.get().getName())));
     }
 
-    protected List<StorageReference> folderList(File file) {
+    protected List<FileSystemReference> folderList(File file) {
         File[] children = file.listFiles();
 
         if (children == null) {
@@ -91,17 +103,7 @@ public class FileSystemStorage implements Storage {
 
         return asList(children)
                 .stream()
-                .map(child -> {
-                    String parentPathOrSlash = Optional.ofNullable(child.getParentFile())
-                            .flatMap(toParentPath()).orElse(slash);
-
-                    return new StorageReference()
-                            .setMimeType(mimeTypes.getMimeType(child).orElse(null))
-                            .setSize(file.length())
-                            .setContainerReference(parentPathOrSlash)
-                            .setDirectory(child.isDirectory())
-                            .setName(child.getName());
-                }).collect(Collectors.toList());
+                .map(child -> fileRef(child)).collect(Collectors.toList());
     }
 
     private Function<File, Optional<String>> toParentPath() {
