@@ -59,7 +59,7 @@ public class FileService {
 
     public PutPutFile createUserFileFromSource(String username,
                                                File sourceFile,
-                                               Optional<String> parentId) {
+                                               Optional<String> parentPath) {
         if (sourceFile.isDirectory()) {
             throw new IllegalArgumentException("unable to create file from folder");
         }
@@ -68,19 +68,24 @@ public class FileService {
         String fileName = sourceFile.getName();
 
         Storage defaultStorage = getDefaultStorage(user);
-        StorageReference storageReference = defaultStorage.store(fileName, Optional.<String>empty(), fileStream(sourceFile));
+        StorageReference<?> storageReference = defaultStorage.store(fileName, parentPath, fileStream(sourceFile));
 
-        PutPutFile putPutFile = createPutPutFile(sourceFile,
-                parentId,
-                user,
-                fileName,
-                defaultStorage,
-                storageReference);
+        Optional<PutPutFile> existingFile = Optional.ofNullable(fileRepository.findByFullReference(storageReference.getName(),
+                storageReference.getContainerReference().get()));
 
-        return fileRepository.save(putPutFile);
+        if (!existingFile.isPresent()) {
+            PutPutFile putPutFile = createPutPutFile(sourceFile,
+                    Optional.<String>empty(),
+                    user,
+                    fileName,
+                    defaultStorage,
+                    storageReference);
+
+            return fileRepository.save(putPutFile);
+        } else {
+            return existingFile.get();
+        }
     }
-
-
 
     public PutPutFile createPutPutFile(File sourceFile, Optional<String> parentId, UserEntity user, String fileName, Storage defaultStorage, StorageReference<?> storageReference) {
         PutPutFile putPutFile = new PutPutFile();
@@ -143,8 +148,8 @@ public class FileService {
         };        
     }
 
-    public List<PutPutFile> getUserFiles(String username) {
-        return fileRepository.findByUser(username);   
+    public List<PutPutFile> getUserFiles(String username, Optional<String> path) {
+        return fileRepository.findByUserAndContainer(username, path.orElse("/"));
     }
 
     public Optional<PutPutFile> getUserFile(String id) {

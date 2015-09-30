@@ -2,7 +2,8 @@
     <div class="row">
         <div data-ng-init="loadFiles()">
             <div data-flow-init
-                 data-flow-files-submitted="$flow.upload()"
+                 data-flow-name="flow.instance"
+                 data-flow-files-submitted="upload()"
                  data-flow-file-success="fileUploaded($file)">
 
                 <span class="btn btn-default" data-flow-btn>Upload File</span>
@@ -28,7 +29,7 @@
     <div class="animation row">
         <div class="top5 left5 file tile tile-blue col-xs-2 col-md-2" 
              data-ng-repeat="file in files"
-             data-ng-click="download(file)"   >
+             data-ng-click="open(file)"   >
             <div class="file-title">
                 <i data-ng-class="{'glyphicon glyphicon-folder-close': file.isDirectory, 'glyphicon glyphicon-file': !file.isDirectory}"></i>
                 <span>{{file.name}}</span>

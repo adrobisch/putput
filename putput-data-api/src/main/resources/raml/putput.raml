@@ -169,6 +169,7 @@ schemas:
           "storageId": {"type": "string"},
           "isDirectory": {"type": "boolean"},
           "name": {"type": "string"},
+          "path": {"type": "string"},
           "mimeType": {"type": "string"},
           "created": {"type": "number"},
           "updated": {"type": "number"},
@@ -419,6 +420,11 @@ traits:
 /files:
   get:
     is: [ halCollection: { id: noteList, collectionJavaType: org.putput.api.model.FileList, itemsProperty: files, itemSchema: file, collectionLinks: fileListLinks}]
+    queryParameters:
+      path:
+        description: the folder path to list files for
+        type: string
+        required: false
 
 /password_request:
   post:

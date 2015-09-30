@@ -16,6 +16,8 @@ public interface Files {
 
     /**
      * 
+     * @param path
+     *     the folder path to list files for
      * @param page
      *     The page to retrieve
      */
@@ -24,6 +26,8 @@ public interface Files {
         "application/hal+json"
     })
     Files.GetFilesResponse getFiles(
+        @QueryParam("path")
+        String path,
         @QueryParam("page")
         BigDecimal page)
         throws Exception

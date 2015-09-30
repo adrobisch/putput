@@ -9,7 +9,8 @@ public interface Storage<T extends StorageReference> {
     T store(String name, Optional<String> containerReference, InputStream dataStream);
     List<T> list(Optional<T> containerReference);
     InputStream getContent(Optional<String> storageContainerReference, String name);
-
+    T createContainer(String name); 
+    
     enum Type {
         FILE_SYSTEM("fs");
 

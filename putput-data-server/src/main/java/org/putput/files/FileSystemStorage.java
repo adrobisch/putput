@@ -39,12 +39,8 @@ public class FileSystemStorage implements Storage<FileSystemReference> {
 
     @Override
     public FileSystemReference store(String name, Optional<String> containerReference, InputStream input) {
-        if (containerReference.isPresent()) {
-            throw new UnsupportedOperationException("saving file with parent path not supported yet");
-        }
-
         try {
-            File file = new File(baseDir, name);
+            File file = new File(new File(baseDir, containerReference.orElse("")), name);
             StreamUtils.copy(input, new FileOutputStream(file));
             return fileRef(file);
         } catch (IOException e) {
@@ -52,7 +48,7 @@ public class FileSystemStorage implements Storage<FileSystemReference> {
         }
     }
 
-    private FileSystemReference fileRef(File file) {
+    FileSystemReference fileRef(File file) {
         String parentPathOrSlash = Optional.ofNullable(file.getParentFile())
                 .flatMap(toParentPath()).orElse(slash);
 
@@ -83,6 +79,13 @@ public class FileSystemStorage implements Storage<FileSystemReference> {
     }
 
     @Override
+    public FileSystemReference createContainer(String name) {
+        File file = new File(baseDir, name);
+        file.mkdirs();
+        return fileRef(file);
+    }
+
+    @Override
     public List<FileSystemReference> list(Optional<FileSystemReference> containerReference) {
         if (!containerReference.isPresent()) {
             return folderList(baseDir);
@@ -90,7 +93,7 @@ public class FileSystemStorage implements Storage<FileSystemReference> {
 
         return containerReference.get()
                 .getContainerReference()
-                .map(folder -> folderList(new File(new File(folder), containerReference.get().getName())))
+                .map(folder -> folderList(new File(new File(baseDir, folder), containerReference.get().getName())))
                 .orElse(folderList(new File(baseDir, containerReference.get().getName())));
     }
 

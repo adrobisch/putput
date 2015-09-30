@@ -1,6 +1,5 @@
 package org.putput.files;
 
-import org.putput.common.UuidService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +20,17 @@ public class FileSystemSync {
     Storages storages;
     StorageConfigurationRepository storageConfigurationRepository;
     FileRepository fileRepository;
-    private final FileService fileService;
-    private final UuidService uuidService;
+    FileService fileService;
 
     @Autowired
     public FileSystemSync(Storages storages,
                           StorageConfigurationRepository storageConfigurationRepository,
                           FileRepository fileRepository,
-                          FileService fileService,
-                          UuidService uuidService) {
+                          FileService fileService) {
         this.storages = storages;
         this.storageConfigurationRepository = storageConfigurationRepository;
         this.fileRepository = fileRepository;
         this.fileService = fileService;
-        this.uuidService = uuidService;
     }
 
     @Scheduled(fixedRate = 10000)
@@ -48,11 +44,11 @@ public class FileSystemSync {
         for (StorageConfiguration configuration : fileSystemConfigurations) {
             Storage storage = storages.getStorage(configuration);
 
-            LinkedList<StorageReference> fileQueue = new LinkedList<>();
+            LinkedList<StorageReference<?>> fileQueue = new LinkedList<>();
             fileQueue.addAll(storage.list(Optional.<StorageReference>empty()));
 
             while(!fileQueue.isEmpty()) {
-                StorageReference storageRef = fileQueue.pop();
+                StorageReference<?> storageRef = fileQueue.pop();
 
                 if (storageRef.isDirectory()) {
                     fileQueue.addAll(storage.list(Optional.of(storageRef)));
