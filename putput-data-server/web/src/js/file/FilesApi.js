@@ -1,7 +1,7 @@
 function FilesApi(http, api) {
-  this.list = function(path) {
+  this.list = function(parent) {
     return api.withLink("files", function (filesLink){
-      var url = filesLink + (path ? "?path=" + path : "");
+      var url = filesLink + (parent ? "?parent=" + parent : "");
         return http.get(url);
     });
   };

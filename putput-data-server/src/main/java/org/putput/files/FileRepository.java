@@ -18,6 +18,13 @@ public interface FileRepository extends CrudRepository<PutPutFile, String> {
     @Query("SELECT file " +
             "FROM PutPutFile file " +
             "WHERE file.user.username = :username " +
+            "AND file.parent.id = :parentId" + folderFirstOrder)
+    List<PutPutFile> findByUserAndParent(@Param("username") String userName,
+                                            @Param("parentId") String parentId);
+
+    @Query("SELECT file " +
+            "FROM PutPutFile file " +
+            "WHERE file.user.username = :username " +
             "AND file.storageContainerReference = :containerReference" + folderFirstOrder)
     List<PutPutFile> findByUserAndContainer(@Param("username") String userName, 
                                             @Param("containerReference") String containerReference);

@@ -421,8 +421,8 @@ traits:
   get:
     is: [ halCollection: { id: noteList, collectionJavaType: org.putput.api.model.FileList, itemsProperty: files, itemSchema: file, collectionLinks: fileListLinks}]
     queryParameters:
-      path:
-        description: the folder path to list files for
+      parent:
+        description: the parent folder to list files for
         type: string
         required: false
 

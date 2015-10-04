@@ -25,7 +25,7 @@ var FileListController =  function(scope, route, location, files) {
   
   scope.open = function (file) {
     if (file.isDirectory) {
-      var newPath = "/files/" + (scope.path ? scope.path + "/" : "") + file.name;
+      var newPath = "/files/" + file.id;
       location.path(newPath);  
     } else {
       window.location.href = scope.downloadUrl(file);  

@@ -59,23 +59,28 @@ public class FileService {
 
     public PutPutFile createUserFileFromSource(String username,
                                                File sourceFile,
-                                               Optional<String> parentPath) {
+                                               Optional<String> parentId,
+                                               Optional<String> containerPath) {
         if (sourceFile.isDirectory()) {
             throw new IllegalArgumentException("unable to create file from folder");
         }
 
         UserEntity user = userRepository.findByUsername(username);
+        Storage defaultStorage = getDefaultStorage(user);
+
         String fileName = sourceFile.getName();
 
-        Storage defaultStorage = getDefaultStorage(user);
-        StorageReference<?> storageReference = defaultStorage.store(fileName, parentPath, fileStream(sourceFile));
+        StorageReference<?> storageReference = parentId
+                .map(parentIdValue -> fileRepository.findOne(parentId.get()))
+                .map(saveInParentFolder(sourceFile, defaultStorage, fileName))
+                .orElseGet(saveInContainerPath(sourceFile, containerPath, defaultStorage, fileName));
 
         Optional<PutPutFile> existingFile = Optional.ofNullable(fileRepository.findByFullReference(storageReference.getName(),
                 storageReference.getContainerReference().get()));
 
         if (!existingFile.isPresent()) {
             PutPutFile putPutFile = createPutPutFile(sourceFile,
-                    Optional.<String>empty(),
+                    parentId,
                     user,
                     fileName,
                     defaultStorage,
@@ -85,6 +90,20 @@ public class FileService {
         } else {
             return existingFile.get();
         }
+    }
+
+    private Supplier<StorageReference> saveInContainerPath(File sourceFile, Optional<String> containerPath, Storage defaultStorage, String fileName) {
+        return () -> {
+            return defaultStorage.store(fileName, containerPath, fileStream(sourceFile));
+        };
+    }
+
+    private Function<PutPutFile, StorageReference> saveInParentFolder(File sourceFile, Storage defaultStorage, String fileName) {
+        return putputFile -> {
+            return defaultStorage.store(fileName,
+                    putputFile.getStorageContainerReference().map(containerRef -> containerRef + defaultStorage.containerSeparator() + putputFile.getName()),
+                    fileStream(sourceFile));
+        };
     }
 
     public PutPutFile createPutPutFile(File sourceFile, Optional<String> parentId, UserEntity user, String fileName, Storage defaultStorage, StorageReference<?> storageReference) {
@@ -148,8 +167,12 @@ public class FileService {
         };        
     }
 
-    public List<PutPutFile> getUserFiles(String username, Optional<String> path) {
-        return fileRepository.findByUserAndContainer(username, path.orElse("/"));
+    public List<PutPutFile> getUserFiles(String username, Optional<String> parentId) {
+        if (parentId.isPresent()) {
+            return fileRepository.findByUserAndParent(username, parentId.get());
+        }
+        
+        return fileRepository.findByUserAndContainer(username, "/");
     }
 
     public Optional<PutPutFile> getUserFile(String id) {

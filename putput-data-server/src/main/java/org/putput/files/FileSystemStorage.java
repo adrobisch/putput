@@ -86,6 +86,11 @@ public class FileSystemStorage implements Storage<FileSystemReference> {
     }
 
     @Override
+    public String containerSeparator() {
+        return "" + File.separatorChar;
+    }
+
+    @Override
     public List<FileSystemReference> list(Optional<FileSystemReference> containerReference) {
         if (!containerReference.isPresent()) {
             return folderList(baseDir);
