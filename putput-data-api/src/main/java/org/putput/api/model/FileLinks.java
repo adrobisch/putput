@@ -20,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
     "self",
-    "content"
+    "content",
+    "tags"
 })
 public class FileLinks {
 
@@ -36,6 +37,12 @@ public class FileLinks {
      */
     @JsonProperty("content")
     private HalLink content;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("tags")
+    private HalLink tags;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -90,6 +97,33 @@ public class FileLinks {
 
     public FileLinks withContent(HalLink content) {
         this.content = content;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The tags
+     */
+    @JsonProperty("tags")
+    public HalLink getTags() {
+        return tags;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param tags
+     *     The tags
+     */
+    @JsonProperty("tags")
+    public void setTags(HalLink tags) {
+        this.tags = tags;
+    }
+
+    public FileLinks withTags(HalLink tags) {
+        this.tags = tags;
         return this;
     }
 

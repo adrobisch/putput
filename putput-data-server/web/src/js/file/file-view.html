@@ -1,0 +1,34 @@
+<div class="container" data-ng-init="loadFile()" data-ng-show="file">
+    <div class="row">
+        <div class="media">
+            <div class="media-left">
+                <a data-ng-href="{{contentUrl}}" data-ng-show="isImage()">
+                    <img class="media-object" data-ng-src="{{contentUrl()}}" alt="256x256" data-holder-rendered="true" style="max-width: 256px; max-height: 256px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">{{file.name}}</h4>
+                <dl>
+                    <dt>MIME</dt>
+                    <dd>{{file.mimeType}}</dd>
+                    <dt>Size</dt>
+                    <dd>{{file.size | bytes}}</dd>
+                    <dt>MD5</dt>
+                    <dd>{{file.md5}}</dd>
+                    <dt>ID</dt>
+                    <dd>{{file.id}}</dd>
+                    <dt>Storage ID</dt>
+                    <dd>{{file.storageId}}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <a data-ng-href="{{contentUrl()}}" data-ng-click="download()" class="btn btn-default">
+                <i class="glyphicon glyphicon-download"></i>
+                <span>Download</span>
+            </a>
+        </div>
+    </div>
+</div>

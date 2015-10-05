@@ -171,6 +171,8 @@ schemas:
           "name": {"type": "string"},
           "path": {"type": "string"},
           "mimeType": {"type": "string"},
+          "size": {"type": "number"},
+          "md5": {"type": "string"},
           "created": {"type": "number"},
           "updated": {"type": "number"},
           "version": {"type": "integer"},
@@ -186,7 +188,8 @@ schemas:
         "description": "The links of a file",
         "properties": {
           "self" : { "$ref": "halLink"},
-          "content" : { "$ref": "halLink"}
+          "content" : { "$ref": "halLink"},
+          "tags" : { "$ref": "halLink"}
         }
       }
   - fileListLinks: |

@@ -21,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "name",
     "path",
     "mimeType",
+    "size",
+    "md5",
     "created",
     "updated",
     "version",
@@ -42,6 +44,10 @@ public class File {
     private String path;
     @JsonProperty("mimeType")
     private String mimeType;
+    @JsonProperty("size")
+    private Double size;
+    @JsonProperty("md5")
+    private String md5;
     @JsonProperty("created")
     private Double created;
     @JsonProperty("updated")
@@ -229,6 +235,56 @@ public class File {
 
     public File withMimeType(String mimeType) {
         this.mimeType = mimeType;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The size
+     */
+    @JsonProperty("size")
+    public Double getSize() {
+        return size;
+    }
+
+    /**
+     * 
+     * @param size
+     *     The size
+     */
+    @JsonProperty("size")
+    public void setSize(Double size) {
+        this.size = size;
+    }
+
+    public File withSize(Double size) {
+        this.size = size;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The md5
+     */
+    @JsonProperty("md5")
+    public String getMd5() {
+        return md5;
+    }
+
+    /**
+     * 
+     * @param md5
+     *     The md5
+     */
+    @JsonProperty("md5")
+    public void setMd5(String md5) {
+        this.md5 = md5;
+    }
+
+    public File withMd5(String md5) {
+        this.md5 = md5;
         return this;
     }
 
