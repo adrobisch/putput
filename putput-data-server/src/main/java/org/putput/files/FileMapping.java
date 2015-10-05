@@ -13,6 +13,7 @@ public interface FileMapping extends HalSupport {
         return putputFile -> new File()
                 .withId(putputFile.getId())
                 .withName(putputFile.getName())
+                .withPath(putputFile.getStorageContainerReference().orElse("/"))
                 .withIsDirectory(putputFile.isDirectory())
                 .withStorageId(putputFile.getStorageConfiguration().getId())
                 .withParentId(putputFile.getParent().map(BaseEntity::getId).orElse(null))

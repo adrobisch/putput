@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "storageId",
     "isDirectory",
     "name",
+    "path",
     "mimeType",
     "created",
     "updated",
@@ -37,6 +38,8 @@ public class File {
     private Boolean isDirectory;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("path")
+    private String path;
     @JsonProperty("mimeType")
     private String mimeType;
     @JsonProperty("created")
@@ -176,6 +179,31 @@ public class File {
 
     public File withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The path
+     */
+    @JsonProperty("path")
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * 
+     * @param path
+     *     The path
+     */
+    @JsonProperty("path")
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public File withPath(String path) {
+        this.path = path;
         return this;
     }
 

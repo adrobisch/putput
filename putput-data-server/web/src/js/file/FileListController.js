@@ -1,17 +1,35 @@
-var FileListController =  function(scope, files) {
+var _ = require("lodash");
 
+var FileListController =  function(scope, route, location, files) {
+  scope.flow = {};
+  
+  scope.path = route.current.params.filePath;
+  
+  scope.upload = function () {
+    _.each(scope.flow.instance.files, function (file) {
+      file.relativePath = scope.path ? scope.path : "/";
+    });
+    
+    scope.flow.instance.upload();
+  };
+  
   scope.fileUploaded = function () {
     scope.loadFiles();
   };
 
   scope.loadFiles = function () {
-    files.list().success(function (result) {
+    files.list(scope.path).success(function (result) {
       scope.files = result.data.files;
     });
   };
   
-  scope.download = function (file) {
-    window.location.href = scope.downloadUrl(file);
+  scope.open = function (file) {
+    if (file.isDirectory) {
+      var newPath = "/files/" + file.id;
+      location.path(newPath);  
+    } else {
+      window.location.href = scope.downloadUrl(file);  
+    }
   };
   
   scope.downloadUrl = function (file) {
@@ -20,6 +38,6 @@ var FileListController =  function(scope, files) {
 
 };
 
-FileListController.$inject = ['$scope', 'files'];
+FileListController.$inject = ['$scope', '$route', '$location', 'files'];
 
 module.exports = FileListController;
