@@ -160,6 +160,37 @@ schemas:
           "self" : { "$ref": "halLink"}
         }
       }
+  - tag: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "id": {"type": "string"},
+          "taggableId": {"type": "string"},
+          "name": {"type": "string"},
+          "text": {"type": "string"},
+          "_links": {
+            "$ref": "tagLinks"
+          }
+        }
+      }
+  - tagLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.TagLinks",
+        "description": "The links of a tag",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
+  - tagListLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.ContactListLinks",
+        "description": "The links of a contact list",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
   - file: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -420,6 +451,22 @@ traits:
                 required: false
             body:
               application/octet-stream:
+    /tag:
+      /{tagId}:
+        delete:
+          responses:
+            200:
+    /tags:
+      get:
+        is: [ halCollection: { id: tagList, collectionJavaType: org.putput.api.model.TagList, itemsProperty: tags, itemSchema: tag, collectionLinks: tagListLinks}]
+      post:
+        body:
+          application/json:
+            schema: tag
+        responses:
+          201:
+            headers:
+              Location:
 /files:
   get:
     is: [ halCollection: { id: noteList, collectionJavaType: org.putput.api.model.FileList, itemsProperty: files, itemSchema: file, collectionLinks: fileListLinks}]

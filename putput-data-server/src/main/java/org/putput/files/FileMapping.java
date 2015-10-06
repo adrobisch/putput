@@ -26,6 +26,7 @@ public interface FileMapping extends HalSupport {
                 .withLinks(new FileLinks()
                         .withSelf(link(org.putput.api.resource.File.class, putputFile.getId()))
                         .withContent(link(org.putput.api.resource.File.class, putputFile.getId(), "content"))
+                        .withTags(link(org.putput.api.resource.File.class, putputFile.getId(), "tags"))
                 );
     }
 }

@@ -1,9 +1,24 @@
 function FilesApi(http, api) {
 
   this.getFile = function(fileId) {
-    return  api.withLink("file", function (fileLink) {
+    return api.withLink("file", function (fileLink) {
       return http.get(fileLink.replace("{id}", fileId));
     });
+  };
+
+  this.getTags = function(file) {
+    return http.get(file._links.tags.href);
+  };
+
+  this.createTag = function (file, text) {
+    return http.post(file._links.tags.href, {
+      "name" : "label",
+      "text" : text
+    });
+  };
+
+  this.deleteTag = function (tag) {
+    return http.delete(tag._links.self.href);
   };
 
   this.list = function(parent) {

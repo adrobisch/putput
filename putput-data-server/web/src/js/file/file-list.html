@@ -48,15 +48,6 @@
                 </tbody>
             </table>
         </div>
-        <!--div class="top5 left5 file tile tile-blue col-xs-2 col-md-2"
-             data-ng-repeat="file in files"
-             data-ng-click="open(file)"   >
-            <div class="file-title">
-                <i data-ng-class="{'glyphicon glyphicon-folder-close': file.isDirectory, 'glyphicon glyphicon-file': !file.isDirectory}"></i>
-                <span>{{file.name}}</span>
-            </div>
-            <div class="file-details">{{file.created | date}}</div>
-        </div-->
         <div data-ng-show="!files.length">
             <p>You don't have files yet, upload some!</p>
         </div>

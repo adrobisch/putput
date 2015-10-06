@@ -1,34 +1,56 @@
 <div class="container" data-ng-init="loadFile()" data-ng-show="file">
     <div class="row">
-        <div class="media">
-            <div class="media-left">
-                <a data-ng-href="{{contentUrl}}" data-ng-show="isImage()">
-                    <img class="media-object" data-ng-src="{{contentUrl()}}" alt="256x256" data-holder-rendered="true" style="max-width: 256px; max-height: 256px;">
-                </a>
-            </div>
-            <div class="media-body">
-                <h4 class="media-heading">{{file.name}}</h4>
-                <dl>
-                    <dt>MIME</dt>
-                    <dd>{{file.mimeType}}</dd>
-                    <dt>Size</dt>
-                    <dd>{{file.size | bytes}}</dd>
-                    <dt>MD5</dt>
-                    <dd>{{file.md5}}</dd>
-                    <dt>ID</dt>
-                    <dd>{{file.id}}</dd>
-                    <dt>Storage ID</dt>
-                    <dd>{{file.storageId}}</dd>
-                </dl>
+        <div class="col-md-12">
+            <div class="media">
+                <div class="media-left" data-ng-show="isImage()">
+                    <a data-ng-href="{{contentUrl}}">
+                        <img class="media-object" data-ng-src="{{contentUrl()}}" alt="256x256" data-holder-rendered="true" style="max-width: 256px; max-height: 256px;">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{file.name}}</h4>
+                    <dl>
+                        <dt>MIME</dt>
+                        <dd>{{file.mimeType}}</dd>
+                        <dt>Size</dt>
+                        <dd>{{file.size | bytes}}</dd>
+                        <dt>MD5</dt>
+                        <dd>{{file.md5}}</dd>
+                        <dt>ID</dt>
+                        <dd>{{file.id}}</dd>
+                        <dt>Storage ID</dt>
+                        <dd>{{file.storageId}}</dd>
+                    </dl>
+                    <a data-ng-href="{{contentUrl()}}" data-ng-click="download()" class="btn btn-default">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <span>Download</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-1">
-            <a data-ng-href="{{contentUrl()}}" data-ng-click="download()" class="btn btn-default">
-                <i class="glyphicon glyphicon-download"></i>
-                <span>Download</span>
-            </a>
+        <div class="col-md-12">
+            <h3>Tags</h3>
+            <form data-ng-submit="createTag()">
+                <div class="form-group">
+                    <button class="btn btn-danger left5"
+                            type="button"
+                            data-ng-repeat="tag in tags"
+                            data-ng-click="deleteTag(tag)"
+                            data-ng-confirm-click="Really delete tag?">
+                        {{tag.text}} &times;
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <input data-ng-model="newTag.text"
+                           type="text"
+                           class="form-control"
+                           id="tag"
+                           placeholder="New Tag">
+                </div>
+            </form>
         </div>
     </div>
 </div>
