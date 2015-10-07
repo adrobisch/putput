@@ -1,6 +1,7 @@
 var _ = require("lodash");
+var $ = require("jquery");
 
-var FileListController =  function(scope, route, location, files, search) {
+var FileListController =  function(scope, route, location, files, search, fullscreen) {
   scope.flow = {};
   scope.tag = null;
   scope.playing = false;
@@ -38,8 +39,11 @@ var FileListController =  function(scope, route, location, files, search) {
     return file._links["content"].href;
   };
 
-  scope.startSlideShow = function () {
-    jQuery(".file-gallery").swipeshow();
+  scope.play = function () {
+    var gallery = $(".file-gallery");
+    
+    gallery.swipeshow();
+    fullscreen.toggleFullScreen(gallery.first().get(0));
     scope.playing = true;
   };
 
@@ -56,6 +60,6 @@ var FileListController =  function(scope, route, location, files, search) {
   search.onSearch(scope.search, scope);
 };
 
-FileListController.$inject = ['$scope', '$route', '$location', 'files', 'search'];
+FileListController.$inject = ['$scope', '$route', '$location', 'files', 'search', 'fullscreen'];
 
 module.exports = FileListController;

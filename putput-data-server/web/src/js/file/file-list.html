@@ -7,7 +7,7 @@
                  data-flow-file-success="fileUploaded($file)">
 
                 <span class="btn btn-default" data-flow-btn><i class="glyphicon glyphicon-upload"></i> Upload File</span>
-                <span class="btn btn-default" data-ng-click="startSlideShow()"><i class="fa fa-play"></i></span>
+                <span class="btn btn-default" data-ng-click="play()"><i class="fa fa-play"></i></span>
 
                 <div data-ng-repeat="file in $flow.files">
                     <span>{{$index+1}}</span>
@@ -55,11 +55,13 @@
         </div>
     </div>
 </div>
-<div class="file-gallery swipeshow" data-ng-show="playing">
-    <div class="slides">
-        <img class="slide"
-             data-ng-repeat="file in files | filter: isImage"
-             data-ng-src="{{file._links.content.href}}">
+<div class="container">
+    <div class="file-gallery swipeshow" data-ng-show="playing">
+        <div class="slides">
+            <img class="slide"
+                 data-ng-repeat="file in files | filter: isImage"
+                 data-ng-src="{{file._links.content.href}}">
+        </div>
     </div>
 </div>
 

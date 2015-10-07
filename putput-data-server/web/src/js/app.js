@@ -31,6 +31,7 @@ app.service('api', require('./common/ApiService'));
 app.service('auth', require('./common/AuthenticationApi'));
 app.service('$alert', require('./common/AlertService'));
 app.service('shortcut', require('./common/ShortcutService'));
+app.service('fullscreen', require('./common/FullscreenService'));
 
 app.factory('authInterceptor', require('./common/AuthInterceptor'));
 
