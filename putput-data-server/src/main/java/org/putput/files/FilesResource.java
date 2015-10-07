@@ -24,11 +24,13 @@ public class FilesResource extends BaseResource implements Files, FileMapping {
     }
 
     @Override
-    public GetFilesResponse getFiles(String parentId, BigDecimal page) throws Exception {
+    public GetFilesResponse getFiles(String parentId, String tag, BigDecimal page) throws Exception {
         FileList fileList = new FileList()
                 .withLinks(new FileListLinks().withSelf(link(Files.class)));
 
-        List<File> userFiles = fileService.getUserFiles(user().getUsername(), Optional.ofNullable(parentId))
+        List<File> userFiles = fileService.getUserFiles(user().getUsername(),
+                Optional.ofNullable(parentId),
+                Optional.ofNullable(tag))
                 .stream()
                 .map(toFileDto())
                 .collect(Collectors.toList());

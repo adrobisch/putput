@@ -23,6 +23,14 @@ public interface FileRepository extends CrudRepository<PutPutFile, String> {
                                             @Param("parentId") String parentId);
 
     @Query("SELECT file " +
+            "FROM PutPutFile file, TagEntity tag " +
+            "WHERE file.user.username = :username " +
+            "AND UPPER(tag.text) = UPPER(:tag) " +
+            "AND tag.taggableId = file.id")
+    List<PutPutFile> findByUserAndTag(@Param("username") String userName,
+                                      @Param("tag") String tag);
+
+    @Query("SELECT file " +
             "FROM PutPutFile file " +
             "WHERE file.user.username = :username " +
             "AND file.storageContainerReference = :containerReference" + folderFirstOrder)

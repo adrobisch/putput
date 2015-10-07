@@ -167,7 +167,11 @@ public class FileService {
         };        
     }
 
-    public List<PutPutFile> getUserFiles(String username, Optional<String> parentId) {
+    public List<PutPutFile> getUserFiles(String username, Optional<String> parentId, Optional<String> tagValue) {
+        if (tagValue.isPresent()) {
+            return fileRepository.findByUserAndTag(username, tagValue.get());
+        }
+
         if (parentId.isPresent()) {
             return fileRepository.findByUserAndParent(username, parentId.get());
         }

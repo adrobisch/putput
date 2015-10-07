@@ -21,10 +21,14 @@ function FilesApi(http, api) {
     return http.delete(tag._links.self.href);
   };
 
-  this.list = function(parent) {
+  this.list = function(parent, tag) {
     return api.withLink("files", function (filesLink){
-      var url = filesLink + (parent ? "?parent=" + parent : "");
-        return http.get(url);
+      var url = filesLink + "?" +
+          (parent ? "parent=" + parent : "") +
+          "&" +
+          (tag ? "tag=" + tag : "");
+
+      return http.get(url);
     });
   };
 }

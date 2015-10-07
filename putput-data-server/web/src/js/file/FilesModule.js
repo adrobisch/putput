@@ -8,7 +8,7 @@ var filesModule = angular.module('files', []);
 filesModule.service("files", require('./FilesApi'));
 
 filesModule.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/files/:filePath*?', {
+  $routeProvider.when('/files/:parent*?', {
     controller: FileListController,
     template: require('./file-list.html')
   }).when('/file/:fileId', {

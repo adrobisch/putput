@@ -7,6 +7,7 @@
                  data-flow-file-success="fileUploaded($file)">
 
                 <span class="btn btn-default" data-flow-btn><i class="glyphicon glyphicon-upload"></i> Upload File</span>
+                <span class="btn btn-default" data-ng-click="startSlideShow()"><i class="fa fa-play"></i></span>
 
                 <div data-ng-repeat="file in $flow.files">
                     <span>{{$index+1}}</span>
@@ -37,20 +38,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-ng-repeat="file in files" data-ng-click="open(file)">
-                    <td>
-                        <i data-ng-class="{'glyphicon glyphicon-folder-close': file.isDirectory, 'glyphicon glyphicon-file': !file.isDirectory}"></i>
-                        <span>{{file.name}}</span>
-                    </td>
-                    <td><span>{{file.created | date:'yyyy-MM-dd HH:mm:ss'}}</span></td>
-                    <td ><span data-ng-hide="file.isDirectory">{{file.size | bytes}}</span></td>
-                </tr>
+                    <tr data-ng-repeat="file in files"
+                        data-ng-click="open(file)">
+                        <td>
+                            <i data-ng-class="{'glyphicon glyphicon-folder-close': file.isDirectory, 'glyphicon glyphicon-file': !file.isDirectory}"></i>
+                            <span>{{file.name}}</span>
+                        </td>
+                        <td><span>{{file.created | date:'yyyy-MM-dd HH:mm:ss'}}</span></td>
+                        <td ><span data-ng-hide="file.isDirectory">{{file.size | bytes}}</span></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
         <div data-ng-show="!files.length">
             <p>You don't have files yet, upload some!</p>
         </div>
+    </div>
+</div>
+<div class="file-gallery swipeshow" data-ng-show="playing">
+    <div class="slides">
+        <img class="slide"
+             data-ng-repeat="file in files | filter: isImage"
+             data-ng-src="{{file._links.content.href}}">
     </div>
 </div>
 

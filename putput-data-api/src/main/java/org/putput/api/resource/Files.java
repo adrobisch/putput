@@ -18,6 +18,8 @@ public interface Files {
      * 
      * @param parent
      *     the parent folder to list files for
+     * @param tag
+     *     param to search only files tagged with specified text
      * @param page
      *     The page to retrieve
      */
@@ -28,6 +30,8 @@ public interface Files {
     Files.GetFilesResponse getFiles(
         @QueryParam("parent")
         String parent,
+        @QueryParam("tag")
+        String tag,
         @QueryParam("page")
         BigDecimal page)
         throws Exception

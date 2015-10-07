@@ -37,7 +37,8 @@ module.exports = function (grunt) {
         options: {
           paths: [
             "<%= config.css %>",
-            "<%= config.node_modules %>/bootstrap/less"
+            "<%= config.node_modules %>/bootstrap/less",
+            "<%= config.node_modules %>/font-awesome/less"
           ],
           cleancss: true
         },
@@ -96,16 +97,12 @@ module.exports = function (grunt) {
             ],
             dest: '<%= config.dist %>'
           },
-          // dist folders
+          // font folders
           {
             expand: true,
             cwd: '<%= config.node_modules %>',
             src: [
-              '**/*.min.js',
-              '**/*.min.css',
-              'fonts/**',
-              'js/**/*.min.js',
-              '**/dist/**/*'
+              '**/fonts/**'
             ],
             dest: '<%= config.dist %>/vendor'
           }
