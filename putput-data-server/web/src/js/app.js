@@ -1,7 +1,6 @@
 'use strict';
 
 var jQuery = window.jQuery = require("jquery");
-require("swipeshow");
 var flow = window.Flow = require("flow.js/dist/flow");
 var angular = window.angular = require('angular');
 
@@ -24,7 +23,8 @@ var app = angular.module('app', [
   require('./user/SettingsModule').name,
   require('./user/PasswordResetModule').name,
   require('./file/FilesModule').name,
-  require("./search/SearchModule").name
+  require("./search/SearchModule").name,
+  require("./media/MediaModule").name
 ]);
 
 app.service('api', require('./common/ApiService'));

@@ -1,0 +1,9 @@
+<div class="slide-container">
+    <div class="slide-image-wrap">
+        <img class="slide-image" data-ng-src="{{currentslide._links.content.href}}" alt="{{currentslide.name}}" />
+        <p>{{currentslide.name}}</p>
+    </div>
+</div>
+<div class="slides-wrap">
+    <ul data-ng-transclude></ul>
+</div>

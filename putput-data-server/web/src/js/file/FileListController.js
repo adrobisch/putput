@@ -1,10 +1,10 @@
 var _ = require("lodash");
-var $ = require("jquery");
 
-var FileListController =  function(scope, route, location, files, search, fullscreen) {
+var FileListController =  function(scope, route, location, files, search, media) {
   scope.flow = {};
   scope.tag = null;
   scope.playing = false;
+  scope.files = ["moo"];
   
   scope.parent = route.current.params.parent;
   
@@ -40,15 +40,7 @@ var FileListController =  function(scope, route, location, files, search, fullsc
   };
 
   scope.play = function () {
-    var gallery = $(".file-gallery");
     
-    gallery.swipeshow();
-    fullscreen.toggleFullScreen(gallery.first().get(0));
-    scope.playing = true;
-  };
-
-  scope.isImage = function (file) {
-    return file.mimeType.indexOf('image') != -1;
   };
 
   scope.search = function (query) {
@@ -60,6 +52,6 @@ var FileListController =  function(scope, route, location, files, search, fullsc
   search.onSearch(scope.search, scope);
 };
 
-FileListController.$inject = ['$scope', '$route', '$location', 'files', 'search', 'fullscreen'];
+FileListController.$inject = ['$scope', '$route', '$location', 'files', 'search', 'media'];
 
 module.exports = FileListController;
