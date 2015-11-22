@@ -28,6 +28,10 @@ public class InternetIdentifier {
   @Column(name = "_ID_VALUE")
   String idValue;
 
+  @OneToOne
+  @JoinColumn(name = "_CONTACT_ID")
+  ContactEntity contact;
+
   public InternetIdentifier() {
   }
 
@@ -46,6 +50,15 @@ public class InternetIdentifier {
 
   public String getIdValue() {
     return idValue;
+  }
+
+  public ContactEntity getContact() {
+      return contact;
+  }
+
+  public InternetIdentifier withContact(ContactEntity contact) {
+      this.contact = contact;
+      return this;
   }
 
   public void setId(String id) {

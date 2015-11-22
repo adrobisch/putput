@@ -67,6 +67,10 @@ public class PhoneNumber {
   @Column(name = "_NUMBER")
   String number;
 
+  @OneToOne
+  @JoinColumn(name = "_CONTACT_ID")
+  ContactEntity contact;
+
   public PhoneNumber() {
   }
 
@@ -85,6 +89,15 @@ public class PhoneNumber {
 
   public String getNumber() {
     return number;
+  }
+
+  public ContactEntity getContact() {
+      return contact;
+  }
+
+  public PhoneNumber withContact(ContactEntity contact) {
+      this.contact = contact;
+      return this;
   }
 
   public void setId(String id) {

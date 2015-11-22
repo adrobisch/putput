@@ -1,9 +1,6 @@
 package org.putput.contacts;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "PP_CONTACT_EMAIL")
@@ -54,6 +51,10 @@ public class EMailAddress {
   @Column(name ="_ADDRESS")
   String address;
 
+  @OneToOne
+  @JoinColumn(name = "_CONTACT_ID")
+  ContactEntity contact;
+
   public EMailAddress() {
   }
 
@@ -77,6 +78,15 @@ public class EMailAddress {
 
   public String getAddress() {
     return address;
+  }
+
+  public ContactEntity getContact() {
+      return contact;
+  }
+
+  public EMailAddress withContact(ContactEntity contact) {
+      this.contact = contact;
+      return this;
   }
 
   public void setId(String id) {

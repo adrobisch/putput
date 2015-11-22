@@ -1,3 +1,0 @@
-#!/bin/sh
-exec java -jar /var/putput/putput-server.jar -Dspring.profiles.active=production \
---spring.config.location=/etc/putput/conf/putput.properties

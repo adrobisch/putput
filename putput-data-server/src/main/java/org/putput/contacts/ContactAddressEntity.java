@@ -38,6 +38,10 @@ public class ContactAddressEntity {
   @Column(name = "_POSTAL_CODE")
   String postalCode;
 
+  @OneToOne
+  @JoinColumn(name = "_CONTACT_ID")
+  ContactEntity contact;
+
   public ContactAddressEntity() {
   }
 
@@ -111,6 +115,15 @@ public class ContactAddressEntity {
   public ContactAddressEntity withType(ContactAddressEntity.Type type) {
     this.type = type.name();
     return this;
+  }
+
+  public ContactEntity getContact() {
+      return contact;
+  }
+
+  public ContactAddressEntity withContact(ContactEntity contact) {
+      this.contact = contact;
+      return this;
   }
 
   public void setId(String id) {

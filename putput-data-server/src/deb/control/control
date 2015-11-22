@@ -1,8 +1,0 @@
-Package: [[name]]
-Version: [[version]]
-Section: misc
-Priority: low
-Architecture: all
-Description: [[description]]
-Maintainer: andreas@drobisch.com
-Depends: openjdk-7-jdk

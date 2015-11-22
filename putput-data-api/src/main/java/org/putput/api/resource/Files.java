@@ -19,7 +19,7 @@ public interface Files {
      * @param parent
      *     the parent folder to list files for
      * @param tag
-     *     param to search only files tagged with specified text
+     *     param to search only files tagged with specified text, disables parent parameter
      * @param page
      *     The page to retrieve
      */

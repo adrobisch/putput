@@ -27,16 +27,28 @@ public class ContactService {
 
   private ContactEntity withIds(ContactEntity contactEntity) {
     contactEntity.getInternetIdentifiers().stream().filter(id -> id.getId() == null)
-      .forEach(id -> id.withId(uuidService.uuid()));
+      .forEach(id -> {
+          id.withId(uuidService.uuid());
+          id.withContact(contactEntity);
+      });
 
     contactEntity.getPhoneNumbers().stream().filter(number -> number.getId() == null)
-      .forEach(number -> number.withId(uuidService.uuid()));
+      .forEach(number -> {
+          number.withId(uuidService.uuid());
+          number.withContact(contactEntity);
+      });
 
     contactEntity.getEmails().stream().filter(number -> number.getId() == null)
-      .forEach(email -> email.withId(uuidService.uuid()));
+      .forEach(email -> {
+          email.withId(uuidService.uuid());
+          email.withContact(contactEntity);
+      });
 
     contactEntity.getContactAddresses().stream().filter(address -> address.getId() == null)
-      .forEach(address -> address.withId(uuidService.uuid()));
+      .forEach(address -> {
+          address.withId(uuidService.uuid());
+          address.withContact(contactEntity);
+      });
 
     return contactEntity;
   }
