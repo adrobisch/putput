@@ -14,10 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -65,7 +67,7 @@ public class VCardImporter {
 
   private List<VCard> parseInput(InputStream vcardContent) {
     try {
-      return Ezvcard.parse(vcardContent).all();
+      return Ezvcard.parse(StreamUtils.copyToString(vcardContent, Charset.forName("UTF-8"))).all();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
