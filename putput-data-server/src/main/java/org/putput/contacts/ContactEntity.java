@@ -47,19 +47,19 @@ public class ContactEntity {
   @Column(name = "_VERSION")
   Long version;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
   @JoinColumn(name = "_CONTACT_ID")
   Set<ContactAddressEntity> contactAddresses = new HashSet<>();
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
   @JoinColumn(name = "_CONTACT_ID")
   Set<PhoneNumber> phoneNumbers = new HashSet<>();
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
   @JoinColumn(name = "_CONTACT_ID")
   Set<InternetIdentifier> internetIdentifiers = new HashSet<>();
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
   @JoinColumn(name = "_CONTACT_ID")
   Set<EMailAddress> emails = new HashSet<>();
 

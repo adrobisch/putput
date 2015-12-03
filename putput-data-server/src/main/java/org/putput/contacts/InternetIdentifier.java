@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "PP_CONTACT_INTERNET_ID")
 public class InternetIdentifier {
 
-  public static enum Type {
+  public enum Type {
     MAIL_HOME,
     MAIL_WORK,
     MSN,

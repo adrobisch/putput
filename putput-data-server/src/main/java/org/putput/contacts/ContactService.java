@@ -26,27 +26,35 @@ public class ContactService {
   }
 
   private ContactEntity withIds(ContactEntity contactEntity) {
-    contactEntity.getInternetIdentifiers().stream().filter(id -> id.getId() == null)
+    contactEntity.getInternetIdentifiers().stream()
       .forEach(id -> {
-          id.withId(uuidService.uuid());
+          if (id.getId() == null) {
+            id.withId(uuidService.uuid());
+          }
           id.withContact(contactEntity);
       });
 
-    contactEntity.getPhoneNumbers().stream().filter(number -> number.getId() == null)
+    contactEntity.getPhoneNumbers().stream()
       .forEach(number -> {
-          number.withId(uuidService.uuid());
+          if (number.getId() == null) {
+            number.withId(uuidService.uuid());
+          }
           number.withContact(contactEntity);
       });
 
-    contactEntity.getEmails().stream().filter(number -> number.getId() == null)
+    contactEntity.getEmails().stream()
       .forEach(email -> {
-          email.withId(uuidService.uuid());
+          if (email.getId() == null) {
+            email.withId(uuidService.uuid());
+          }
           email.withContact(contactEntity);
       });
 
-    contactEntity.getContactAddresses().stream().filter(address -> address.getId() == null)
+    contactEntity.getContactAddresses().stream()
       .forEach(address -> {
-          address.withId(uuidService.uuid());
+          if (address.getId() == null) {
+            address.withId(uuidService.uuid());
+          }
           address.withContact(contactEntity);
       });
 
@@ -72,7 +80,7 @@ public class ContactService {
     contactRepository.delete(id);
   }
 
-  public void update(ContactEntity updatedContact) {
-    contactRepository.save(withIds(updatedContact));
+  public ContactEntity update(ContactEntity updatedContact) {
+    return contactRepository.save(withIds(updatedContact));
   }
 }

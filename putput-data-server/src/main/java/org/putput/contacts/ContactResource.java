@@ -5,6 +5,7 @@ import org.putput.api.model.ContactLinks;
 import org.putput.api.model.NewContact;
 import org.putput.api.resource.Contact;
 import org.putput.common.web.BaseResource;
+import org.putput.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ public class ContactResource extends BaseResource implements Contact {
 
   @Autowired
   ContactService contactService;
+
+  @Autowired
+  UserRepository userRepository;
 
   @Autowired
   MapperFacade beanMapper;
@@ -49,7 +53,9 @@ public class ContactResource extends BaseResource implements Contact {
 
   @Override
   public PutContactByIdResponse putContactById(String id, org.putput.api.model.Contact updatedContact) throws Exception {
-    contactService.update(beanMapper.map(updatedContact, ContactEntity.class));
+    ContactEntity contactEntity = beanMapper.map(updatedContact, ContactEntity.class)
+            .withUser(userRepository.findByUsername(user().getUsername()));
+    contactService.update(contactEntity);
     return PutContactByIdResponse.withOK();
   }
 
