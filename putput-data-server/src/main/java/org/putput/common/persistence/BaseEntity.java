@@ -11,7 +11,7 @@ import java.util.Date;
 @MappedSuperclass
 public abstract class BaseEntity<T> {
   @Id
-  @Column(name = "_ID")
+  @Column(name = "_ID", nullable = false)
   protected String id;
   
   @Version
@@ -43,7 +43,7 @@ public abstract class BaseEntity<T> {
     return self();
   }
 
-  private T self() {
+  protected T self() {
     return (T) this;
   }
 
@@ -75,10 +75,5 @@ public abstract class BaseEntity<T> {
       return null;
     }
     return new Date(updated);
-  }
-
-  public T withId(String id) {
-    this.id = id;
-    return self();
   }
 }

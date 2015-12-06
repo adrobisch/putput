@@ -1,10 +1,12 @@
 package org.putput.contacts;
 
+import org.putput.common.persistence.BaseEntity;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "PP_CONTACT_EMAIL")
-public class EMailAddress {
+public class EMailAddress extends BaseEntity<EMailAddress> {
 
   public static class Type {
 
@@ -41,17 +43,13 @@ public class EMailAddress {
     }
   }
 
-  @Id
-  @Column(name = "_ID")
-  String id;
-
   @Column(name ="_TYPE")
   String type;
 
   @Column(name ="_ADDRESS")
   String address;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "_CONTACT_ID")
   ContactEntity contact;
 
@@ -61,15 +59,6 @@ public class EMailAddress {
   public EMailAddress(EMailAddress.Type type, String address) {
     this.type = type.name();
     this.address = address;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public EMailAddress withId(String id) {
-    this.id = id;
-    return this;
   }
 
   public String getType() {
@@ -84,21 +73,19 @@ public class EMailAddress {
       return contact;
   }
 
-  public EMailAddress withContact(ContactEntity contact) {
+  public EMailAddress setContact(ContactEntity contact) {
       this.contact = contact;
       return this;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setType(String type) {
+  public EMailAddress setType(String type) {
     this.type = type;
+    return self();
   }
 
-  public void setAddress(String address) {
+  public EMailAddress setAddress(String address) {
     this.address = address;
+    return self();
   }
 
   @Override

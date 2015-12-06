@@ -1,10 +1,12 @@
 package org.putput.contacts;
 
+import org.putput.common.persistence.BaseEntity;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "PP_CONTACT_INTERNET_ID")
-public class InternetIdentifier {
+public class InternetIdentifier extends BaseEntity<InternetIdentifier> {
 
   public enum Type {
     MAIL_HOME,
@@ -18,17 +20,13 @@ public class InternetIdentifier {
     GOOGLE
   }
 
-  @Id
-  @Column(name ="_ID")
-  String id;
-
   @Column(name ="_TYPE")
   String type;
 
   @Column(name = "_ID_VALUE")
   String idValue;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "_CONTACT_ID")
   ContactEntity contact;
 
@@ -38,10 +36,6 @@ public class InternetIdentifier {
   public InternetIdentifier(InternetIdentifier.Type type, String idValue) {
     this.type = type.name();
     this.idValue = idValue;
-  }
-
-  public String getId() {
-    return id;
   }
 
   public String getType() {
@@ -56,26 +50,19 @@ public class InternetIdentifier {
       return contact;
   }
 
-  public InternetIdentifier withContact(ContactEntity contact) {
+  public InternetIdentifier setContact(ContactEntity contact) {
       this.contact = contact;
       return this;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setType(String type) {
+  public InternetIdentifier setType(String type) {
     this.type = type;
+    return self();
   }
 
-  public void setIdValue(String idValue) {
+  public InternetIdentifier setIdValue(String idValue) {
     this.idValue = idValue;
-  }
-
-  public InternetIdentifier withId(String id) {
-    this.id = id;
-    return this;
+    return self();
   }
 
   @Override

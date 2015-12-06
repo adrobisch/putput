@@ -50,16 +50,13 @@ public class ContactEntity {
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "contact")
   Set<ContactAddressEntity> contactAddresses = new HashSet<>();
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-  @JoinColumn(name = "_CONTACT_ID")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "contact")
   Set<PhoneNumber> phoneNumbers = new HashSet<>();
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-  @JoinColumn(name = "_CONTACT_ID")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "contact")
   Set<InternetIdentifier> internetIdentifiers = new HashSet<>();
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-  @JoinColumn(name = "_CONTACT_ID")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "contact")
   Set<EMailAddress> emails = new HashSet<>();
 
   @ManyToMany(fetch = FetchType.EAGER)

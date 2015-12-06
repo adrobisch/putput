@@ -1,10 +1,12 @@
 package org.putput.contacts;
 
+import org.putput.common.persistence.BaseEntity;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "PP_CONTACT_PHONE")
-public class PhoneNumber {
+public class PhoneNumber extends BaseEntity<PhoneNumber> {
 
   public static class Type {
     String name;
@@ -57,17 +59,13 @@ public class PhoneNumber {
     }
   }
 
-  @Id
-  @Column(name ="_ID")
-  String id;
-
   @Column(name ="_TYPE")
   String type;
 
   @Column(name = "_NUMBER")
   String number;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "_CONTACT_ID")
   ContactEntity contact;
 
@@ -77,10 +75,6 @@ public class PhoneNumber {
   public PhoneNumber(PhoneNumber.Type type, String number) {
     this.type = type.name();
     this.number = number;
-  }
-
-  public String getId() {
-    return id;
   }
 
   public String getType() {
@@ -95,26 +89,19 @@ public class PhoneNumber {
       return contact;
   }
 
-  public PhoneNumber withContact(ContactEntity contact) {
+  public PhoneNumber setContact(ContactEntity contact) {
       this.contact = contact;
-      return this;
+      return self();
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setType(String type) {
+  public PhoneNumber setType(String type) {
     this.type = type;
+    return self();
   }
 
-  public void setNumber(String number) {
+  public PhoneNumber setNumber(String number) {
     this.number = number;
-  }
-
-  public PhoneNumber withId(String id) {
-    this.id = id;
-    return this;
+    return self();
   }
 
   @Override

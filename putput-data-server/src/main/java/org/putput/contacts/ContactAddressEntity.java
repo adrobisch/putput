@@ -110,11 +110,6 @@ public class ContactAddressEntity extends BaseEntity<ContactAddressEntity> {
       return contact;
   }
 
-  public ContactAddressEntity withContact(ContactEntity contact) {
-      this.contact = contact;
-      return this;
-  }
-
   public void setType(String type) {
     this.type = type;
   }
