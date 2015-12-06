@@ -2,10 +2,12 @@ package org.putput.contacts;
 
 import org.putput.api.model.Contact;
 import org.putput.api.model.ContactAddress;
+import org.putput.common.persistence.BaseEntity;
 import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
 import org.putput.common.UuidService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,43 +116,53 @@ public class ContactService {
       ofNullable(updatedContact.getDateOfBirth()).ifPresent(dateOfBirth ->
           contactEntity.setDateOfBirth(dateOfBirth.longValue()));
 
-      Map<String, List<ContactAddressEntity>> existingAddresses = contactEntity.getContactAddresses()
-          .stream()
-          .collect(Collectors.groupingBy(ContactAddressEntity::getId));
-
-      List<String> newAddressIds = updatedContact.getContactAddresses()
-          .stream()
-          .map(newContactAddress -> mergeAddress(contactEntity, newContactAddress, existingAddresses))
-          .map(ContactAddressEntity::getId)
-          .collect(Collectors.toList());
-
-      contactEntity
-          .getContactAddresses()
-          .stream()
-          .filter(notIn(newAddressIds))
-          .forEach(removeFrom(contactEntity));
+      updateCollection(updatedContact.getContactAddresses(),
+          contactEntity.getContactAddresses(),
+          createNewContactAddress(contactEntity),
+          ContactAddress::getId,
+          withFieldsOfContact(),
+          contactAddressRepository);
 
       return contactEntity;
     };
   }
 
-  private Consumer<ContactAddressEntity> removeFrom(ContactEntity contactEntity) {
-    return address -> {
-      contactAddressRepository.delete(address);
-      contactEntity.getContactAddresses().remove(address);
+  private <T extends BaseEntity, U> void updateCollection(Collection<U> updatedValues,
+                                                       Collection<T> currentValues,
+                                                       Supplier<T> newInstance,
+                                                       Function<U, String> idFun,
+                                                       Function<U, Function<T, T>> updateFunctionSupplier,
+                                                       CrudRepository<T, String> repository) {
+    Map<String, List<T>> valuesMap = currentValues.stream()
+        .collect(Collectors.groupingBy(T::getId));
+
+    List<String> newIds = updatedValues
+        .stream()
+        .map(newCollectionItem -> {
+          Optional<T> existingItem = ofNullable(valuesMap.get(idFun.apply(newCollectionItem)))
+              .flatMap(toFirst());
+
+          return repository.save(updateFunctionSupplier.apply(newCollectionItem).apply(existingItem
+              .orElseGet(newInstance)));
+        })
+        .map(T::getId)
+        .collect(Collectors.toList());
+
+    currentValues
+        .stream()
+        .filter(notIn(newIds))
+        .forEach(removeFrom(currentValues, repository));
+  }
+
+  private <T> Consumer<T> removeFrom(Collection<T> collection, CrudRepository<T, String> repository) {
+    return item -> {
+      repository.delete(item);
+      collection.remove(item);
     };
   }
 
-  private Predicate<ContactAddressEntity> notIn(List<String> newAddressIds) {
+  private <T extends BaseEntity> Predicate<T> notIn(List<String> newAddressIds) {
     return id -> !newAddressIds.contains(id.getId());
-  }
-
-  ContactAddressEntity mergeAddress(ContactEntity contact, ContactAddress newContactAddress, Map<String, List<ContactAddressEntity>> existingAddresses) {
-    Optional<ContactAddressEntity> existingAddressWithId = ofNullable(existingAddresses.get(newContactAddress.getId()))
-        .flatMap(toFirst());
-
-    return contactAddressRepository.save(withFieldsOf(newContactAddress).apply(existingAddressWithId
-        .orElseGet(createNewContactAddress(contact))));
   }
 
   private Supplier<ContactAddressEntity> createNewContactAddress(ContactEntity contact) {
@@ -159,8 +171,8 @@ public class ContactService {
         .setContact(contact));
   }
 
-  Function<ContactAddressEntity, ContactAddressEntity> withFieldsOf(ContactAddress newContactAddress) {
-    return existingContactAddress -> {
+  Function<ContactAddress, Function<ContactAddressEntity, ContactAddressEntity>> withFieldsOfContact() {
+    return newContactAddress -> (existingContactAddress) -> {
       existingContactAddress.setCity(newContactAddress.getCity());
       existingContactAddress.setCountry(newContactAddress.getCountry());
       existingContactAddress.setHouseNo(newContactAddress.getHouseNo());

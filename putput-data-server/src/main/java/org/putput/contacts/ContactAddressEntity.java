@@ -1,10 +1,12 @@
 package org.putput.contacts;
 
+import org.putput.common.persistence.BaseEntity;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "PP_CONTACT_ADDRESS")
-public class ContactAddressEntity {
+public class ContactAddressEntity extends BaseEntity<ContactAddressEntity> {
 
   public enum Type {
     HOME,
@@ -12,10 +14,6 @@ public class ContactAddressEntity {
     SECONDARY_HOME,
     OTHER
   }
-
-  @Id
-  @Column(name ="_ID")
-  String id;
 
   @Column(name = "_TYPE")
   String type;
@@ -43,10 +41,6 @@ public class ContactAddressEntity {
   ContactEntity contact;
 
   public ContactAddressEntity() {
-  }
-
-  public String getId() {
-    return id;
   }
 
   public String getType() {
@@ -107,11 +101,6 @@ public class ContactAddressEntity {
     return this;
   }
 
-  public ContactAddressEntity withId(String id) {
-    this.id = id;
-    return this;
-  }
-
   public ContactAddressEntity withType(ContactAddressEntity.Type type) {
     this.type = type.name();
     return this;
@@ -124,11 +113,6 @@ public class ContactAddressEntity {
   public ContactAddressEntity withContact(ContactEntity contact) {
       this.contact = contact;
       return this;
-  }
-
-  public ContactAddressEntity setId(String id) {
-    this.id = id;
-    return this;
   }
 
   public void setType(String type) {

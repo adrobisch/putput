@@ -7,13 +7,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Version;
 import java.util.Date;
-import java.util.Optional;
 
 @MappedSuperclass
 public abstract class BaseEntity<T> {
   @Id
   @Column(name = "_ID")
-  String id;
+  protected String id;
   
   @Version
   @Column(name = "_VERSION")
@@ -41,6 +40,10 @@ public abstract class BaseEntity<T> {
 
   public T setId(String id) {
     this.id = id;
+    return self();
+  }
+
+  private T self() {
     return (T) this;
   }
 
@@ -72,5 +75,10 @@ public abstract class BaseEntity<T> {
       return null;
     }
     return new Date(updated);
+  }
+
+  public T withId(String id) {
+    this.id = id;
+    return self();
   }
 }
