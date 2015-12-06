@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "PP_CONTACT_ADDRESS")
 public class ContactAddressEntity {
 
-  public static enum Type {
+  public enum Type {
     HOME,
     WORK,
     SECONDARY_HOME,
@@ -38,7 +38,7 @@ public class ContactAddressEntity {
   @Column(name = "_POSTAL_CODE")
   String postalCode;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "_CONTACT_ID")
   ContactEntity contact;
 
@@ -126,8 +126,9 @@ public class ContactAddressEntity {
       return this;
   }
 
-  public void setId(String id) {
+  public ContactAddressEntity setId(String id) {
     this.id = id;
+    return this;
   }
 
   public void setType(String type) {
@@ -156,6 +157,11 @@ public class ContactAddressEntity {
 
   public void setPostalCode(String postalCode) {
     this.postalCode = postalCode;
+  }
+
+  public ContactAddressEntity setContact(ContactEntity contact) {
+    this.contact = contact;
+    return this;
   }
 
   @Override

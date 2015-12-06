@@ -53,9 +53,7 @@ public class ContactResource extends BaseResource implements Contact {
 
   @Override
   public PutContactByIdResponse putContactById(String id, org.putput.api.model.Contact updatedContact) throws Exception {
-    ContactEntity contactEntity = beanMapper.map(updatedContact, ContactEntity.class)
-            .withUser(userRepository.findByUsername(user().getUsername()));
-    contactService.update(contactEntity);
+    contactService.update(updatedContact, user());
     return PutContactByIdResponse.withOK();
   }
 

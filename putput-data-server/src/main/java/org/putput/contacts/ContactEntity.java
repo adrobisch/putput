@@ -47,8 +47,7 @@ public class ContactEntity {
   @Column(name = "_VERSION")
   Long version;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-  @JoinColumn(name = "_CONTACT_ID")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "contact")
   Set<ContactAddressEntity> contactAddresses = new HashSet<>();
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
