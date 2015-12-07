@@ -97,12 +97,16 @@ module.exports = function (grunt) {
             ],
             dest: '<%= config.dist %>'
           },
-          // font folders
+          // dist folders
           {
             expand: true,
             cwd: '<%= config.node_modules %>',
             src: [
-              '**/fonts/**'
+              '**/*.min.js',
+              '**/*.min.css',
+              '**/fonts/**',
+              'js/**/*.min.js',
+              '**/dist/**/*'
             ],
             dest: '<%= config.dist %>/vendor'
           }

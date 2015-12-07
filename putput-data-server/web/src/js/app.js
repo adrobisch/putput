@@ -61,6 +61,10 @@ app.config(['$routeProvider', function($routeProvider) {
   });
 }]);
 
+app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+  cfpLoadingBarProvider.includeSpinner = false;
+}]);
+
 app.directive('ngConfirmClick', [
   function(){
     return {
