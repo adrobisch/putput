@@ -220,7 +220,8 @@ public class ContactService {
     currentValues
         .stream()
         .filter(notIn(newIds))
-        .forEach(removeFrom(currentValues, repository));
+        .collect(Collectors.toList())
+        .forEach(removeFrom(currentValues, repository));    
   }
 
   private <T> Consumer<T> removeFrom(Collection<T> collection, CrudRepository<T, String> repository) {
