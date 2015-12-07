@@ -45,9 +45,6 @@
             <column name="_NOTES" type="varchar(4000)">
                 <constraints nullable="true"/>
             </column>
-            <column name="_PASSWORD_HASH" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
             <column name="_VERSION" type="bigint" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>
@@ -107,15 +104,6 @@
                 <constraints nullable="true"/>
             </column>
             <column name="_POSTAL_CODE" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
-            <column name="_ORGANISATION" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
-            <column name="_NOTES" type="varchar(4000)">
-                <constraints nullable="true"/>
-            </column>
-            <column name="_PASSWORD_HASH" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
             <column name="_VERSION" type="bigint" defaultValueNumeric="0">

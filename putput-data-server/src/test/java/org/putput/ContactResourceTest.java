@@ -1,6 +1,5 @@
 package org.putput;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.putput.api.model.*;
 import org.putput.contacts.ContactEntity;
@@ -27,14 +26,13 @@ public class ContactResourceTest extends SpringIntegrationTest {
   }
 
   @Test
-  @Ignore
   public void shouldUpdateContact() throws Exception {
     Contact theContact = get("/api/contact/1").as(Contact.class);
 
     theContact.getPhoneNumbers().add(new PhoneNumber()
             .withNumber("+491723646646")
             .withType("WORK"));
-    // FIXME: this will break the current implementation
+
     theContact.getEmails().clear();
 
     theContact.getEmails().add(new Email()

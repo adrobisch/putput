@@ -1,7 +1,5 @@
 package org.putput.ui;
 
-import com.google.common.base.Function;
-import org.fluentlenium.core.Fluent;
 import org.fluentlenium.core.annotation.Page;
 import org.junit.Test;
 import org.putput.BrowserTest;

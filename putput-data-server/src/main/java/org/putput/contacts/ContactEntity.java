@@ -1,5 +1,6 @@
 package org.putput.contacts;
 
+import org.putput.common.persistence.BaseEntity;
 import org.putput.images.PutPutImage;
 import org.putput.users.UserEntity;
 
@@ -9,11 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "PP_CONTACT")
-public class ContactEntity {
-
-  @Id
-  @Column(name = "_ID")
-  String id;
+public class ContactEntity extends BaseEntity<ContactEntity> {
 
   @Column(name = "_FIRST_NAME")
   String firstName;
@@ -42,10 +39,6 @@ public class ContactEntity {
   @ManyToOne
   @JoinColumn(name = "_OWNER_ID")
   UserEntity user;
-
-  @Version
-  @Column(name = "_VERSION")
-  Long version;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "contact")
   Set<ContactAddressEntity> contactAddresses = new HashSet<>();
@@ -92,10 +85,6 @@ public class ContactEntity {
 
   public String getOrganisation() {
     return organisation;
-  }
-
-  public Long getVersion() {
-    return version;
   }
 
   public ContactEntity withId(String id) {
@@ -175,10 +164,6 @@ public class ContactEntity {
     return photos;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
   public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
@@ -213,10 +198,6 @@ public class ContactEntity {
 
   public void setUser(UserEntity user) {
     this.user = user;
-  }
-
-  public void setVersion(Long version) {
-    this.version = version;
   }
 
   public void setContactAddresses(Set<ContactAddressEntity> contactAddresses) {
