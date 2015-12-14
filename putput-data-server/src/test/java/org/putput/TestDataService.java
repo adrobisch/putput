@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static java.util.Optional.ofNullable;
+
 @Service
 public class TestDataService implements SmartLifecycle {
 
@@ -44,11 +46,17 @@ public class TestDataService implements SmartLifecycle {
   public void start() {
     running.set(true);
 
-    UserEntity testUser = addTestUser();
-    streamItemService.newItemEntity(testUser.getUsername(), "Test Put.", Optional.empty(), Optional.empty());
-    streamItemService.newItemEntity("user", "User Put.", Optional.empty(), Optional.empty());
+    addTestData();
+  }
 
-    profileService.addFollower("user", "johndoe");
+  private void addTestData() {
+    if (!ofNullable(userRepository.findByUsername("johndoe")).isPresent()) {
+      UserEntity testUser = addTestUser();
+      streamItemService.newItemEntity(testUser.getUsername(), "Test Put.", Optional.empty(), Optional.empty());
+      streamItemService.newItemEntity("user", "User Put.", Optional.empty(), Optional.empty());
+
+      profileService.addFollower("user", "johndoe");
+    }
   }
 
   private UserEntity addTestUser() {
