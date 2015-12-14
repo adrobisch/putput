@@ -1,7 +1,8 @@
 package org.putput.stream;
 
 public enum StreamItemSource {
-  PUTPUT("putput");
+  PUTPUT("PUTPUT"),
+  RSS("RSS");
 
   StreamItemSource(String value) {
     this.value = value;

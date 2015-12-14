@@ -58,5 +58,17 @@
                                  referencedColumnNames="_ID"/>
 
     </changeSet>
+    
+    <changeSet id="2" author="adrobisch">
+        <preConditions>
+            <not>
+                <columnExists tableName="PP_ITEM" columnName="_EXTERNAL_REF"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="PP_ITEM">
+            <column name="_EXTERNAL_REF" type="VARCHAR(1024)"/>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>
