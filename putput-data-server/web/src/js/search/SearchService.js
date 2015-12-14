@@ -1,6 +1,8 @@
 function SearchService(rootScope) {
     var searchEventKey = "search.event";
 
+    this.enabled = false;
+
     this.query = function (q) {
         rootScope.$emit(searchEventKey, {"query": q});
     };
@@ -20,6 +22,14 @@ function SearchService(rootScope) {
 
         return registration;
     };
+
+    this.setEnabled = function (enabled) {
+      this.enabled = enabled;
+    };
+
+    this.isEnabled = function () {
+        return this.enabled;
+    }
 }
 
 SearchService.$inject = ["$rootScope"];

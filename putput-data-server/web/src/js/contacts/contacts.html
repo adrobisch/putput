@@ -45,15 +45,17 @@
     </div>
   </div>
 </div>
-<div class="row">
-  <div id="contact-table" class="animation" data-ng-show="contacts">
-    <table class="table table-striped col-md-12">
+<div class="row animation">
+  <div id="contact-table" class="table-responsive" data-ng-show="contacts">
+    <table class="table table-striped">
       <thead>
-      <th></th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Phone</th>
-      <th>e-Mail</th>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Phone</th>
+          <th>e-Mail</th>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
       <tr data-ng-repeat="contact in contacts">
@@ -68,15 +70,17 @@
         <td>{{contact.firstName}}</td>
         <td>{{contact.lastName}}</td>
         <td class="col-md1">
-            <div class="label label-primary" data-ng-repeat="number in contact.phoneNumbers">
-                <span>{{number.number}} ({{number.type}})</span> <br>
+            <div data-ng-repeat="number in contact.phoneNumbers">
+              <span class="label label-primary">{{number.number}} ({{number.type}})</span>
+              <br>
             </div>
         </td>
         <td>
-          <div class="label label-info" data-ng-repeat="email in contact.emails">
-            <span>
+          <div data-ng-repeat="email in contact.emails">
+            <span class="label label-info">
                 <a data-ng-href="mailto:{{email.address}}" style="color:#ffffff">{{email.address}}</a>
-            </span> <br>
+            </span>
+            <br>
           </div>
         </td>
       </tr>

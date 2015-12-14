@@ -48,7 +48,7 @@ public class BaseResource implements HalSupport {
     return httpsEnabled;
   }
 
-  protected User user() {
+  public User user() {
     return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
 }

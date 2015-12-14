@@ -14,8 +14,10 @@ var app = angular.module('app', [
   require("angular-route"),
   require("angular-animate"),
   require("angular-loading-bar"),
+  require("angular-moment").name,
   require('./login/LoginModule').name,
   require('./home/HomeModule').name,
+  require('./profile/ProfileModule').name,
   require('./navbar/NavbarModule').name,
   require('./contacts/ContactsModule').name,
   require('./note/NotesModule').name,
@@ -57,7 +59,7 @@ app.config(['flowFactoryProvider', function (flowFactoryProvider) {
 
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({
-    redirectTo: '/'
+    redirectTo: '/home'
   });
 }]);
 

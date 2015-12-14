@@ -1,7 +1,7 @@
 #%RAML 0.8
 
-title: PutPut Contacts API
-baseUri: https://contacts.putput.org
+title: PutPut API
+baseUri: https://www.putput.org
 version: v1
 schemas:
   - empty: |
@@ -160,6 +160,92 @@ schemas:
           "self" : { "$ref": "halLink"}
         }
       }
+  - streamItemResource: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.StreamItemResource",
+        "properties": {
+          "streamItem": {
+            "$ref": "streamItem"
+          },
+          "markerInfo": {
+            "$ref": "markerInfo"
+          },
+          "_links": {
+            "$ref": "streamItemLinks"
+          }
+        }
+      }
+  - markerInfo: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.MarkerInfo",
+        "properties": {
+          "dislikes": {"type": "number"},
+          "isDislike": {"type": "boolean"},
+          "isFavorite": {"type": "boolean"},
+          "isLike": {"type": "boolean"},
+          "isReadLater": {"type": "boolean"},
+          "likes": {"type": "number"}
+        }
+      }
+  - streamItem: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.StreamItem",
+        "properties": {
+          "id": {"type": "string"},
+          "creator": {"type": "string"},
+          "source": {"type": "string"},
+          "title": {"type": "string"},
+          "content": {"type": "string"},
+          "created": {"type": "number"}
+        }
+      }
+  - newMarker: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.NewMarker",
+        "properties": {
+          "itemId": {"type": "string"},
+          "markerType": {"type": "string"}
+        }
+      }
+  - newStreamItem: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.NewStreamItem",
+        "properties": {
+          "source": {"type": "string"},
+          "title": {"type": "string"},
+          "content": {"type": "string"}
+        }
+      }
+  - streamItemLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.StreamItemLinks",
+        "description": "The links of a stream item",
+        "properties": {
+          "self" : { "$ref": "halLink"},
+          "delete" : { "$ref": "halLink"}
+        }
+      }
+  - streamItemListLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.StreamItemListLinks",
+        "description": "The links of a stream item list",
+        "properties": {
+          "self" : { "$ref": "halLink"},
+          "nextPage" : { "$ref": "halLink"}
+        }
+      }
   - tag: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -231,7 +317,7 @@ schemas:
         "properties": {
           "self" : { "$ref": "halLink"}
         }
-      }      
+      }
   - userInfo: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -257,7 +343,65 @@ schemas:
           "passwordRepeat": {"type": "string"}
         }
       }
-
+  - profile: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.UserProfile",
+        "properties": {
+          "profile": {
+            "$ref": "profileInfo"
+          },
+          "following": {"type": "boolean"},
+          "_links": {
+            "$ref": "profileLinks"
+          }
+        }
+      }
+  - profileInfo: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.ProfileInfo",
+        "properties": {
+          "about": {"type": "string"},
+          "followers": {
+             "type": "array",
+             "items": {
+               "$ref": "followShip"
+             }
+           },
+          "following": {
+            "type": "array",
+            "items": {
+              "$ref": "followShip"
+            }
+          },
+          "itemCount": {
+            "type": "integer"
+          }
+        }
+      }
+  - profileLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.ProfileLinks",
+        "description": "The links of a profile",
+        "properties": {
+          "self" : { "$ref": "halLink"},
+          "stream" : { "$ref": "halLink"},
+          "follow" : { "$ref": "halLink"},
+          "unfollow" : { "$ref": "halLink"}
+        }
+      }
+  - followShip: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "follower": {"type": "string"},
+          "followed": {"type": "string"}
+        }
+      }
   - serviceDocument: |
       { "$schema": "http://json-schema.org/schema",
         "type": "object",
@@ -469,7 +613,7 @@ traits:
               Location:
 /files:
   get:
-    is: [ halCollection: { id: noteList, collectionJavaType: org.putput.api.model.FileList, itemsProperty: files, itemSchema: file, collectionLinks: fileListLinks}]
+    is: [ halCollection: { id: fileList, collectionJavaType: org.putput.api.model.FileList, itemsProperty: files, itemSchema: file, collectionLinks: fileListLinks}]
     queryParameters:
       parent:
         description: the parent folder to list files for
@@ -479,6 +623,58 @@ traits:
         description: param to search only files tagged with specified text, disables parent parameter
         type: string
         required: false
+
+/stream:
+  get:
+    is: [ halCollection: { id: streamItemList, collectionJavaType: org.putput.api.model.StreamItemList, itemsProperty: items, itemSchema: streamItemResource, collectionLinks: streamItemListLinks}]
+    queryParameters:
+      profile:
+        type: string
+        required: false
+      type:
+        description: the type of stream to receive
+        type: string
+        required: false
+  /items:
+    post:
+      body:
+        application/json:
+          schema: newStreamItem
+      responses:
+        201:
+          headers:
+            Location:
+  /item:
+    /{id}:
+      get:
+        responses:
+          200:
+            body:
+              application/hal+json:
+                schema: streamItemResource
+          404:
+      delete:
+        responses:
+          200:
+          400:
+
+/marker:
+  post:
+    body:
+      application/json:
+        schema: newMarker
+    responses:
+        200:
+  delete:
+    queryParameters:
+      itemId:
+        type: string
+        required: true
+      markerType:
+        type: string
+        required: true
+    responses:
+      200:
 
 /password_request:
   post:
@@ -490,6 +686,22 @@ traits:
       400:
         description: "Bad Request, unable to reset password"
 
+/profile:
+  /{userName}:
+    get:
+      responses:
+        200:
+          body:
+            application/hal+json:
+              schema: profile
+        404:
+    /follow:
+      post:
+        responses:
+          200:
+      delete:
+        responses:
+          200:
 /user:
   /info:
     get:

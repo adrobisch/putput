@@ -50,6 +50,12 @@ var FileListController =  function(scope, route, location, files, search, media)
   };
 
   search.onSearch(scope.search, scope);
+
+  search.setEnabled(true);
+
+  scope.$on("$destroy", function() {
+    search.setEnabled(false);
+  });
 };
 
 FileListController.$inject = ['$scope', '$route', '$location', 'files', 'search', 'media'];

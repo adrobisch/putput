@@ -15,4 +15,8 @@
     <include file="db/changelog/add_metadata_to_file.xml" />
     <include file="db/changelog/create_tag.xml" />
 
+    <include file="db/changelog/create_follower.xml" />
+    <include file="db/changelog/create_item.xml" />
+    <include file="db/changelog/create_item_marker.xml" />
+
 </databaseChangeLog>

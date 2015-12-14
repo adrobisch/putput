@@ -1,3 +1,46 @@
-<div class="row">
-    <h3 class="animation" data-ng-show="user">Welcome to PutPut {{user}}!</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4" id="putForm" data-ng-cloak>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form role="form" class="inline-form">
+                        <div>
+                            <label for="newPut">What's new?</label>
+                            <textarea name="newPut" class="form-control" id="newPut" data-ng-model="newPut" placeholder="Put it here"></textarea>
+                        </div>
+                        <br/>
+                        <button data-ng-click="put()" type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                    <!--form class="inline-form">
+                        <button id="image-upload" type="button" class="btn btn-default" data-ng-click="uploadImage()">
+                            <span class="glyphicon glyphicon-upload"></span> Upload Image
+                        </button>
+                        <div style='height: 0px;width:0px; overflow:hidden;'>
+                            <input id="file-input" name="file" type="file" size="1" accept="image/*">
+                        </div>
+                    </form>
+                    <div data-ng-show="imageUrl">
+                        <h4>Image preview</h4>
+                        <img class="thumb" data-ng-src="{{imageUrl}}">
+                    </div-->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h4>Timeline</h4>
+            <ul class="nav nav-pills">
+                <li data-ng-class="{active: filter == 'all'}">
+                    <a data-ng-click="setFilter('all')" href="">All</a>
+                </li>
+                <li data-ng-class="{active: filter == 'favorites'}">
+                    <a data-ng-click="setFilter('favorites')" href="">My Favorites</a>
+                </li>
+                <li data-ng-class="{active: filter == 'later'}">
+                    <a data-ng-click="setFilter('later')" href="">Read later</a>
+                </li>
+            </ul>
+            <hr>
+            <div data-timeline data-filter="filter"></div>
+        </div>
+    </div>
 </div>

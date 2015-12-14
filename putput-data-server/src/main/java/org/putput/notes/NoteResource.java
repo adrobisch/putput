@@ -5,9 +5,9 @@ import org.putput.api.model.NoteLinks;
 import org.putput.api.resource.Note;
 import org.putput.common.web.BaseResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 
-@Service
+@Controller
 public class NoteResource extends BaseResource implements Note {
 
   @Autowired

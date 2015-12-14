@@ -3,14 +3,16 @@
 var angular = require('angular');
 var HomeController = require("./HomeController");
 
-var homeModule = angular.module('home', []);
+var homeModule = angular.module('home', [
+    require("../timeline/TimelineModule").name
+]);
 
 homeModule.controller("HomeController", HomeController);
 
 homeModule.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/', {
+  $routeProvider.when('/home', {
     controller: HomeController,
-    template: require('./home.html')
+    template: require("./home.html")
   });
 }]);
 

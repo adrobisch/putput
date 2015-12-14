@@ -39,7 +39,7 @@
         </createTable>
 
         <createIndex tableName="PP_USER" indexName="IDX_USER_MAIL">
-            <column name="_EMAIL"></column>
+            <column name="_EMAIL"/>
         </createIndex>
 
         <insert tableName="PP_USER">
@@ -51,5 +51,30 @@
             <column name="_CREATED" value="1426352675" />
         </insert>
     </changeSet>
+
+    <changeSet id="2" author="adrobisch">
+        <preConditions>
+            <not>
+                <columnExists tableName="PP_USER" columnName="_DISPLAY_NAME" />
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="PP_USER">
+            <column name="_DISPLAY_NAME" type="VARCHAR(256)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="3" author="adrobisch">
+        <preConditions>
+            <not>
+                <columnExists tableName="PP_USER" columnName="_ABOUT" />
+            </not>
+        </preConditions>
+
+        <addColumn tableName="PP_USER">
+            <column name="_ABOUT" type="VARCHAR(4000)"/>
+        </addColumn>
+    </changeSet>
+
 
 </databaseChangeLog>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="create_item.xml">
+
+    <changeSet id="1" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_ITEM" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_ITEM">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_AUTHOR" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_TITLE" type="varchar(1024)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_CONTENT" type="varchar(4000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_SOURCE" type="varchar(30)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="PP_ITEM"
+                     indexName="IDX_ITEM_AUTHOR">
+            <column name="_AUTHOR" />
+        </createIndex>
+
+        <createIndex tableName="PP_ITEM"
+                     indexName="IDX_ITEM_CREATED">
+            <column name="_CREATED" />
+        </createIndex>
+        
+        <addForeignKeyConstraint baseTableName="PP_ITEM"
+                                 baseColumnNames="_AUTHOR"
+                                 constraintName="FK_ITEM_AUTHOR"
+                                 referencedTableName="PP_USER"
+                                 referencedColumnNames="_ID"/>
+
+    </changeSet>
+
+</databaseChangeLog>

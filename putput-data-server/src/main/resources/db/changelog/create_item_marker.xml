@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="create_item_marker.xml">
+
+    <changeSet id="1" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_ITEM_MARKER" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_ITEM_MARKER">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_ITEM_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_AUTHOR" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_MARKER_TYPE" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="PP_ITEM_MARKER"
+                     indexName="IDX_ITEM_MARKER_TYPE_AUTHOR"
+                     unique="true">
+            <column name="_ITEM_ID" />
+            <column name="_AUTHOR" />
+            <column name="_MARKER_TYPE" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="PP_ITEM_MARKER"
+                                 baseColumnNames="_AUTHOR"
+                                 constraintName="FK_ITEM_MARKER_AUTHOR"
+                                 referencedTableName="PP_USER"
+                                 referencedColumnNames="_ID"/>
+
+        <addForeignKeyConstraint baseTableName="PP_ITEM_MARKER"
+                                 baseColumnNames="_ITEM_ID"
+                                 constraintName="FK_ITEM_MARKER_ITEM"
+                                 referencedTableName="PP_ITEM"
+                                 referencedColumnNames="_ID"/>
+
+    </changeSet>
+
+</databaseChangeLog>
