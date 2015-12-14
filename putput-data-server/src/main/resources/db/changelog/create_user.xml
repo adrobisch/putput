@@ -53,7 +53,7 @@
     </changeSet>
 
     <changeSet id="2" author="adrobisch">
-        <preConditions>
+        <preConditions onFail="MARK_RAN">
             <not>
                 <columnExists tableName="PP_USER" columnName="_DISPLAY_NAME" />
             </not>
@@ -65,7 +65,7 @@
     </changeSet>
 
     <changeSet id="3" author="adrobisch">
-        <preConditions>
+        <preConditions onFail="MARK_RAN">
             <not>
                 <columnExists tableName="PP_USER" columnName="_ABOUT" />
             </not>

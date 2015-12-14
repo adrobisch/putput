@@ -60,7 +60,7 @@
     </changeSet>
     
     <changeSet id="2" author="adrobisch">
-        <preConditions>
+        <preConditions onFail="MARK_RAN">
             <not>
                 <columnExists tableName="PP_ITEM" columnName="_EXTERNAL_REF"/>
             </not>
