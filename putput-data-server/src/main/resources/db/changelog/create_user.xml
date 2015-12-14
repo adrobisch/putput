@@ -19,7 +19,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="_USERNAME" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="_EMAIL" type="varchar(1024)">
                 <constraints nullable="false"/>
