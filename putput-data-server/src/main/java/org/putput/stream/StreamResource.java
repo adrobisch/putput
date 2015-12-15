@@ -42,14 +42,21 @@ public class StreamResource extends BaseResource implements Stream {
         .withSelf(link(Stream.class));
 
     if (streamItemPage.hasNext()) {
-      Map<String, Object> params = new HashMap<>();
-      params.put("page", streamItemPage.nextPageable().getPageNumber());
-      links.withNextPage(link(Stream.class, params));
+      links.withNextPage(link(Stream.class,
+          nextPageParams(profile, type, streamItemPage)));
     }
 
     return GetStreamResponse.withHaljsonOK(new StreamItemList()
         .withItems(streamItems)
         .withLinks(links));
+  }
+
+  private Map<String, Object> nextPageParams(String profile, String type, Page<StreamItemEntity> streamItemPage) {
+    Map<String, Object> params = new HashMap<>();
+    params.put("page", streamItemPage.nextPageable().getPageNumber());
+    ofNullable(profile).map(profileValue -> params.put("profile", profileValue));
+    ofNullable(type).map(typeValue -> params.put("type", typeValue));
+    return params;
   }
 
   private Page<StreamItemEntity> getItems(String profile, String type, BigDecimal page) {
