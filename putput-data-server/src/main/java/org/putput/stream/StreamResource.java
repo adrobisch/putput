@@ -53,9 +53,22 @@ public class StreamResource extends BaseResource implements Stream {
   }
 
   private Page<StreamItemEntity> getItems(String profile, String type, BigDecimal page) {
-    return streamItemService.getByUserName(Optional.ofNullable(profile).orElse(user().getUsername()),
-        ofNullable(type),
-        pageable(ofNullable(page).orElse(new BigDecimal(0))));
+    Optional<String> optionalType = ofNullable(type);
+    Optional<String> optionalProfile = Optional.ofNullable(profile);
+
+    Pageable pageable = pageable(ofNullable(page).orElse(new BigDecimal(0)));
+
+    if (optionalProfile.isPresent()) {
+      return streamItemService.getByUserName(optionalProfile.get(),
+          optionalType,
+          pageable);
+    } else if (optionalType.isPresent()){
+      return streamItemService.getByUserName(optionalProfile.orElse(user().getUsername()),
+          optionalType,
+          pageable);
+    } else {
+      return streamItemService.getFollowedByUserName(user().getUsername(), pageable);
+    }
   }
 
   Pageable pageable(BigDecimal page) {

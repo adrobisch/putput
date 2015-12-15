@@ -56,6 +56,7 @@ public class TestDataService implements SmartLifecycle {
       streamItemService.newItemEntity("user", "User Put.", Optional.empty(), Optional.empty());
 
       profileService.addFollower("user", "johndoe");
+      profileService.addFollower("johndoe", "user");
     }
   }
 

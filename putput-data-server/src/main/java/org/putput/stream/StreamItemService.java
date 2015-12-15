@@ -43,11 +43,15 @@ public class StreamItemService {
         .setSource(sourceName.map(StreamItemSource::valueOf).orElse(null)));
   }
 
+  public Page<StreamItemEntity> getFollowedByUserName(String username, Pageable pageable) {
+      return streamItemRepository.findFollowedItems(username, pageable);
+  }
+
   public Page<StreamItemEntity> getByUserName(String username, Optional<String> markerType, Pageable pageable) {
     if (!markerType.isPresent()) {
-      return streamItemRepository.findByUserName(username, pageable);
+      return streamItemRepository.findUserItems(username, pageable);
     } else {
-      return streamItemRepository.findByUserNameAndMarkerType(username, markerType.get(), pageable);
+      return streamItemRepository.findByUserMarker(username, markerType.get(), pageable);
     }
   }
 
