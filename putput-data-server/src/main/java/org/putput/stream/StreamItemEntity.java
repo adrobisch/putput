@@ -27,6 +27,9 @@ public class StreamItemEntity extends BaseEntity<StreamItemEntity> {
   @Column(name = "_SOURCE")
   String source;
 
+  @Column(name = "_EXTERNAL_REF")
+  String externalRef;
+
   @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
   List<StreamItemMarkerEntity> markers = new ArrayList<>();
 
@@ -45,6 +48,15 @@ public class StreamItemEntity extends BaseEntity<StreamItemEntity> {
 
   public StreamItemEntity setTitle(String title) {
     this.title = title;
+    return this;
+  }
+
+  public Optional<String> getExternalRef() {
+    return Optional.ofNullable(externalRef);
+  }
+
+  public StreamItemEntity setExternalRef(String externalRef) {
+    this.externalRef = externalRef;
     return this;
   }
 

@@ -25,6 +25,9 @@ public class StreamResource extends BaseResource implements Stream {
   @Autowired
   StreamItemService streamItemService;
 
+  @Autowired
+  StreamItemHtmlProcessor itemHtmlProcessor;
+
   @Override
   public GetStreamResponse getStream(String profile,
                                      String type,
@@ -108,7 +111,7 @@ public class StreamResource extends BaseResource implements Stream {
   Function<StreamItemEntity, StreamItem> entityToItem() {
     return streamItemEntity -> new StreamItem()
         .withId(streamItemEntity.getId())
-        .withContent(streamItemEntity.getContent())
+        .withContent(itemHtmlProcessor.itemHtml(streamItemEntity))
         .withCreated(streamItemEntity.getCreated().doubleValue())
         .withCreator(streamItemEntity.getAuthor().getUsername())
         .withSource(streamItemEntity.getSource().map(StreamItemSource::value).orElse(null))
