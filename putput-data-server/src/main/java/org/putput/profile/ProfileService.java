@@ -36,6 +36,10 @@ public class ProfileService {
   public Optional<UserProfile> getProfileByUserName(String profileUsername, BaseResource resource) {
     UserEntity userEntity = userRepository.findByUsername(profileUsername);
 
+    if (userEntity == null) {
+      return Optional.empty();
+    }
+
     HalLink followLink = resource.link(Profile.class, profileUsername, "follow");
     HalLink self = resource.link(Profile.class, profileUsername);
 
