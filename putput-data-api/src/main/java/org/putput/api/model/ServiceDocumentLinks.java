@@ -25,7 +25,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "user-settings",
     "login",
     "logout",
-    "password-reset"
+    "password-reset",
+    "password-reset-confirmation"
 })
 public class ServiceDocumentLinks {
 
@@ -101,6 +102,12 @@ public class ServiceDocumentLinks {
      */
     @JsonProperty("password-reset")
     private HalLink passwordReset;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("password-reset-confirmation")
+    private HalLink passwordResetConfirmation;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -425,6 +432,33 @@ public class ServiceDocumentLinks {
 
     public ServiceDocumentLinks withPasswordReset(HalLink passwordReset) {
         this.passwordReset = passwordReset;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The passwordResetConfirmation
+     */
+    @JsonProperty("password-reset-confirmation")
+    public HalLink getPasswordResetConfirmation() {
+        return passwordResetConfirmation;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param passwordResetConfirmation
+     *     The password-reset-confirmation
+     */
+    @JsonProperty("password-reset-confirmation")
+    public void setPasswordResetConfirmation(HalLink passwordResetConfirmation) {
+        this.passwordResetConfirmation = passwordResetConfirmation;
+    }
+
+    public ServiceDocumentLinks withPasswordResetConfirmation(HalLink passwordResetConfirmation) {
+        this.passwordResetConfirmation = passwordResetConfirmation;
         return this;
     }
 

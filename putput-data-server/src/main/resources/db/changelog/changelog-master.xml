@@ -7,6 +7,8 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
         logicalFilePath="changelog-master.xml">
 
+    <include file="brainslug/database/migration/update.xml" />
+
     <include file="db/changelog/create_user.xml" />
     <include file="db/changelog/create_contact.xml" />
     <include file="db/changelog/create_image.xml" />

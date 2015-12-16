@@ -21,9 +21,9 @@ public class JerseyConfig extends ResourceConfig {
 
   @PostConstruct
   public void registerResources() {
-    for (BaseResource baseResource: baseResources) {
+    for (Object baseResource: baseResources) {
       org.slf4j.LoggerFactory.getLogger(JerseyConfig.class).info("registering " + baseResource.getClass().getName());
-      register(baseResource.getClass());
+      register(baseResource);
     }
   }
 

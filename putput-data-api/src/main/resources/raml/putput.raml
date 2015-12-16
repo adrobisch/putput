@@ -422,7 +422,8 @@ schemas:
               "user-settings" : { "$ref": "halLink"},
               "login" : { "$ref": "halLink"},
               "logout" : { "$ref": "halLink"},
-              "password-reset": { "$ref": "halLink"}
+              "password-reset": { "$ref": "halLink"},
+              "password-reset-confirmation": { "$ref": "halLink"}
             }
           }
         }
@@ -436,6 +437,17 @@ schemas:
           "email": {
             "type": "string",
             "description": "the email of the user requesting a new password"
+          }
+        }
+      }
+  - passwordResetConfirmation: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "description": "A confirmation of a password request",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "the confirmation code send to the user"
           }
         }
       }
@@ -685,6 +697,16 @@ traits:
       204:
       400:
         description: "Bad Request, unable to reset password"
+  /confirmation:
+    post:
+      body:
+        application/json:
+          schema: passwordResetConfirmation
+      responses:
+        204:
+        400:
+          description: "Bad Request, unable to reset password"
+
 
 /profile:
   /{userName}:

@@ -23,7 +23,7 @@ var app = angular.module('app', [
   require('./note/NotesModule').name,
   require('./user/UsersModule').name,
   require('./user/SettingsModule').name,
-  require('./user/PasswordResetModule').name,
+  require('./password/PasswordResetModule').name,
   require('./file/FilesModule').name,
   require("./search/SearchModule").name,
   require("./media/MediaModule").name

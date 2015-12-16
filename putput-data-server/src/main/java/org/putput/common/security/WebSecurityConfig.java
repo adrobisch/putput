@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +26,7 @@ import java.io.IOException;
 import static org.putput.util.FileHelper.getPathFromResource;
 
 @Configuration
-@EnableWebMvcSecurity
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
@@ -39,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private static final String apiBasePath = "/api/";
   private static String loginPath = apiBasePath + getPathFromResource(Login.class);
   private static String logoutPath = apiBasePath + getPathFromResource(Logout.class);
+  public static final String passwordRequestPath = apiBasePath + getPathFromResource(PasswordRequest.class);
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -48,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .and()
       .authorizeRequests()
       .requestMatchers(request -> request.getRequestURI().startsWith(loginPath)).anonymous()
+      .requestMatchers(request -> request.getRequestURI().startsWith(passwordRequestPath)).permitAll()
       .requestMatchers(request -> request.getRequestURI().startsWith(apiBasePath + getPathFromResource(PasswordRequest.class))).anonymous()
       .requestMatchers(request -> request.getRequestURI().startsWith(apiBasePath)).authenticated()
       .and()

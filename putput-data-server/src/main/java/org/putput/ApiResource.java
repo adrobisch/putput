@@ -15,6 +15,7 @@ public class ApiResource extends BaseResource implements Root {
       .withUser(link(User.class, "info"))
       .withUserSettings(link(User.class, "settings"))
       .withPasswordReset(link(PasswordRequest.class))
+      .withPasswordResetConfirmation(link(PasswordRequest.class, "confirmation"))
       .withLogin(link(Login.class))
       .withLogout(link(Logout.class))
       .withNotes(link(Notes.class))
