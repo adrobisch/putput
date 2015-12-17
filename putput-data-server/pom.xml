@@ -17,7 +17,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <brainslug.version>0.20</brainslug.version>
+        <brainslug.version>0.22-SNAPSHOT</brainslug.version>
         <docker.image.prefix>putput</docker.image.prefix>
         <docker.registry>registry</docker.registry>
         <docker.tag>dev</docker.tag>

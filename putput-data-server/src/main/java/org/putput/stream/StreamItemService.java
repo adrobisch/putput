@@ -1,6 +1,9 @@
 package org.putput.stream;
 
+import brainslug.flow.context.BrainslugContext;
+import brainslug.flow.instance.FlowInstance;
 import org.putput.api.model.MarkerInfo;
+import org.putput.api.model.NewStreamItem;
 import org.putput.common.UuidService;
 import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
@@ -13,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import static brainslug.flow.execution.property.ExecutionProperties.newProperties;
 import static java.util.Optional.ofNullable;
 
 @Service
@@ -27,6 +31,20 @@ public class StreamItemService {
 
   @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  BrainslugContext brainslugContext;
+
+  public String newUserItem(NewStreamItem newItem, String userName) {
+    FlowInstance newItemFlowInstance = brainslugContext.startFlow(NewItemFlow.id, newProperties()
+        .with(NewItemFlow.newItem, newItem, true)
+        .with(NewItemFlow.author, userName, true));
+
+    return newItemFlowInstance
+        .getProperties()
+        .value(NewItemFlow.itemId, String.class);
+  }
+
 
   public StreamItemEntity newItemEntity(String userName,
                                         String content,

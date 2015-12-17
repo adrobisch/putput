@@ -1,30 +1,38 @@
 package org.putput.config;
 
+import org.glassfish.hk2.runlevel.RunLevelException;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.putput.common.web.BaseResource;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.ws.rs.ApplicationPath;
-import java.util.Collection;
 
 @Component
 @ApplicationPath("/api")
 public class JerseyConfig extends ResourceConfig {
-
-  @Autowired
-  Collection<BaseResource> baseResources;
 
   public JerseyConfig() {
   }
 
   @PostConstruct
   public void registerResources() {
-    for (Object baseResource: baseResources) {
-      org.slf4j.LoggerFactory.getLogger(JerseyConfig.class).info("registering " + baseResource.getClass().getName());
-      register(baseResource);
+    ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+    provider.addIncludeFilter(new AssignableTypeFilter(BaseResource.class));
+
+    for (BeanDefinition component : provider.findCandidateComponents("org/putput")) {
+      try {
+        Class<?> resourceClass = Class.forName(component.getBeanClassName());
+        org.slf4j.LoggerFactory.getLogger(JerseyConfig.class).info("registering " + resourceClass.getName());
+        register(resourceClass);
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      }
     }
+
   }
 
 }

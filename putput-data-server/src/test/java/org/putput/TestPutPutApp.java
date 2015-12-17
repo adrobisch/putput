@@ -9,6 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.subethamail.wiser.Wiser;
 
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableScheduling
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @Configuration
 @ComponentScan
 @EntityScan(basePackageClasses={FlowInstanceEntity.class, TestPutPutApp.class})

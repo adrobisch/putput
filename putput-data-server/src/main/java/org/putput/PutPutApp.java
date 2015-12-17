@@ -6,10 +6,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @Configuration
 @ComponentScan
 @EntityScan(basePackageClasses={FlowInstanceEntity.class, PutPutApp.class})
