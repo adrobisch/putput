@@ -17,12 +17,12 @@ public class SendConfirmationTask implements SimpleTask {
     public void execute(ExecutionContext executionContext) {
       MailSender mailSender = executionContext.service(MailSender.class);
       String confirmationCode = UUID.randomUUID().toString();
-      executionContext.setProperty(ForgotPasswordFlow.confirmationCode.getString(), confirmationCode);
+      executionContext.setProperty(ForgotPasswordFlow.confirmationCode, confirmationCode);
 
       SimpleMailMessage confirmationMail = new SimpleMailMessage();
       confirmationMail.setFrom("info@putput.org");
       confirmationMail.setSubject("Your Password Reset Request");
-      confirmationMail.setTo(executionContext.property(ForgotPasswordFlow.emailAddress, String.class));
+      confirmationMail.setTo(executionContext.property(ForgotPasswordFlow.emailAddress));
       confirmationMail.setText(new MailTemplates()
           .create("passwordRequest.txt")
           .replace("code", confirmationCode)

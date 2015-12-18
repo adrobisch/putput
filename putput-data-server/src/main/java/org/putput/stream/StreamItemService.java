@@ -42,7 +42,7 @@ public class StreamItemService {
 
     return newItemFlowInstance
         .getProperties()
-        .value(NewItemFlow.itemId, String.class);
+        .value(NewItemFlow.savedItemId);
   }
 
 

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
+import static org.putput.util.LangUtil.as;
 
 @Service
 public class StreamItemHtmlProcessor {
@@ -65,9 +66,6 @@ public class StreamItemHtmlProcessor {
     return sanitizer.sanitize(rssHtml);
   }
 
-  <T, I> T as(Class<T> clazz, I instance) {
-    return clazz.cast(instance);
-  }
 
   String contentHtml(String content) {
     List<ContentFragment> parsedContent =
