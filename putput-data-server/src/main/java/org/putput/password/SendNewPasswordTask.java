@@ -7,6 +7,6 @@ class SendNewPasswordTask implements SimpleTask {
   @Override
   public void execute(ExecutionContext executionContext) {
     PasswordService passwordService = executionContext.service(PasswordService.class);
-    passwordService.resetPassword(executionContext.property(ForgotPasswordFlow.emailAddress, String.class));
+    passwordService.resetPassword(executionContext.property(ForgotPasswordFlow.emailAddress));
   }
 }

@@ -40,7 +40,7 @@ public class StreamItemMarkerService {
 
     return newItemFlowInstance
         .getProperties()
-        .value(NewMarkerFlow.newMarkerId, String.class);
+        .value(NewMarkerFlow.newMarkerId);
   }
 
     public StreamItemMarkerEntity saveMarker(String userName, String itemId, String markerType) {

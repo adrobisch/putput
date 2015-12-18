@@ -11,7 +11,7 @@ public class UserExistsPredicate implements ContextPredicate {
   @Override
   public boolean isFulfilled(ExecutionContext context) {
     UserRepository userService = context.service(UserRepository.class);
-    Optional<UserEntity> user = userService.findByEmail(context.property(ForgotPasswordFlow.emailAddress, String.class));
+    Optional<UserEntity> user = userService.findByEmail(context.property(ForgotPasswordFlow.emailAddress));
     if (user.isPresent()) {
       context.setProperty(ForgotPasswordFlow.username.getValue().stringValue(), user.get().getUsername());
       return true;
