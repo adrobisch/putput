@@ -140,8 +140,8 @@ public class RssFeedItemImportService {
     return element -> {
       try {
         Map<String, Object> json = new ObjectMapper().readValue(element.getValue(), Map.class);
-        String type = json.get("type").toString();
-        String source = json.get("source").toString();
+        String type = ofNullable(json.get("type")).orElse("").toString();
+        String source = ofNullable(json.get("source")).orElse("").toString();
 
         if (type.equals("video")) {
           return source.contains("youtube") ? YoutubeUtil.embed(source) : source;
