@@ -60,7 +60,7 @@ public class StreamItemHtmlProcessor {
     String rssHtml = ofNullable(item.getTitle())
         .map(title -> format("<a target='_blank' href='%s'>%s</a>",
             item.getExternalRef().orElse("#"), item.getTitle())
-            .concat(item.getContent() == null || item.getContent().isEmpty() ? "" : ":" + item.content))
+            .concat(item.getContent() == null || item.getContent().isEmpty() ? "" : ": " + item.content))
         .orElse(item.getContent());
 
     return sanitizer.sanitize(rssHtml);

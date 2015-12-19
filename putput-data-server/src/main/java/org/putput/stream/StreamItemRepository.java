@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface StreamItemRepository extends PagingAndSortingRepository<StreamItemEntity, String> {
   @Query("SELECT streamItem FROM StreamItemEntity streamItem " +
       "WHERE streamItem.author.username = :username " +
@@ -30,5 +32,11 @@ public interface StreamItemRepository extends PagingAndSortingRepository<StreamI
   @Query("SELECT COUNT(streamItem) FROM StreamItemEntity streamItem " +
       "WHERE streamItem.author.username = :username ")
   Long countByUsername(@Param("username") String userName);
+
+  @Query("SELECT streamItem FROM StreamItemEntity streamItem " +
+      "WHERE streamItem.author.username = :username " +
+      "AND streamItem.externalRef = :externalRef")
+  List<StreamItemEntity> findByExternalRefAndUser(@Param("username") String username,
+                                                  @Param("externalRef") String externalRef);
 
 }

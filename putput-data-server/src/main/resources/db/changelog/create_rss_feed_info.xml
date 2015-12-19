@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="create_rss_feed_info.xml">
+
+    <changeSet id="1" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_RSS_FEED_INFO" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_RSS_FEED_INFO">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_URL" type="varchar(4000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_USERNAME" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="PP_RSS_FEED_INFO"
+                     indexName="IDX_RSS_FEED_OWNER"
+                     unique="true">
+            <column name="_USERNAME" />
+            <column name="_URL" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="PP_RSS_FEED_INFO"
+                                 baseColumnNames="_USERNAME"
+                                 constraintName="FK_FEED_INFO_OWNER"
+                                 referencedTableName="PP_USER"
+                                 referencedColumnNames="_USERNAME"/>
+
+    </changeSet>
+
+</databaseChangeLog>

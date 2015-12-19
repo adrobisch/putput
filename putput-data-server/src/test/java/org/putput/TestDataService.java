@@ -2,6 +2,8 @@ package org.putput;
 
 import org.putput.common.UuidService;
 import org.putput.profile.ProfileService;
+import org.putput.rss.RssFeedInfoEntity;
+import org.putput.rss.RssFeedInfoRepository;
 import org.putput.stream.StreamItemService;
 import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 @Service
@@ -22,6 +25,9 @@ public class TestDataService implements SmartLifecycle {
 
   @Autowired
   StreamItemService streamItemService;
+
+  @Autowired
+  RssFeedInfoRepository rssFeedInfoRepository;
 
   @Autowired
   ProfileService profileService;
@@ -52,8 +58,8 @@ public class TestDataService implements SmartLifecycle {
   private void addTestData() {
     if (!ofNullable(userRepository.findByUsername("johndoe")).isPresent()) {
       UserEntity testUser = addTestUser();
-      streamItemService.newItemEntity(testUser.getUsername(), "Test Put.", Optional.empty(), Optional.empty());
-      streamItemService.newItemEntity("user", "User Put.", Optional.empty(), Optional.empty());
+      streamItemService.newItemEntity(testUser.getUsername(), "Test Put.", Optional.empty(), Optional.empty(), empty(), empty());
+      streamItemService.newItemEntity("user", "User Put.", Optional.empty(), Optional.empty(), empty(), empty());
 
       profileService.addFollower("user", "johndoe");
       profileService.addFollower("johndoe", "user");

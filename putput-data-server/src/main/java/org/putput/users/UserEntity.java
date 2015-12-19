@@ -1,15 +1,15 @@
 package org.putput.users;
 
 import org.putput.common.persistence.BaseEntity;
+import org.putput.rss.RssFeedInfoEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "PP_USER")
-public class UserEntity extends BaseEntity<UserEntity> {
+public class UserEntity extends BaseEntity<UserEntity> implements Serializable {
   @Column(name = "_USERNAME")
   String username;
 
@@ -24,6 +24,9 @@ public class UserEntity extends BaseEntity<UserEntity> {
 
   @Column(name = "_PASSWORD_HASH")
   String passwordHash;
+
+  @OneToMany(mappedBy = "owner")
+  List<RssFeedInfoEntity> rssFeeds;
 
   public String getId() {
     return id;

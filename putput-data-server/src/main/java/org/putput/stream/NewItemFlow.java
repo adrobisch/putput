@@ -15,6 +15,7 @@ import org.springframework.mail.SimpleMailMessage;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 import static org.putput.util.LangUtil.as;
 
@@ -42,7 +43,9 @@ public class NewItemFlow extends FlowBuilder {
       StreamItemEntity newItemEntity = streamItemService.newItemEntity(author,
           newItem.getContent(),
           ofNullable(newItem.getTitle()),
-          ofNullable(newItem.getSource()));
+          ofNullable(newItem.getSource()),
+          empty(),
+          empty());
 
       context.setProperty(savedItem, newItemEntity, true);
       context.setProperty(savedItemId, newItemEntity.getId());

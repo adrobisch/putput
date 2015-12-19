@@ -10,7 +10,7 @@ public enum StreamItemSource {
 
   final String value;
 
-  String value() {
+  public String value() {
     return value;
   }
 }

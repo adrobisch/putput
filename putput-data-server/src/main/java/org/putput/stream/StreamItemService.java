@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -49,7 +50,9 @@ public class StreamItemService {
   public StreamItemEntity newItemEntity(String userName,
                                         String content,
                                         Optional<String> title,
-                                        Optional<String> sourceName) {
+                                        Optional<String> sourceName,
+                                        Optional<String> externalRef,
+                                        Optional<Date> createdDate) {
     Optional<UserEntity> user = ofNullable(userRepository.findByUsername(userName));
     return streamItemRepository.save(new StreamItemEntity()
         .setId(uuidService.uuid())
@@ -58,7 +61,9 @@ public class StreamItemService {
         ))
         .setContent(content)
         .setTitle(title.orElse(null))
-        .setSource(sourceName.map(StreamItemSource::valueOf).orElse(null)));
+        .setSource(sourceName.map(StreamItemSource::valueOf).orElse(null))
+        .setExternalRef(externalRef.orElse(null))
+        .setCreated(createdDate.orElse(new Date()).getTime()));
   }
 
   public Page<StreamItemEntity> getFollowedByUserName(String username, Pageable pageable) {

@@ -26,7 +26,9 @@ public abstract class BaseEntity<T> {
 
   @PrePersist
   void onCreate() {
-    this.created = new Date().getTime();
+    if (this.created == null) {
+      this.created = new Date().getTime();
+    }
   }
 
   @PreUpdate
@@ -57,6 +59,11 @@ public abstract class BaseEntity<T> {
 
   public Long getCreated() {
     return created;
+  }
+
+  public T setCreated(Long created) {
+    this.created = created;
+    return self();
   }
 
   public Long getUpdated() {
