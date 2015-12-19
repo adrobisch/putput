@@ -1,0 +1,3 @@
+Your put ({{link}}) got a "{{markerType}}"" by {{markerAuthor}}:
+
+{{content}}
