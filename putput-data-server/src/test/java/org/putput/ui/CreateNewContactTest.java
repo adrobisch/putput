@@ -4,6 +4,8 @@ import org.fluentlenium.core.annotation.Page;
 import org.junit.Test;
 import org.putput.BrowserTest;
 
+import java.util.concurrent.TimeUnit;
+
 public class CreateNewContactTest extends BrowserTest {
   @Page
   public ContactsPage contactsPage;
@@ -20,6 +22,6 @@ public class CreateNewContactTest extends BrowserTest {
 
     click("#btn-submit-contact");
 
-    await().until("td").containsText("John");
+    await().atMost(60, TimeUnit.SECONDS).until("td").containsText("John");
   }
 }
