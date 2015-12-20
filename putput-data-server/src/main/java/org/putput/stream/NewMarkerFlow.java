@@ -48,7 +48,8 @@ public class NewMarkerFlow extends FlowBuilder {
                                                       String markerType) {
     return foundItem -> {
       Optional<String> authorMail = ofNullable(foundItem.getAuthor().getEmail());
-      if (authorMail.isPresent() && !foundItem.getAuthor().getUsername().equals(markerAuthor)) {
+      if (validMailAddress(authorMail) &&
+          !itemAuthorEqualsMarkerAuthor(markerAuthor, foundItem)) {
         SimpleMailMessage mentionMessage = new SimpleMailMessage();
         mentionMessage.setFrom("info@putput.org");
         mentionMessage.setSubject("You got a new '" + markerType + "' on a put!");
@@ -64,6 +65,14 @@ public class NewMarkerFlow extends FlowBuilder {
         mailSender.send(mentionMessage);
       }
     };
+  }
+
+  private boolean itemAuthorEqualsMarkerAuthor(String markerAuthor, StreamItemEntity foundItem) {
+    return foundItem.getAuthor().getUsername().equals(markerAuthor);
+  }
+
+  private boolean validMailAddress(Optional<String> authorMail) {
+    return authorMail.isPresent() && !authorMail.get().isEmpty();
   }
 
   String contentPreview(StreamItemEntity foundItem) {
