@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rometools.fetcher.FetcherException;
 import com.rometools.fetcher.impl.FeedFetcherCache;
 import com.rometools.fetcher.impl.HashMapFeedInfoCache;
-import com.rometools.fetcher.impl.HttpURLFeedFetcher;
+import com.rometools.fetcher.impl.HttpClientFeedFetcher;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
@@ -81,15 +81,16 @@ public class RssFeedItemImportService {
   }
 
   private void saveEntryAsItem(RssFeedInfoEntity feedInfo, SyndEntry entry) {
-    String link = ofNullable(entry.getLink()).orElse("");
     String title = ofNullable(entry.getTitle()).orElse("no title");
+    String link = ofNullable(entry.getLink()).orElse(feedInfo.getUrl() + "#" + title);
     Date publishedDate = ofNullable(entry.getPublishedDate()).orElse(new Date());
-    Optional<String> description = getDescription(entry);
+
+    String description = getDescription(entry).orElse(title + ": " + publishedDate.toString());
 
     if (streamItemRepository.findByExternalRefAndUser(feedInfo.getOwner().getUsername(), link).isEmpty()) {
       log.info("importing: " + link);
       streamItemService.newItemEntity(feedInfo.getOwner().getUsername(),
-          description.orElse(""),
+          description,
           Optional.of(title),
           Optional.of(StreamItemSource.RSS.value()),
           Optional.of(link),
@@ -110,10 +111,10 @@ public class RssFeedItemImportService {
 
     if (customDescription.isPresent()) {
       return customDescription;
-    } else if (entryDescription.isPresent()) {
-      return entryDescription;
     } else if (firstContent.isPresent()){
       return firstContent;
+    } else if (entryDescription.isPresent()) {
+      return entryDescription;
     } else {
       return Optional.empty();
     }
@@ -157,7 +158,7 @@ public class RssFeedItemImportService {
   private SyndFeed getFeed(String url) {
     FeedFetcherCache feedCache = HashMapFeedInfoCache.getInstance();
     try {
-      return new HttpURLFeedFetcher(feedCache).retrieveFeed(userAgent, new URL(url));
+      return new HttpClientFeedFetcher(feedCache).retrieveFeed(userAgent, new URL(url));
     } catch (IOException | FeedException | FetcherException e) {
       throw new RuntimeException(e);
     }

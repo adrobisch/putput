@@ -63,6 +63,11 @@ public class TestDataService implements SmartLifecycle {
 
       profileService.addFollower("user", "johndoe");
       profileService.addFollower("johndoe", "user");
+
+      /*rssFeedInfoRepository.save(new RssFeedInfoEntity()
+          .setId(uuidService.uuid())
+          .setOwner(testUser)
+          .setUrl("https://foreveregon.wordpress.com/feed"));*/
     }
   }
 
