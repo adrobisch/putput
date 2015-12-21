@@ -14,14 +14,45 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-    "displayName"
+    "userName",
+    "displayName",
+    "about"
 })
 public class UserInfo {
 
+    @JsonProperty("userName")
+    private String userName;
     @JsonProperty("displayName")
     private String displayName;
+    @JsonProperty("about")
+    private String about;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    /**
+     * 
+     * @return
+     *     The userName
+     */
+    @JsonProperty("userName")
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * 
+     * @param userName
+     *     The userName
+     */
+    @JsonProperty("userName")
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public UserInfo withUserName(String userName) {
+        this.userName = userName;
+        return this;
+    }
 
     /**
      * 
@@ -45,6 +76,31 @@ public class UserInfo {
 
     public UserInfo withDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The about
+     */
+    @JsonProperty("about")
+    public String getAbout() {
+        return about;
+    }
+
+    /**
+     * 
+     * @param about
+     *     The about
+     */
+    @JsonProperty("about")
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public UserInfo withAbout(String about) {
+        this.about = about;
         return this;
     }
 

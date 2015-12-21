@@ -321,11 +321,23 @@ schemas:
   - userInfo: |
       {
         "$schema": "http://json-schema.org/json-schema",
+        "javaType" : "org.putput.api.model.UserInfo",
         "properties": {
-          "displayName": {"type": "string"}
+          "userName": {"type": "string"},
+          "displayName": {"type": "string"},
+          "about": {"type": "string"}
         }
       }
-
+  - userListLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.UserListLinks",
+        "description": "The links of a user list",
+        "properties": {
+          "self" : { "$ref": "halLink"},
+          "nextPage" : { "$ref": "halLink"}
+        }
+      }
   - userSettings: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -333,7 +345,6 @@ schemas:
           "email": {"type": "string"}
         }
       }
-
   - userSettingsUpdate: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -418,6 +429,7 @@ schemas:
               "file" : { "$ref": "halLink"},
               "contacts" : { "$ref": "halLink"},
               "contact" : { "$ref": "halLink"},
+              "users" : { "$ref": "halLink"},
               "user" : { "$ref": "halLink"},
               "user-settings" : { "$ref": "halLink"},
               "login" : { "$ref": "halLink"},
@@ -724,6 +736,11 @@ traits:
       delete:
         responses:
           200:
+
+/users:
+  get:
+    is: [ halCollection: { id: userList, collectionJavaType: org.putput.api.model.UserList, itemsProperty: users, itemSchema: userInfo, collectionLinks: userListLinks}]
+
 /user:
   /info:
     get:

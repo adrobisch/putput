@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "file",
     "contacts",
     "contact",
+    "users",
     "user",
     "user-settings",
     "login",
@@ -72,6 +73,12 @@ public class ServiceDocumentLinks {
      */
     @JsonProperty("contact")
     private HalLink contact;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("users")
+    private HalLink users;
     /**
      * A HAL link
      * 
@@ -297,6 +304,33 @@ public class ServiceDocumentLinks {
 
     public ServiceDocumentLinks withContact(HalLink contact) {
         this.contact = contact;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The users
+     */
+    @JsonProperty("users")
+    public HalLink getUsers() {
+        return users;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param users
+     *     The users
+     */
+    @JsonProperty("users")
+    public void setUsers(HalLink users) {
+        this.users = users;
+    }
+
+    public ServiceDocumentLinks withUsers(HalLink users) {
+        this.users = users;
         return this;
     }
 

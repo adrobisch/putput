@@ -21,7 +21,7 @@ var app = angular.module('app', [
   require('./navbar/NavbarModule').name,
   require('./contacts/ContactsModule').name,
   require('./note/NotesModule').name,
-  require('./user/UsersModule').name,
+  require('./explore/ExploreModule').name,
   require('./user/SettingsModule').name,
   require('./password/PasswordResetModule').name,
   require('./file/FilesModule').name,

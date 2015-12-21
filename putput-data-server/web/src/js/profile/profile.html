@@ -16,7 +16,6 @@
             <div class="col-xs-12 divider text-center">
                 <div class="col-xs-12 col-sm-4 emphasis">
                     <h2><strong>{{profile.followers.length}}</strong></h2>
-
                     <p>
                         <small>Followers</small>
                         <div>
@@ -47,25 +46,11 @@
             <div class="col-xs-12 text-center">
                 <div class="col-xs-12 col-sm-4">
                     <div style="margin-top: 10px">
-                        <button data-ng-disabled="following" data-ng-click="follow()" class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Follow</button>
+                        <button data-ng-cloak data-ng-hide="following" data-ng-click="follow()" class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Follow</button>
+                        <button data-ng-cloak data-ng-show="following" data-ng-click="unfollow()" class="btn btn-primary btn-block"><span class="fa fa-trash"></span> Unfollow</button>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-4">
-                    <div style="margin-top: 10px">
-                        <button type="button" class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown">
-                            Options <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <!--li><a><span class="disabled fa fa-envelope pull-right"></span> Send a message </a></li>
-                            <li><a><span class="disabled fa fa-list pull-right"></span> Add or remove from a list </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li><a><span class="disabled fa fa-warning pull-right"></span>Report this user for spam</a>
-                            </li>
-                            <li class="divider"></li-->
-                            <li><a data-ng-disabled="!following" data-ng-click="unfollow()" class="btn" role="button"> Unfollow </a></li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="col-xs-12 col-sm-4 emphasis">
                 </div>

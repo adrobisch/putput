@@ -12,6 +12,7 @@ public class ApiResource extends BaseResource implements Root {
   public GetResponse get() throws Exception {
     ServiceDocumentLinks serviceDocumentLinks = new ServiceDocumentLinks()
       .withSelf(link(Root.class))
+      .withUsers(link(Users.class))
       .withUser(link(User.class, "info"))
       .withUserSettings(link(User.class, "settings"))
       .withPasswordReset(link(PasswordRequest.class))
