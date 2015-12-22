@@ -1,5 +1,6 @@
 package org.putput.stream;
 
+import org.hibernate.annotations.Type;
 import org.putput.common.persistence.BaseEntity;
 import org.putput.users.UserEntity;
 
@@ -23,6 +24,7 @@ public class StreamItemEntity extends BaseEntity<StreamItemEntity> {
 
   @Column(name = "_CONTENT")
   @Lob
+  @Type(type="org.hibernate.type.StringClobType")
   String content;
 
   @Column(name = "_SOURCE")
