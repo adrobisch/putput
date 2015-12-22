@@ -2,9 +2,11 @@
 
 var angular = require('angular');
 var HomeController = require("./HomeController");
+var mentio = require("ment.io");
 
 var homeModule = angular.module('home', [
-    require("../timeline/TimelineModule").name
+    require("../timeline/TimelineModule").name,
+    "mentio"
 ]);
 
 homeModule.controller("HomeController", HomeController);

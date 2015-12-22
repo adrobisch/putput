@@ -1,8 +1,20 @@
-var HomeController = function (scope, timeline, rootScope, hotkeys) {
+var _ = require("lodash");
+
+var HomeController = function (scope, timeline, rootScope, hotkeys, users) {
     scope.stream = [];
     scope.imageUrl = null;
     scope.filter = "all";
     scope.newPut = null;
+
+    scope.users = [];
+
+    scope.searchUsers = function (term) {
+        users.getUsers(function (userPage) {
+            scope.users = _.filter(userPage.users, function (user) {
+                return user.userName.indexOf(term) == 0;
+            });
+        });
+    };
 
     scope.setFilter = function(filter) {
         scope.filter = filter;
@@ -27,6 +39,6 @@ var HomeController = function (scope, timeline, rootScope, hotkeys) {
         callback: scope.put
     });
 };
-HomeController.$inject = ["$scope", "timeline", "$rootScope", "hotkeys"];
+HomeController.$inject = ["$scope", "timeline", "$rootScope", "hotkeys", "users"];
 
 module.exports = HomeController;
