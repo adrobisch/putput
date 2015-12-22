@@ -10,10 +10,8 @@ var HomeController = function (scope, timeline, rootScope, hotkeys, users) {
 
     scope.searchUsers = function (term) {
         users.getUsers(function (userPage) {
-            scope.users = _.filter(userPage.users, function (user) {
-                return user.userName.indexOf(term) == 0;
-            });
-        });
+            scope.users = userPage.users;
+        }, term);
     };
 
     scope.setFilter = function(filter) {

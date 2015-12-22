@@ -2,13 +2,14 @@ function UsersApi(http, api) {
 
   var userSettingsRelation = "user-settings";
 
-  this.getUsers = function (userListCallback) {
-    return api.withLink("users", this.getUsersFromUrl(userListCallback));
+  this.getUsers = function (userListCallback, search) {
+    return api.withLink("users", this.getUsersFromUrl(userListCallback, search));
   };
 
-  this.getUsersFromUrl = function (userListCallback) {
+  this.getUsersFromUrl = function (userListCallback, search) {
     return function (url) {
-      return http.get(url).success(userListCallback);
+      var requestUrl = search ? url + "?search=" + search : url;
+      return http.get(requestUrl).success(userListCallback);
     };
   };
 

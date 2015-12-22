@@ -12,10 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Optional.ofNullable;
 
@@ -26,12 +23,12 @@ public class UsersResource extends BaseResource implements Users {
   UserRepository userRepository;
 
   @Override
-  public GetUsersResponse getUsers(BigDecimal page) throws Exception {
+  public GetUsersResponse getUsers(String search, BigDecimal page) throws Exception {
     List<UserInfo> users = new ArrayList<>();
 
     Pageable pageable = pageable(ofNullable(page).orElse(new BigDecimal(0)));
 
-    Page<UserEntity> userPage = userPage(pageable);
+    Iterable<UserEntity> userPage = userPage(ofNullable(search), pageable);
 
     userPage.forEach(userEntity -> {
       users.add(new UserInfo()
@@ -43,8 +40,8 @@ public class UsersResource extends BaseResource implements Users {
     UserList userList = new UserList().withUsers(users);
     UserListLinks links = new UserListLinks().withSelf(link(Users.class));
 
-    if (userPage.hasNext()) {
-      links.withNextPage(link(Users.class, nextPageParams(userPage.getNumber() + 1)));
+    if (userPage instanceof Page && ((Page) userPage).hasNext()) {
+      links.withNextPage(link(Users.class, nextPageParams(((Page) userPage).getNumber() + 1)));
     }
 
     userList.withLinks(links);
@@ -52,9 +49,12 @@ public class UsersResource extends BaseResource implements Users {
     return GetUsersResponse.withHaljsonOK(userList);
   }
 
-  private Page<UserEntity> userPage(Pageable pageable) {
-    return userRepository
-        .findAll(pageable);
+  private Iterable<UserEntity> userPage(Optional<String> search, Pageable pageable) {
+    if (search.isPresent()) {
+      return userRepository.findByUsernameContaining(search.get());
+    } else {
+      return userRepository.findAll(pageable);
+    }
   }
 
   Pageable pageable(BigDecimal page) {

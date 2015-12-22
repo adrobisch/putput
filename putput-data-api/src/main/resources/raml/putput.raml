@@ -740,7 +740,10 @@ traits:
 /users:
   get:
     is: [ halCollection: { id: userList, collectionJavaType: org.putput.api.model.UserList, itemsProperty: users, itemSchema: userInfo, collectionLinks: userListLinks}]
-
+    queryParameters:
+      search:
+        type: string
+        required: false
 /user:
   /info:
     get:

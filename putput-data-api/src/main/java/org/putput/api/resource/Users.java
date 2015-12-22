@@ -16,6 +16,8 @@ public interface Users {
 
     /**
      * 
+     * @param search
+     *     
      * @param page
      *     The page to retrieve
      */
@@ -24,6 +26,8 @@ public interface Users {
         "application/hal+json"
     })
     Users.GetUsersResponse getUsers(
+        @QueryParam("search")
+        String search,
         @QueryParam("page")
         BigDecimal page)
         throws Exception
