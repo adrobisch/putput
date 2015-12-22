@@ -24,7 +24,7 @@ public class StreamItemEntity extends BaseEntity<StreamItemEntity> {
 
   @Column(name = "_CONTENT")
   @Lob
-  @Type(type="org.hibernate.type.StringClobType")
+  @Type(type="org.hibernate.type.MaterializedClobType")
   String content;
 
   @Column(name = "_SOURCE")
