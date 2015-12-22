@@ -22,6 +22,7 @@ public class StreamItemEntity extends BaseEntity<StreamItemEntity> {
   String title;
 
   @Column(name = "_CONTENT")
+  @Lob
   String content;
 
   @Column(name = "_SOURCE")

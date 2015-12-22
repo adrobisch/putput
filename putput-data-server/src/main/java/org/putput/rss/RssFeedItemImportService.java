@@ -32,7 +32,7 @@ import static java.util.Optional.ofNullable;
 @Service
 public class RssFeedItemImportService {
 
-  public static final String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36";
+  public static final String userAgent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0";
 
   Logger log = LoggerFactory.getLogger(getClass());
 
