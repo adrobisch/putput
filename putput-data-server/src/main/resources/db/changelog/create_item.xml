@@ -21,10 +21,10 @@
             <column name="_AUTHOR" type="varchar(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="_TITLE" type="varchar(1024)">
+            <column name="_TITLE" type="varchar(2048)">
                 <constraints nullable="true"/>
             </column>
-            <column name="_CONTENT" type="varchar(4000)">
+            <column name="_CONTENT" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="_SOURCE" type="varchar(30)">
