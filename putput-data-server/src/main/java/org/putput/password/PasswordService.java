@@ -64,6 +64,7 @@ public class PasswordService {
 
   SimpleMailMessage passwordResetMail(String recipient, String newPassword) {
     SimpleMailMessage mailWithNewPassword = new SimpleMailMessage();
+    mailWithNewPassword.setFrom("info@putput.org");
     mailWithNewPassword.setTo(recipient);
     mailWithNewPassword.setSubject("Your Password Reset Request");
     mailWithNewPassword.setText(format("Your new Password: %s", newPassword));
