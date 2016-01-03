@@ -1,6 +1,13 @@
+var emojify = require("emojify.js");
+
 function TimelineApi(http, sce, q) {
-    this.trustItemContent = function (item) {
-        item.streamItem.content = sce.trustAsHtml(item.streamItem.content);
+    emojify.setConfig({
+       mode: 'data-uri',
+       ignore_emoticons: true
+    });
+
+    this.transformItemContent = function (item) {
+        item.streamItem.content = sce.trustAsHtml(emojify.replace(item.streamItem.content));
         return item;
     };
 
@@ -8,9 +15,9 @@ function TimelineApi(http, sce, q) {
         var deferred = q.defer();
         var self = this;
         return http.get(path).success(function(stream) {
-            // preprocess items with sce using proxy promise
+            // pre-process items with sce using proxy promise
             var trustedData = stream.items.map(function (item) {
-                return self.trustItemContent(item);
+                return self.transformItemContent(item);
             });
             deferred.resolve(trustedData);
         }).error(function(){
@@ -38,7 +45,7 @@ function TimelineApi(http, sce, q) {
         var deferred = q.defer();
         var self = this;
         return http.get("/api/stream/item/" + itemId).success(function(item) {
-            deferred.resolve(self.trustItemContent(item));
+            deferred.resolve(self.transformItemContent(item));
         }).error(function(){
             deferred.reject();
         });
