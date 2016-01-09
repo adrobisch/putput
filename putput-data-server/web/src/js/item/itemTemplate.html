@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="message-content preview" data-ng-bind-html="item.streamItem.content"></div>
+        <div class="message-content" data-ng-bind-html="item.streamItem.content"></div>
         <div class="message-foot clearfix">
             <ul class="actions">
                 <li id="like-action" data-ng-click="toggleLike(item)"  data-ng-class="{'like-active': item.markerInfo.isLike}" class="action glyphicon glyphicon glyphicon-thumbs-up"><span class="likes-count">{{item.markerInfo.likes}}</span></li>
