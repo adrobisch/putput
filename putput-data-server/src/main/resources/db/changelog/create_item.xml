@@ -71,4 +71,16 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="3" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="PP_ITEM" columnName="_ITEM_REF"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="PP_ITEM">
+            <column name="_ITEM_REF" type="VARCHAR(40)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

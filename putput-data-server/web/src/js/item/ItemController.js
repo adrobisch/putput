@@ -1,4 +1,4 @@
-var itemController = function (scope, rootScope, timeline, route) {
+var itemController = function (scope, rootScope, timeline, route, modal) {
     scope.itemId = route.current.params["itemId"];
     scope.theItem = null;
 
@@ -44,6 +44,26 @@ var itemController = function (scope, rootScope, timeline, route) {
         });
     };
 
+    scope.share = function (item) {
+        var modalInstance = modal.open({
+            animation: true,
+            backdrop: false,
+            template: require("./ShareDialog.html"),
+            controller: require("./ShareDialogController"),
+            resolve: {
+                item: function () {
+                    return item;
+                }
+            }
+        });
+
+        modalInstance.result.then(function () {
+            console.log("closed")
+        }, function () {
+            // modal dismissed
+        });
+    };
+
     scope.getItem = function (itemId) {
         timeline.getItem(itemId).success(function (data) {
             scope.theItem = data;
@@ -65,5 +85,5 @@ var itemController = function (scope, rootScope, timeline, route) {
     }
 };
 
-itemController.$inject = ["$scope", "$rootScope", "timeline", "$route"];
+itemController.$inject = ["$scope", "$rootScope", "timeline", "$route", "$uibModal"];
 module.exports = itemController;

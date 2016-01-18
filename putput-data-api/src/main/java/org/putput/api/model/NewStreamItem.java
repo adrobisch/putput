@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "source",
     "title",
-    "content"
+    "content",
+    "reference"
 })
 public class NewStreamItem {
 
@@ -26,6 +27,8 @@ public class NewStreamItem {
     private String title;
     @JsonProperty("content")
     private String content;
+    @JsonProperty("reference")
+    private String reference;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -101,6 +104,31 @@ public class NewStreamItem {
 
     public NewStreamItem withContent(String content) {
         this.content = content;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The reference
+     */
+    @JsonProperty("reference")
+    public String getReference() {
+        return reference;
+    }
+
+    /**
+     * 
+     * @param reference
+     *     The reference
+     */
+    @JsonProperty("reference")
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public NewStreamItem withReference(String reference) {
+        this.reference = reference;
         return this;
     }
 

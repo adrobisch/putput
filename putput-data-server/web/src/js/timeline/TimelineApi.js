@@ -51,8 +51,8 @@ function TimelineApi(http, sce, q) {
         });
     };
 
-    this.postItem = function (itemContent) {
-        return http.post("/api/stream/items", {content: itemContent});
+    this.postItem = function (itemContent, itemRef) {
+        return http.post("/api/stream/items", {content: itemContent, reference: itemRef});
     };
 
     this.deleteItem = function(item) {

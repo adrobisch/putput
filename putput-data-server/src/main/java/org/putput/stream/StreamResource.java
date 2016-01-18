@@ -115,12 +115,15 @@ public class StreamResource extends BaseResource implements Stream {
         .withCreated(streamItemEntity.getCreated().doubleValue())
         .withCreator(streamItemEntity.getAuthor().getUsername())
         .withSource(streamItemEntity.getSource().map(StreamItemSource::value).orElse(null))
-        .withTitle(streamItemEntity.getTitle());
+        .withTitle(streamItemEntity.getTitle())
+        .withReference(streamItemEntity.getItemRef());
   }
 
   @Override
   public PostStreamItemsResponse postStreamItems(NewStreamItem newItem) throws Exception {
-    String newItemId = streamItemService.newUserItem(newItem, user().getUsername());
+    String newItemId = streamItemService.newUserItem(newItem,
+        user().getUsername(),
+        Optional.ofNullable(newItem.getReference()));
     return PostStreamItemsResponse.withCreated(link(Stream.class, "item", newItemId).getHref());
   }
 

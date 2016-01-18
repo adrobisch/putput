@@ -58,8 +58,8 @@ public class TestDataService implements SmartLifecycle {
   private void addTestData() {
     if (!ofNullable(userRepository.findByUsername("johndoe")).isPresent()) {
       UserEntity testUser = addTestUser();
-      streamItemService.newItemEntity(testUser.getUsername(), "Test Put.", Optional.empty(), Optional.empty(), empty(), empty());
-      streamItemService.newItemEntity("user", "User Put.", Optional.empty(), Optional.empty(), empty(), empty());
+      streamItemService.newItemEntity(testUser.getUsername(), "Test Put.", Optional.empty(), Optional.empty(), empty(), empty(), empty());
+      streamItemService.newItemEntity("user", "User Put.", Optional.empty(), Optional.empty(), empty(), empty(), empty());
 
       profileService.addFollower("user", "johndoe");
       profileService.addFollower("johndoe", "user");

@@ -1,0 +1,9 @@
+<ul class="dropdown-menu scrollable-menu" style="display:block">
+    <li data-mentio-menu-item="item"
+        data-ng-repeat="item in items track by $index">
+        <a class="text-primary">
+            <img class="emoji" data-ng-src="/vendor/emojify.js/dist/images/basic/{{item}}.png">
+            <span data-ng-bind-html="item"></span>
+        </a>
+    </li>
+</ul>

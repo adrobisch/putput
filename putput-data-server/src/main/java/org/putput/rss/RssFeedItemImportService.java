@@ -94,7 +94,8 @@ public class RssFeedItemImportService {
           Optional.of(title),
           Optional.of(StreamItemSource.RSS.value()),
           Optional.of(link),
-          Optional.of(publishedDate));
+          Optional.of(publishedDate),
+          empty());
     }
   }
 

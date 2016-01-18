@@ -36,10 +36,11 @@ public class StreamItemService {
   @Autowired
   BrainslugContext brainslugContext;
 
-  public String newUserItem(NewStreamItem newItem, String userName) {
+  public String newUserItem(NewStreamItem newItem, String userName, Optional<String> referencedItemId) {
     FlowInstance newItemFlowInstance = brainslugContext.startFlow(NewItemFlow.id, newProperties()
         .with(NewItemFlow.newItem, newItem, true)
-        .with(NewItemFlow.author, userName, true));
+        .with(NewItemFlow.author, userName, true)
+        .with(NewItemFlow.referencedItemId, referencedItemId.orElse(null), true));
 
     return newItemFlowInstance
         .getProperties()
@@ -52,7 +53,8 @@ public class StreamItemService {
                                         Optional<String> title,
                                         Optional<String> sourceName,
                                         Optional<String> externalRef,
-                                        Optional<Date> createdDate) {
+                                        Optional<Date> createdDate,
+                                        Optional<String> referencedItemId) {
     Optional<UserEntity> user = ofNullable(userRepository.findByUsername(userName));
     return streamItemRepository.save(new StreamItemEntity()
         .setId(uuidService.uuid())
@@ -63,6 +65,7 @@ public class StreamItemService {
         .setTitle(title.orElse(null))
         .setSource(sourceName.map(StreamItemSource::valueOf).orElse(null))
         .setExternalRef(externalRef.orElse(null))
+        .setItemRef(referencedItemId.orElse(null))
         .setCreated(createdDate.orElse(new Date()).getTime()));
   }
 

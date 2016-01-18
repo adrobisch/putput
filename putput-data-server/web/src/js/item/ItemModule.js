@@ -26,4 +26,11 @@ itemModule.directive("streamItem", function () {
     };
 });
 
+itemModule.run(['$templateCache', function (templateCache) {
+    templateCache.put("user-mentions.tpl", require("./user-mentions.html"));
+    templateCache.put("emoji.tpl", require("./emoji.html"));
+}]);
+
+itemModule.directive("itemInput", require("./ItemInputDirective"));
+
 module.exports = itemModule;

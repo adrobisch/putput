@@ -11,6 +11,7 @@ require('bootstrap');
 var app = angular.module('app', [
   "cfp.hotkeys",
   "flow",
+  require("angular-ui-bootstrap"),
   require("angular-route"),
   require("angular-animate"),
   require("angular-loading-bar"),

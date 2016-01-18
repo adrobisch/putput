@@ -3,61 +3,7 @@
         <div class="col-md-4" id="putForm" data-ng-cloak>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form role="form" class="inline-form">
-                        <div>
-                            <label for="newPut">What's new?</label>
-                            <textarea name="newPut"
-                                      class="form-control"
-                                      id="newPut"
-                                      data-ng-model="newPut"
-                                      placeholder="Put it here"
-                                      data-mentio
-                                      data-mentio-id="newPut"></textarea>
-
-                            <mentio-menu mentio-for="'newPut'"
-                                         mentio-trigger-char="'@'"
-                                         mentio-typed-text="typedTerm"
-                                         mentio-items="users"
-                                         mentio-template-url="/user-mentions.tpl"
-                                         mentio-search="searchUsers(term)"
-                                         mentio-select="'@' + item.userName"></mentio-menu>
-
-
-                            <script type="text/ng-template" id="/user-mentions.tpl">
-                                <ul class="dropdown-menu scrollable-menu" style="display:block">
-                                    <li data-mentio-menu-item="item"
-                                        data-ng-repeat="item in items">
-                                        <a class="text-primary">
-                                            <img class="avatar" data-ng-src="/avatar/{{item.userName}}">
-                                            <span data-ng-bind-html="item.userName | mentioHighlight:typedTerm:'menu-highlighted' | unsafe"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </script>
-
-                            <mentio-menu mentio-for="'newPut'"
-                                         mentio-trigger-char="':'"
-                                         mentio-typed-text="typedTerm"
-                                         mentio-items="emojis"
-                                         mentio-template-url="/emoji.tpl"
-                                         mentio-search="findEmoji(term)"
-                                         mentio-select="':' + item + ':'"></mentio-menu>
-
-                            <script type="text/ng-template" id="/emoji.tpl">
-                                <ul class="dropdown-menu scrollable-menu" style="display:block">
-                                    <li data-mentio-menu-item="item"
-                                        data-ng-repeat="item in items track by $index">
-                                        <a class="text-primary">
-                                            <img class="emoji" data-ng-src="/vendor/emojify.js/dist/images/basic/{{item}}.png">
-                                            <span data-ng-bind-html="item"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </script>
-                        </div>
-                        <br/>
-                        <button data-ng-click="put()" type="submit" class="btn btn-default">Submit</button>
-                    </form>
+                    <div data-item-input></div>
                     <!--form class="inline-form">
                         <button id="image-upload" type="button" class="btn btn-default" data-ng-click="uploadImage()">
                             <span class="glyphicon glyphicon-upload"></span> Upload Image

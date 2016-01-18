@@ -1,0 +1,9 @@
+<ul class="dropdown-menu scrollable-menu" style="display:block">
+    <li data-mentio-menu-item="item"
+        data-ng-repeat="item in items">
+        <a class="text-primary">
+            <img class="avatar" data-ng-src="/avatar/{{item.userName}}">
+            <span data-ng-bind-html="item.userName | mentioHighlight:typedTerm:'menu-highlighted' | unsafe"></span>
+        </a>
+    </li>
+</ul>

@@ -23,7 +23,7 @@
             <ul class="actions">
                 <li id="like-action" data-ng-click="toggleLike(item)"  data-ng-class="{'like-active': item.markerInfo.isLike}" class="action glyphicon glyphicon glyphicon-thumbs-up"><span class="likes-count">{{item.markerInfo.likes}}</span></li>
                 <li id="dislike-action" data-ng-click="toggleDislike(item)"  data-ng-class="{'like-active': item.markerInfo.isDislike}" class="action glyphicon glyphicon glyphicon-thumbs-down"><span class="likes-count">{{item.markerInfo.dislikes}}</span></li>
-                <!-- li id="comment-action" data-ng-click="toggleComments(item)" class="action glyphicon glyphicon glyphicon-comment"><span class="comments-count">{{item.markerInfo.comments}}</span></li -->
+                <li id="share-action" data-ng-click="share(item)" class="action glyphicon glyphicon-share-alt"></li>
                 <li id="favorite-action" data-ng-click="toggleFavorite(item)" data-ng-class="{'favorite-active': item.markerInfo.isFavorite}" class="action glyphicon glyphicon-star"></li>
                 <li id="later-action" data-ng-click="toggleLater(item)" data-ng-class="{'later-active': item.markerInfo.isReadLater}" class="action glyphicon glyphicon-bookmark"></li>
             </ul>

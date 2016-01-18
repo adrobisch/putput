@@ -28,6 +28,7 @@ public class NewItemFlow extends FlowBuilder {
 
   public static final Identifier author = id("author");
   public static final Identifier itemId = id("item_id");
+  public static final Identifier referencedItemId = id("referenced_item_id");
   public static final Identifier start = id("start");
   public static final Identifier end = id("item_processed");
 
@@ -39,13 +40,15 @@ public class NewItemFlow extends FlowBuilder {
       NewStreamItem newItem = context.property(NewItemFlow.newItem);
 
       String author = context.property(NewItemFlow.author, String.class);
+      String referencedItemId = context.property(NewItemFlow.referencedItemId, String.class);
 
       StreamItemEntity newItemEntity = streamItemService.newItemEntity(author,
           newItem.getContent(),
           ofNullable(newItem.getTitle()),
           ofNullable(newItem.getSource()),
           empty(),
-          empty());
+          empty(),
+          ofNullable(referencedItemId));
 
       context.setProperty(savedItem, newItemEntity, true);
       context.setProperty(savedItemId, newItemEntity.getId());

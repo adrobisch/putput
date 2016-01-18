@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "source",
     "title",
     "content",
-    "created"
+    "created",
+    "reference"
 })
 public class StreamItem {
 
@@ -35,6 +36,8 @@ public class StreamItem {
     private String content;
     @JsonProperty("created")
     private Double created;
+    @JsonProperty("reference")
+    private String reference;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -185,6 +188,31 @@ public class StreamItem {
 
     public StreamItem withCreated(Double created) {
         this.created = created;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The reference
+     */
+    @JsonProperty("reference")
+    public String getReference() {
+        return reference;
+    }
+
+    /**
+     * 
+     * @param reference
+     *     The reference
+     */
+    @JsonProperty("reference")
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public StreamItem withReference(String reference) {
+        this.reference = reference;
         return this;
     }
 
