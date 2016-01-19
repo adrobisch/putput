@@ -1,3 +1,0 @@
-You have been mentioned in a put ({{link}}) by {{author}} :
-
-{{content}}

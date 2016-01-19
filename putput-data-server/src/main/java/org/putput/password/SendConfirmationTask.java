@@ -24,7 +24,7 @@ public class SendConfirmationTask implements SimpleTask {
       confirmationMail.setSubject("Your Password Reset Request");
       confirmationMail.setTo(executionContext.property(ForgotPasswordFlow.emailAddress));
       confirmationMail.setText(new MailTemplates()
-          .create("passwordRequest.txt")
+          .create("passwordRequest")
           .replace("code", confirmationCode)
           .getText()
       );

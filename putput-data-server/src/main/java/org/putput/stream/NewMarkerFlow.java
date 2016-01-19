@@ -55,7 +55,7 @@ public class NewMarkerFlow extends FlowBuilder {
         mentionMessage.setSubject("You got a new '" + markerType + "' on a put!");
         mentionMessage.setTo(foundItem.getAuthor().getEmail());
         mentionMessage.setText(new MailTemplates()
-            .create("markerNotification.txt")
+            .create("markerNotification")
             .replace("markerType", markerType)
             .replace("markerAuthor", "@" + markerAuthor)
             .replace("link", "https://putput.org/#/item/" + itemId)

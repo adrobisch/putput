@@ -83,6 +83,7 @@ public class NewItemFlow extends FlowBuilder {
   private void processMention(StreamItemContentParser.Mention mention, StreamItemEntity item, ExecutionContext taskContext) {
     MailSender mailSender = taskContext.service(MailSender.class);
     UserRepository userRepository = taskContext.service(UserRepository.class);
+    StreamItemRepository streamItemRepository = taskContext.service(StreamItemRepository.class);
 
     Optional.ofNullable(userRepository.findByUsername(mention.getUsername())).ifPresent(foundUser -> {
       if (ofNullable(foundUser.getEmail()).isPresent()) {
@@ -91,10 +92,9 @@ public class NewItemFlow extends FlowBuilder {
         mentionMessage.setSubject("You have been mentioned by @" + item.getAuthor().getUsername());
         mentionMessage.setTo(foundUser.getEmail());
         mentionMessage.setText(new MailTemplates()
-            .create("mention.txt")
-            .replace("author", "@" + item.getAuthor().getUsername())
-            .replace("link", "https://putput.org/#/item/" + item.getId())
-            .replace("content", item.getContent())
+            .create("mention")
+            .data("item", item)
+            .data("referencedItem", ofNullable(item.getItemRef()).map(streamItemRepository::findOne).orElse(null))
             .getText()
         );
         mailSender.send(mentionMessage);

@@ -1,5 +1,5 @@
 <form role="form" class="inline-form">
-    <div style="z-index: 10000">
+    <div>
         <label for="newPut">What's new?</label>
 
         <textarea name="newPut"
@@ -9,7 +9,7 @@
                   placeholder="Put it here"
                   data-mentio
                   data-mentio-id="newPut"></textarea>
-
+        
         <mentio-menu mentio-for="'newPut'"
                      mentio-trigger-char="'@'"
                      mentio-typed-text="typedTerm"
@@ -26,6 +26,7 @@
                      mentio-search="findEmoji(term)"
                      mentio-select="':' + item + ':'"></mentio-menu>
     </div>
-    <br/>
-    <button data-ng-click="put()" type="submit" class="btn btn-default">Submit</button>
+    <div class="top10">
+        <button data-ng-click="put()" type="submit" class="btn btn-default">Submit</button>    
+    </div>
 </form>

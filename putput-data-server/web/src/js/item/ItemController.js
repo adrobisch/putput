@@ -1,7 +1,4 @@
 var itemController = function (scope, rootScope, timeline, route, modal) {
-    scope.itemId = route.current.params["itemId"];
-    scope.theItem = null;
-
     scope.toggleMarker = function (item, markerInfoProperty, type, markCallback, unmarkCallback) {
         if (!item.markerInfo[markerInfoProperty]) {
             return timeline.markItem(item.streamItem.id, type).success(function () {
@@ -66,12 +63,12 @@ var itemController = function (scope, rootScope, timeline, route, modal) {
 
     scope.getItem = function (itemId) {
         timeline.getItem(itemId).success(function (data) {
-            scope.theItem = data;
+            scope.item = data;
         });
     };
 
     scope.canDelete = function (item) {
-        return item._links.delete != undefined;
+        return item && item._links.delete != undefined;
     };
 
     scope.deleteStreamItem = function(item) {

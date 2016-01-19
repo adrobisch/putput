@@ -1,5 +1,15 @@
 <div class="qa-message-list" id="wallmessages" data-infinite-scroll="nextPage()" data-infinite-scroll-distance="0">
-    <div data-stream-item data-item="item" data-ng-repeat="item in stream.items"></div>
+    <div data-stream-item data-item="item" data-ng-repeat="item in stream.items">
+        <div data-ng-cloak
+             data-ng-show="item.streamItem.reference">
+            <hr>
+            <h5>in response to:</h5>
+            <div data-stream-item
+                 data-item-id="item.streamItem.reference"
+                 data-plain="true">
+            </div>    
+        </div>
+    </div>
 </div>
 <div data-ng-cloak data-ng-show="stream.items.length==0">
     <h3>No items in this timeline, yet!</h3>
