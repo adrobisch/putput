@@ -58,7 +58,7 @@ public class NewMarkerFlow extends FlowBuilder {
             .create("markerNotification.txt")
             .replace("markerType", markerType)
             .replace("markerAuthor", "@" + markerAuthor)
-            .replace("link", "https://www.putput.org/#/item/" + itemId)
+            .replace("link", "https://putput.org/#/item/" + itemId)
             .replace("content", contentPreview(foundItem))
             .getText()
         );

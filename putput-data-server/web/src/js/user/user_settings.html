@@ -11,7 +11,40 @@
                 <input type="password" data-ng-model="settings.password" class="form-control" id="password" placeholder="Enter new password">
                 <input type="password" data-ng-model="settings.passwordRepeat" equals="{{settings.password}}" class="form-control" id="repeat_password" placeholder="Repeat new password">
             </div>
-            <button type="submit" data-ng-disabled="!settingsForm.$valid"class="btn btn-default">Update</button>
+            <button type="submit" data-ng-disabled="!settingsForm.$valid" class="btn btn-default">Update</button>
+        </form>
+    </div>
+</div>
+<div class="panel panel-default animation" data-ng-show="rssFeedList" data-ng-init="getRssFeeds()">
+    <div class="panel-heading">RSS Feeds</div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>URL</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="rssFeed in rssFeedList.rssFeeds">
+                <td>{{rssFeed.url}}</td>
+                <td>
+                    <button class="btn btn-default"
+                            data-ng-click="deleteRssFeed(rssFeed.id)"
+                            data-ng-confirm-click="Are you sure you want to delete {{rssFeed.url}}?">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <p data-ng-hide="rssFeedList.rssFeeds.length">No feeds yet, add one!</p>
+        <form name="rssFeedForm" novalidate role="form" data-ng-submit="addRssFeed()">
+            <div class="form-group">
+                <label for="feedUrl">New Feed</label>
+                <input type="text" data-ng-model="newFeedUrl" class="form-control" id="feedUrl" placeholder="Enter feed URL">
+            </div>
+            <button type="submit" data-ng-disabled="!rssFeedForm.$valid" class="btn btn-default">Add</button>
         </form>
     </div>
 </div>

@@ -24,6 +24,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "users",
     "user",
     "user-settings",
+    "user-feeds",
+    "user-feed",
     "login",
     "logout",
     "password-reset",
@@ -91,6 +93,18 @@ public class ServiceDocumentLinks {
      */
     @JsonProperty("user-settings")
     private HalLink userSettings;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("user-feeds")
+    private HalLink userFeeds;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("user-feed")
+    private HalLink userFeed;
     /**
      * A HAL link
      * 
@@ -385,6 +399,60 @@ public class ServiceDocumentLinks {
 
     public ServiceDocumentLinks withUserSettings(HalLink userSettings) {
         this.userSettings = userSettings;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The userFeeds
+     */
+    @JsonProperty("user-feeds")
+    public HalLink getUserFeeds() {
+        return userFeeds;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param userFeeds
+     *     The user-feeds
+     */
+    @JsonProperty("user-feeds")
+    public void setUserFeeds(HalLink userFeeds) {
+        this.userFeeds = userFeeds;
+    }
+
+    public ServiceDocumentLinks withUserFeeds(HalLink userFeeds) {
+        this.userFeeds = userFeeds;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The userFeed
+     */
+    @JsonProperty("user-feed")
+    public HalLink getUserFeed() {
+        return userFeed;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param userFeed
+     *     The user-feed
+     */
+    @JsonProperty("user-feed")
+    public void setUserFeed(HalLink userFeed) {
+        this.userFeed = userFeed;
+    }
+
+    public ServiceDocumentLinks withUserFeed(HalLink userFeed) {
+        this.userFeed = userFeed;
         return this;
     }
 

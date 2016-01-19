@@ -93,7 +93,7 @@ public class NewItemFlow extends FlowBuilder {
         mentionMessage.setText(new MailTemplates()
             .create("mention.txt")
             .replace("author", "@" + item.getAuthor().getUsername())
-            .replace("link", "https://www.putput.org/#/item/" + item.getId())
+            .replace("link", "https://putput.org/#/item/" + item.getId())
             .replace("content", item.getContent())
             .getText()
         );

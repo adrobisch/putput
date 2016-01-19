@@ -85,12 +85,12 @@ public class RssFeedItemImportService {
     String link = ofNullable(entry.getLink()).orElse(feedInfo.getUrl() + "#" + title);
     Date publishedDate = ofNullable(entry.getPublishedDate()).orElse(new Date());
 
-    String description = getDescription(entry).orElse(title + ": " + publishedDate.toString());
+    String content = getContent(entry, feedInfo).orElse(title + ": " + publishedDate.toString());
 
     if (streamItemRepository.findByExternalRefAndUser(feedInfo.getOwner().getUsername(), link).isEmpty()) {
       log.info("importing: " + link);
       streamItemService.newItemEntity(feedInfo.getOwner().getUsername(),
-          description,
+          content,
           Optional.of(title),
           Optional.of(StreamItemSource.RSS.value()),
           Optional.of(link),
@@ -99,7 +99,7 @@ public class RssFeedItemImportService {
     }
   }
 
-  private Optional<String> getDescription(SyndEntry entry) {
+  private Optional<String> getContent(SyndEntry entry, RssFeedInfoEntity feedInfo) {
     Optional<String> entryDescription = entryDescription(entry);
 
     Optional<String> firstContent = entry
@@ -112,13 +112,19 @@ public class RssFeedItemImportService {
 
     if (customDescription.isPresent()) {
       return customDescription;
-    } else if (firstContent.isPresent()){
+    } else if (firstContent.isPresent() && shouldUseContent(feedInfo)){
       return firstContent;
     } else if (entryDescription.isPresent()) {
       return entryDescription;
+    } else if (firstContent.isPresent()) {
+      return firstContent;
     } else {
       return Optional.empty();
     }
+  }
+
+  private boolean shouldUseContent(RssFeedInfoEntity feedInfo) {
+    return feedInfo.getContentSource().isPresent() && feedInfo.getContentSource().get().equalsIgnoreCase("content");
   }
 
   private Optional<String> entryDescription(SyndEntry entry) {

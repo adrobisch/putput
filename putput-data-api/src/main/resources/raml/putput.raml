@@ -1,7 +1,7 @@
 #%RAML 0.8
 
 title: PutPut API
-baseUri: https://www.putput.org
+baseUri: https://putput.org
 version: v1
 schemas:
   - empty: |
@@ -347,6 +347,26 @@ schemas:
           "email": {"type": "string"}
         }
       }
+  - rssFeed: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "id": {"type": "string"},
+          "url": {"type": "string"}
+        }
+      }
+  - rssFeedList: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "rssFeeds": {
+            "type": "array",
+            "items": {
+                "$ref": "rssFeed"
+            }
+          }
+        }
+      }
   - userSettingsUpdate: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -434,6 +454,8 @@ schemas:
               "users" : { "$ref": "halLink"},
               "user" : { "$ref": "halLink"},
               "user-settings" : { "$ref": "halLink"},
+              "user-feeds" : { "$ref": "halLink"},
+              "user-feed" : { "$ref": "halLink"},
               "login" : { "$ref": "halLink"},
               "logout" : { "$ref": "halLink"},
               "password-reset": { "$ref": "halLink"},
@@ -767,3 +789,23 @@ traits:
           schema: userSettingsUpdate
       responses:
         204:
+  /rss-feeds:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              schema: rssFeedList
+    post:
+      body:
+        application/json:
+          schema: rssFeed
+      responses:
+        200:
+
+  /rss-feed:
+    put:
+    /{id}:
+      delete:
+        responses:
+          200:

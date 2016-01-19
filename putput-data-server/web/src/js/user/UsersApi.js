@@ -1,6 +1,8 @@
 function UsersApi(http, api) {
 
   var userSettingsRelation = "user-settings";
+  var userFeedsRelation = "user-feeds";
+  var userFeedRelation = "user-feed";
 
   this.getUsers = function (userListCallback, search) {
     return api.withLink("users", this.getUsersFromUrl(userListCallback, search));
@@ -30,6 +32,26 @@ function UsersApi(http, api) {
   this.getSettings = function() {
     return api.withLink(userSettingsRelation, function (settingsLink) {
       return http.get(settingsLink);
+    })
+  };
+
+  this.getRssFeeds = function() {
+    return api.withLink(userFeedsRelation, function (userFeedsLink) {
+      return http.get(userFeedsLink);
+    })
+  };
+
+  this.addRssFeed = function(url) {
+    return api.withLink(userFeedsRelation, function (userFeedsLink) {
+      return http.post(userFeedsLink, {
+        "url": url
+      });
+    })
+  };
+
+  this.deleteRssFeed = function(feedId) {
+    return api.withLink(userFeedRelation, function (userFeedLink) {
+      return http.delete(userFeedLink+"/"+feedId);
     })
   };
 

@@ -49,5 +49,17 @@
                                  referencedColumnNames="_USERNAME"/>
 
     </changeSet>
+    
+    <changeSet id="2" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="PP_RSS_FEED_INFO" columnName="_CONTENT_SOURCE"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="PP_RSS_FEED_INFO">
+            <column name="_CONTENT_SOURCE" type="varchar(32)"/>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>
