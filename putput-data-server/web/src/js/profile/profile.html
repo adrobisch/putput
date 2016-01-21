@@ -1,58 +1,62 @@
 <div class="row">
     <div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
-        <div class="well profile animation" data-ng-hide="!profile">
-            <div class="col-sm-12">
-                <div class="col-xs-12 col-sm-8">
-                    <h2>{{userId}}</h2>
-                    <p><strong>About: </strong> {{profile.about}} </p>
-                </div>
-                <div class="col-xs-12 col-sm-4 text-center">
-                    <figure>
-                        <img data-ng-src="avatar/{{userId}}"
-                             alt="" class="img-circle img-responsive">
-                    </figure>
-                </div>
-            </div>
-            <div class="col-xs-12 divider text-center">
-                <div class="col-xs-12 col-sm-4 emphasis">
-                    <h2><strong>{{profile.followers.length}}</strong></h2>
-                    <p>
-                        <small>Followers</small>
-                        <div>
-                            <a data-ng-href="/@{{follower.follower}}" data-ng-repeat="follower in profile.followers" class="profile-item">
-                                <span class="label label-default">{{follower.follower}}</span>
-                            </a>
+        <div class="panel panel-default animation">
+            <div class="panel-body">
+                <div class="profile animation" data-ng-hide="!profile">
+                    <div class="col-sm-12">
+                        <div class="col-xs-12 col-sm-8">
+                            <h2>{{userId}}</h2>
+                            <p><strong>About: </strong> {{profile.about}} </p>
                         </div>
-                    </p>
-                </div>
-                <div class="col-xs-12 col-sm-4 emphasis">
-                    <h2><strong>{{profile.following.length}}</strong></h2>
-                    <p>
-                        <small>Following</small>
-                        <div>
-                            <a data-ng-href="/@{{followed.followed}}" data-ng-repeat="followed in profile.following" class="profile-item">
-                                <span class="label label-default">{{followed.followed}}</span>
-                            </a>
+                        <div class="col-xs-12 col-sm-4 text-center">
+                            <figure>
+                                <img data-ng-src="avatar/{{userId}}"
+                                     alt="" class="img-circle img-responsive">
+                            </figure>
                         </div>
-                    </p>
-                </div>
-                <div class="col-xs-12 col-sm-4 emphasis">
-                    <h2><strong>{{profile.itemCount}}</strong></h2>
-                    <p>
-                        <small>Puts</small>
-                    </p>
-                </div>
-            </div>
-            <div class="col-xs-12 text-center">
-                <div class="col-xs-12 col-sm-4">
-                    <div style="margin-top: 10px">
-                        <button data-ng-cloak data-ng-hide="following" data-ng-click="follow()" class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Follow</button>
-                        <button data-ng-cloak data-ng-show="following" data-ng-click="unfollow()" class="btn btn-primary btn-block"><span class="fa fa-trash"></span> Unfollow</button>
                     </div>
-                </div>
-                <div class="col-xs-12 col-sm-4">
-                </div>
-                <div class="col-xs-12 col-sm-4 emphasis">
+                    <div class="col-xs-12 divider text-center">
+                        <div class="col-xs-12 col-sm-4 emphasis">
+                            <h2><strong>{{profile.followers.length}}</strong></h2>
+                            <p>
+                                <small>Followers</small>
+                            <div>
+                                <a data-ng-href="/@{{follower.follower}}" data-ng-repeat="follower in profile.followers" class="profile-item">
+                                    <span class="label label-default">{{follower.follower}}</span>
+                                </a>
+                            </div>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 emphasis">
+                            <h2><strong>{{profile.following.length}}</strong></h2>
+                            <p>
+                                <small>Following</small>
+                            <div>
+                                <a data-ng-href="/@{{followed.followed}}" data-ng-repeat="followed in profile.following" class="profile-item">
+                                    <span class="label label-default">{{followed.followed}}</span>
+                                </a>
+                            </div>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 emphasis">
+                            <h2><strong>{{profile.itemCount}}</strong></h2>
+                            <p>
+                                <small>Puts</small>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 text-center">
+                        <div class="col-xs-12 col-sm-4">
+                            <div style="margin-top: 10px">
+                                <button data-ng-cloak data-ng-hide="following" data-ng-click="follow()" class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Follow</button>
+                                <button data-ng-cloak data-ng-show="following" data-ng-click="unfollow()" class="btn btn-primary btn-block"><span class="fa fa-trash"></span> Unfollow</button>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                        </div>
+                        <div class="col-xs-12 col-sm-4 emphasis">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
