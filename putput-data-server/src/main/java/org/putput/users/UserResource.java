@@ -30,6 +30,17 @@ public class UserResource extends BaseResource implements User {
   @Autowired
   UuidService uuidService;
 
+  @Override
+  public PostUserResponse postUser(UserRegistration entity) throws Exception {
+    UserEntity s = new UserEntity()
+        .setUsername(entity.getUserName())
+        .setId(uuidService.uuid())
+        .setEmail(entity.getEmail())
+        .setPasswordHash(passwordService.hash(entity.getPassword()));
+    userRepository.save(s);
+    return PostUserResponse.withOK();
+  }
+
   @Secured("USER")
   @Override
   public GetUserInfoResponse getUserInfo() throws Exception {

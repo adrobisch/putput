@@ -279,6 +279,39 @@ schemas:
           "self" : { "$ref": "halLink"}
         }
       }
+  - message: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "id": {"type": "string"},
+          "from": {"type": "string"},
+          "to": {"type": "string"},
+          "text": {"type": "string"},
+          "state": {"type": "string"},
+          "type": {"type": "string"},
+          "_links": {
+            "$ref": "messageLinks"
+          }
+        }
+      }
+  - messageLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.MessageLinks",
+        "description": "The links of a tag",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
+  - messageListLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.MessageListLinks",
+        "description": "The links of a message list",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
   - file: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -318,6 +351,16 @@ schemas:
         "description": "The links of a file list",
         "properties": {
           "self" : { "$ref": "halLink"}
+        }
+      }
+  - userRegistration: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "javaType" : "org.putput.api.model.UserRegistration",
+        "properties": {
+          "userName": {"type": "string"},
+          "password": {"type": "string"},
+          "email": {"type": "string"}
         }
       }
   - userInfo: |
@@ -447,6 +490,8 @@ schemas:
               "self" : { "$ref": "halLink"},
               "notes" : { "$ref": "halLink"},
               "note" : { "$ref": "halLink"},
+              "messages" : { "$ref": "halLink"},
+              "message" : { "$ref": "halLink"},
               "files" : { "$ref": "halLink"},
               "file" : { "$ref": "halLink"},
               "contacts" : { "$ref": "halLink"},
@@ -672,6 +717,36 @@ traits:
         type: string
         required: false
 
+/messages:
+  get:
+    is: [ halCollection: { id: messageList, collectionJavaType: org.putput.api.model.MessageList, itemsProperty: messages, itemSchema: message, collectionLinks: messageListLinks}]
+
+/message:
+  post:
+    body:
+      application/json:
+        schema: message
+    responses:
+      201:
+        headers:
+          Location:
+  /{id}:
+    get:
+      responses:
+        200:
+          body:
+            application/hal+json:
+              schema: message
+    put:
+      body:
+        application/json:
+          schema: message
+      responses:
+        200:
+    delete:
+      responses:
+        200:
+
 /stream:
   get:
     is: [ halCollection: { id: streamItemList, collectionJavaType: org.putput.api.model.StreamItemList, itemsProperty: items, itemSchema: streamItemResource, collectionLinks: streamItemListLinks}]
@@ -769,6 +844,12 @@ traits:
         type: string
         required: false
 /user:
+  post:
+    body:
+      application/json:
+        schema: userRegistration
+    responses:
+      200:
   /info:
     get:
       responses:

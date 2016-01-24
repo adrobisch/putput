@@ -13,12 +13,24 @@ import javax.ws.rs.core.Response;
 import org.putput.api.model.RssFeed;
 import org.putput.api.model.RssFeedList;
 import org.putput.api.model.UserInfo;
+import org.putput.api.model.UserRegistration;
 import org.putput.api.model.UserSettings;
 import org.putput.api.model.UserSettingsUpdate;
 
 @Path("user")
 public interface User {
 
+
+    /**
+     * 
+     * @param entity
+     *     
+     */
+    @POST
+    @Consumes("application/json")
+    User.PostUserResponse postUser(UserRegistration entity)
+        throws Exception
+    ;
 
     /**
      * 
@@ -183,6 +195,25 @@ public interface User {
             Response.ResponseBuilder responseBuilder = Response.status(200).header("Content-Type", "application/json");
             responseBuilder.entity(entity);
             return new User.GetUserSettingsResponse(responseBuilder.build());
+        }
+
+    }
+
+    public class PostUserResponse
+        extends org.putput.api.support.ResponseWrapper
+    {
+
+
+        private PostUserResponse(Response delegate) {
+            super(delegate);
+        }
+
+        /**
+         * 
+         */
+        public static User.PostUserResponse withOK() {
+            Response.ResponseBuilder responseBuilder = Response.status(200);
+            return new User.PostUserResponse(responseBuilder.build());
         }
 
     }

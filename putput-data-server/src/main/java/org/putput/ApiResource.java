@@ -17,6 +17,7 @@ public class ApiResource extends BaseResource implements Root {
       .withUserSettings(link(User.class, "settings"))
       .withUserFeeds(link(User.class, "rss-feeds"))
       .withUserFeed(link(User.class, "rss-feed"))
+      .withMessages(link(Messages.class))
       .withPasswordReset(link(PasswordRequest.class))
       .withPasswordResetConfirmation(link(PasswordRequest.class, "confirmation"))
       .withLogin(link(Login.class))

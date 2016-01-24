@@ -1,6 +1,8 @@
 package org.putput;
 
 import org.putput.common.UuidService;
+import org.putput.messages.MessageEntity;
+import org.putput.messages.MessageRepository;
 import org.putput.profile.ProfileService;
 import org.putput.rss.RssFeedInfoEntity;
 import org.putput.rss.RssFeedInfoRepository;
@@ -28,6 +30,9 @@ public class TestDataService implements SmartLifecycle {
 
   @Autowired
   RssFeedInfoRepository rssFeedInfoRepository;
+
+  @Autowired
+  MessageRepository messageRepository;
 
   @Autowired
   ProfileService profileService;
@@ -63,6 +68,15 @@ public class TestDataService implements SmartLifecycle {
 
       profileService.addFollower("user", "johndoe");
       profileService.addFollower("johndoe", "user");
+
+      messageRepository.save(new MessageEntity()
+          .setId("1")
+          .setFrom("johndoe")
+          .setTo("user")
+          .setText("Test Message")
+          .setType("chat")
+          .setStatus("new")
+      );
 
       /*rssFeedInfoRepository.save(new RssFeedInfoEntity()
           .setId(uuidService.uuid())

@@ -23,6 +23,7 @@ var app = angular.module('app', [
   require('./contacts/ContactsModule').name,
   require('./note/NotesModule').name,
   require('./explore/ExploreModule').name,
+  require('./messages/InboxModule').name,
   require('./user/SettingsModule').name,
   require('./password/PasswordResetModule').name,
   require('./file/FilesModule').name,

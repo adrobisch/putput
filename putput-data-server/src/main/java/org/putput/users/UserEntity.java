@@ -60,12 +60,14 @@ public class UserEntity extends BaseEntity<UserEntity> implements Serializable {
     this.displayName = displayName;
   }
 
-  public void setPasswordHash(String passwordHash) {
+  public UserEntity setPasswordHash(String passwordHash) {
     this.passwordHash = passwordHash;
+    return this;
   }
 
-  public void setEmail(String email) {
+  public UserEntity setEmail(String email) {
     this.email = email;
+    return this;
   }
 
   public UserEntity setUsername(String username) {

@@ -41,7 +41,7 @@ public class PasswordServiceTest {
   private PasswordService createPasswordService(final String newPassword, final PasswordEncoder passwordEncoder, final UserRepository userRepository, final MailSender mailSender) {
     return new PasswordService(passwordEncoder, userRepository, mailSender) {
       @Override
-      protected String newRandomPassword() {
+      public String newRandomPassword() {
         return newPassword;
       }
     };

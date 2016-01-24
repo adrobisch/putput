@@ -76,7 +76,11 @@ public class PasswordService {
     return new PasswordResetSuccess(newPassword);
   }
 
-  protected String newRandomPassword() {
+  public String newRandomPassword() {
     return RandomStringUtils.randomAlphanumeric(8);
+  }
+
+  public String hash(String password) {
+    return passwordEncoder.encode(password);
   }
 }

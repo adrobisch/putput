@@ -17,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "self",
     "notes",
     "note",
+    "messages",
+    "message",
     "files",
     "file",
     "contacts",
@@ -51,6 +53,18 @@ public class ServiceDocumentLinks {
      */
     @JsonProperty("note")
     private HalLink note;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("messages")
+    private HalLink messages;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("message")
+    private HalLink message;
     /**
      * A HAL link
      * 
@@ -210,6 +224,60 @@ public class ServiceDocumentLinks {
 
     public ServiceDocumentLinks withNote(HalLink note) {
         this.note = note;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The messages
+     */
+    @JsonProperty("messages")
+    public HalLink getMessages() {
+        return messages;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param messages
+     *     The messages
+     */
+    @JsonProperty("messages")
+    public void setMessages(HalLink messages) {
+        this.messages = messages;
+    }
+
+    public ServiceDocumentLinks withMessages(HalLink messages) {
+        this.messages = messages;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The message
+     */
+    @JsonProperty("message")
+    public HalLink getMessage() {
+        return message;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param message
+     *     The message
+     */
+    @JsonProperty("message")
+    public void setMessage(HalLink message) {
+        this.message = message;
+    }
+
+    public ServiceDocumentLinks withMessage(HalLink message) {
+        this.message = message;
         return this;
     }
 

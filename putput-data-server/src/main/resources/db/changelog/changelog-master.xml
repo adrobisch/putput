@@ -21,5 +21,6 @@
     <include file="db/changelog/create_item.xml" />
     <include file="db/changelog/create_item_marker.xml" />
     <include file="db/changelog/create_rss_feed_info.xml" />
+    <include file="db/changelog/create_message.xml" />
 
 </databaseChangeLog>

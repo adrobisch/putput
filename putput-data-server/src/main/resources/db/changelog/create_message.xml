@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="create_message.xml">
+
+    <changeSet id="1" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_MESSAGE" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_MESSAGE">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_FROM" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_TO" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_TEXT" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_TYPE" type="varchar(40)">
+                <constraints nullable="false" />
+            </column>
+            <column name="_STATUS" type="varchar(40)">
+                <constraints nullable="false" />
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="idx_message_to" tableName="pp_message"/>
+            </not>
+        </preConditions>
+
+        <createIndex tableName="pp_message" indexName="idx_message_to">
+            <column name="_to" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="3" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="idx_message_from" tableName="pp_message"/>
+            </not>
+        </preConditions>
+
+        <createIndex tableName="pp_message" indexName="idx_message_from">
+            <column name="_from" />
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,36 @@
+<div class="row inbox">
+    <div class="col-sm-3 col-md-2">
+        <a href="#" class="btn btn-danger btn-sm btn-block" role="button">NEW</a>
+        <hr/>
+    </div>
+    <div class="col-sm-9 col-md-10">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="/#home" data-toggle="tab">
+                    <span class="glyphicon glyphicon-inbox"></span> Inbox
+                </a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="inbox">
+                <div class="list-group" data-ng-show="messages.messages">
+                    <a data-ng-repeat="message in messages.messages" href="" class="list-group-item">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="name" style="min-width: 120px;
+                                display: inline-block;">{{message.message.from}}</span>
+                        <span class="">{{message.message.body}}</span>
+                        <span class="text-muted" style="font-size: 11px;"></span>
+                        <span class="badge">{{message.message.created | date:'yyyy-MM-dd HH:mm'}}</span>
+                        <span class="pull-right">
+                            <span data-ng-show="message.message.unread" class="glyphicon glyphicon-envelope"></span>
+                        </span>
+                    </a>
+                </div>
+                <div data-ng-hide="messages.messages">
+                    <p>No messages!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
