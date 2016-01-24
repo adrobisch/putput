@@ -42,6 +42,7 @@
     "angular-loading-bar": "0.8.0",
     "angular-hotkeys": "1.4.5",
     "angular-ui-bootstrap" : "1.1.0",
+    "ui-select": "0.13.2",
     "angular-moment": "1.0.0-beta.3",
     "ng-infinite-scroll": "1.2.0",
     "flow.js": "flowjs/flow.js#v2.9.0",

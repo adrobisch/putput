@@ -101,6 +101,14 @@ public interface Message {
 
         /**
          * 
+         */
+        public static Message.GetMessageByIdResponse withNotFound() {
+            Response.ResponseBuilder responseBuilder = Response.status(404);
+            return new Message.GetMessageByIdResponse(responseBuilder.build());
+        }
+
+        /**
+         * 
          * @param entity
          *     
          */

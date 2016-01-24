@@ -289,6 +289,7 @@ schemas:
           "text": {"type": "string"},
           "state": {"type": "string"},
           "type": {"type": "string"},
+          "created": {"type": "number"},
           "_links": {
             "$ref": "messageLinks"
           }
@@ -733,6 +734,7 @@ traits:
   /{id}:
     get:
       responses:
+        404:
         200:
           body:
             application/hal+json:

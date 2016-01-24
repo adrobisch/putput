@@ -7,10 +7,12 @@ var angular = window.angular = require('angular');
 require("ng-flow/dist/ng-flow");
 require('angular-hotkeys');
 require('bootstrap');
+require("ui-select");
 
 var app = angular.module('app', [
   "cfp.hotkeys",
   "flow",
+  "ui.select",
   require("angular-ui-bootstrap"),
   require("angular-route"),
   require("angular-animate"),

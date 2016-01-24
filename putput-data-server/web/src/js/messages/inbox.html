@@ -1,9 +1,48 @@
-<div class="row inbox">
+<div class="row inbox" data-ng-init="init()">
     <div class="col-sm-3 col-md-2">
-        <a href="#" class="btn btn-danger btn-sm btn-block" role="button">NEW</a>
+        <a href="" 
+           class="btn btn-danger btn-sm btn-block" 
+           role="button"
+           data-ng-click="openCompose()">NEW</a>
         <hr/>
     </div>
     <div class="col-sm-9 col-md-10">
+        <div class="row">
+            <div class="panel panel-default animation" data-ng-show="compose" data-ng-cloak>
+                <div class="panel-body">
+                    <form class="form-horizontal" data-ng-submit="sendMessage()">
+                        <div class="form-group">
+                            <label for="recipient" class="control-label col-md-1">To</label>
+                            <div class="col-md-11" id="recipient">
+                                <ui-select data-ng-model="newMessage.recipient" theme="bootstrap">
+                                    <ui-select-match placeholder="Select recipient...">{{$select.selected.userName}}</ui-select-match>
+                                    <ui-select-choices repeat="user in users | filter: $select.search track by user.userName"
+                                                       refresh="getUsers($select.search)">
+                                        <img class="avatar" data-ng-src="avatar/{{user.userName}}" >
+                                        <div data-ng-bind-html="user.userName | highlight: $select.search"></div>
+                                        <div data-ng-bind-html="user.about | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="text" class="control-label col-md-1">Text</label>
+                            <div class="col-md-11">
+                                <textarea id="text"
+                                       data-ng-model="newMessage.message.text" 
+                                       class="form-control" 
+                                       placeholder="Enter text"></textarea>
+                            </div>
+                        </div>
+                        <button id="btn-send-message" type="submit" class="btn btn-primary">
+                            <i class="glyphicon glyphicon-envelope"></i> Send
+                        </button>
+                        <button id="btn-cancel-message" type="button" class="btn btn-default" data-ng-click="closeCompose()">Cancel</button>
+                    </form>
+                </div>
+            </div>   
+        </div>
+        
         <ul class="nav nav-tabs">
             <li class="active">
                 <a href="/#home" data-toggle="tab">
@@ -11,24 +50,25 @@
                 </a>
             </li>
         </ul>
-        <!-- Tab panes -->
         <div class="tab-content">
             <div class="tab-pane fade in active" id="inbox">
                 <div class="list-group" data-ng-show="messages.messages">
                     <a data-ng-repeat="message in messages.messages" href="" class="list-group-item">
-                        <span class="glyphicon glyphicon-user"></span>
+                        <span><img class="avatar" data-ng-src="avatar/{{message.from}}" ></span>
                         <span class="name" style="min-width: 120px;
-                                display: inline-block;">{{message.message.from}}</span>
-                        <span class="">{{message.message.body}}</span>
+                                display: inline-block;">{{message.from}}</span>                        
+                        <span class="name" style="min-width: 120px;
+                                display: inline-block;">{{message.to}}</span>
+                        <span class="">{{message.text}}</span>
                         <span class="text-muted" style="font-size: 11px;"></span>
-                        <span class="badge">{{message.message.created | date:'yyyy-MM-dd HH:mm'}}</span>
+                        <span class="badge">{{message.created | date:'yyyy-MM-dd HH:mm'}}</span>
                         <span class="pull-right">
-                            <span data-ng-show="message.message.unread" class="glyphicon glyphicon-envelope"></span>
+                            <span data-ng-show="message.state == 'unread'" class="glyphicon glyphicon-envelope"></span>
                         </span>
                     </a>
                 </div>
                 <div data-ng-hide="messages.messages">
-                    <p>No messages!</p>
+                    <p class="top15">No messages yet.</p>
                 </div>
             </div>
         </div>

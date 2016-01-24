@@ -17,7 +17,7 @@ public class NewMarkerFlow extends FlowBuilder {
 
   public static final Identifier id = id("createMarker");
 
-  public static final Property<String> itemId = property(id("itemId"), String.class);
+  public static final Property<String> itemId = property(id("messageId"), String.class);
   public static final Property<String> username = property(id("username"), String.class);
   public static final Property<String> markerType = property(id("markerType"), String.class);
   public static final Property<String> newMarkerId = property(id("newMarkerId"), String.class);

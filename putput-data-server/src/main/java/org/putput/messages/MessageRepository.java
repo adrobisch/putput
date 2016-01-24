@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MessageRepository extends CrudRepository<MessageEntity, String> {
-  @Query("select message from MessageEntity message where message.from = :username or message.to = :username")
+  @Query("select message from MessageEntity message where message.from = :username or message.to = :username order by message.created desc")
   List<MessageEntity> findToOrFromUser(@Param("username") String username);
 }

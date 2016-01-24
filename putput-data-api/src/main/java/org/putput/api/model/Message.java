@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "text",
     "state",
     "type",
+    "created",
     "_links"
 })
 public class Message {
@@ -36,6 +37,8 @@ public class Message {
     private String state;
     @JsonProperty("type")
     private String type;
+    @JsonProperty("created")
+    private Double created;
     /**
      * The links of a tag
      * 
@@ -192,6 +195,31 @@ public class Message {
 
     public Message withType(String type) {
         this.type = type;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The created
+     */
+    @JsonProperty("created")
+    public Double getCreated() {
+        return created;
+    }
+
+    /**
+     * 
+     * @param created
+     *     The created
+     */
+    @JsonProperty("created")
+    public void setCreated(Double created) {
+        this.created = created;
+    }
+
+    public Message withCreated(Double created) {
+        this.created = created;
         return this;
     }
 

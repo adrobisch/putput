@@ -5,6 +5,7 @@ import brainslug.jpa.spring.SpringDatabaseConfiguration;
 import brainslug.spring.SpringBrainslugConfiguration;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
+import org.putput.messages.NewMessageFlow;
 import org.putput.password.ForgotPasswordFlow;
 import org.putput.stream.NewItemFlow;
 import org.putput.stream.NewMarkerFlow;
@@ -34,5 +35,10 @@ public class BrainslugConfiguration {
     @Bean
     FlowBuilder newMarkerFlow() {
         return new NewMarkerFlow();
+    }
+    
+    @Bean
+    FlowBuilder newMessageFlow() {
+        return new NewMessageFlow();
     }
 }

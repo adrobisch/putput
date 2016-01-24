@@ -38,7 +38,8 @@ module.exports = function (grunt) {
           paths: [
             "<%= config.css %>",
             "<%= config.node_modules %>/bootstrap/less",
-            "<%= config.node_modules %>/font-awesome/less"
+            "<%= config.node_modules %>/font-awesome/less",
+            "<%= config.node_modules %>/ui-select/dist"
           ],
           cleancss: true
         },

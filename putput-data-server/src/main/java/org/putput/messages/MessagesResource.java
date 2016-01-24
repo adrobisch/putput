@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.putput.messages.MessageResource.*;
+
 @Component
 public class MessagesResource extends BaseResource implements Messages {
 
@@ -22,16 +24,11 @@ public class MessagesResource extends BaseResource implements Messages {
     List<Message> messages = messageRepository
         .findToOrFromUser(user().getUsername())
         .stream()
-        .map(messageEntity -> new Message()
-            .withFrom(messageEntity.getFrom())
-            .withTo(messageEntity.getTo())
-            .withState(messageEntity.getStatus())
-            .withText(messageEntity.getText())
-            .withType(messageEntity.getType())
-            .withId(messageEntity.getId()))
+        .map(toMessage())
         .collect(Collectors.toList());
 
     MessageList messageList = new MessageList().withMessages(messages);
     return GetMessagesResponse.withHaljsonOK(messageList);
   }
+
 }
