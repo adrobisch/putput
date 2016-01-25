@@ -17,7 +17,8 @@
                                 <ui-select data-ng-model="newMessage.recipient" theme="bootstrap">
                                     <ui-select-match placeholder="Select recipient...">{{$select.selected.userName}}</ui-select-match>
                                     <ui-select-choices repeat="user in users | filter: $select.search track by user.userName"
-                                                       refresh="getUsers($select.search)">
+                                                       refresh="getUsers($select.search)"
+                                                       refresh-delay="500">
                                         <img class="avatar" data-ng-src="avatar/{{user.userName}}" >
                                         <div data-ng-bind-html="user.userName | highlight: $select.search"></div>
                                         <div data-ng-bind-html="user.about | highlight: $select.search"></div>
