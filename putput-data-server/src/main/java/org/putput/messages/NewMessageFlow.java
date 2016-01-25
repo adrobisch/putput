@@ -32,7 +32,7 @@ public class NewMessageFlow extends FlowBuilder {
     flowId(id);
 
     start(task(id("save_message"), saveMessage()))
-            .execute(task(id("send_notification"), sendNotification()).async(true));
+            .execute(task(id("send_notification"), sendNotification()));
   }
 
   Task saveMessage() {
