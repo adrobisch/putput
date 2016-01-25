@@ -310,7 +310,9 @@ schemas:
         "javaType" : "org.putput.api.model.MessageListLinks",
         "description": "The links of a message list",
         "properties": {
-          "self" : { "$ref": "halLink"}
+          "self" : { "$ref": "halLink"},
+          "nextPage" : { "$ref": "halLink"},
+          "previousPage" : { "$ref": "halLink"}
         }
       }
   - file: |
@@ -554,6 +556,12 @@ traits:
                     "count": {
                       "type": "integer"
                     },
+                    "pageSize": {
+                      "type": "integer"
+                    },
+                    "currentPage": {
+                      "type": "integer"
+                    },
                     "<<itemsProperty>>": {
                       "type": "array",
                       "items": {
@@ -735,6 +743,7 @@ traits:
     get:
       responses:
         404:
+        403:
         200:
           body:
             application/hal+json:
@@ -748,6 +757,7 @@ traits:
     delete:
       responses:
         200:
+        403:
 
 /stream:
   get:

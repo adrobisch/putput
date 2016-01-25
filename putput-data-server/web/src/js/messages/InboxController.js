@@ -24,7 +24,40 @@ var InboxController = function (scope, messages, hotkeys, users) {
             scope.messages = messages.data;
         });
     };
-    
+
+    scope.loadNext = function () {
+        messages.nextPage(scope.messages).success(function (messages) {
+            scope.messages = messages;
+        });
+    };
+
+    scope.loadPrevious = function () {
+        messages.previousPage(scope.messages).success(function (messages) {
+            scope.messages = messages;
+        });
+    };
+
+    scope.start = function (messages) {
+        if (!messages) {
+            return 0;
+        }
+        return messages.currentPage * messages.pageSize;
+    };
+
+    scope.end = function (messages) {
+        if (!messages) {
+            return 0;
+        }
+        return (messages.currentPage + 1) * messages.pageSize;
+    };
+
+    scope.totalCount = function () {
+        if (!scope.messages) {
+            return 0;
+        }
+        return scope.messages.count;
+    };
+
     scope.sendMessage = function () {
         if (!scope.newMessage.recipient) {
             return;

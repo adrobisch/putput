@@ -61,10 +61,10 @@ public class UsersResource extends BaseResource implements Users {
     return new PageRequest(page.intValue(), 15);
   }
 
-  private Map<String, Object> nextPageParams(Integer page) {
-    HashMap<String, Object> pageParams = new HashMap<>();
+  private Map<String, String> nextPageParams(Integer page) {
+    HashMap<String, String> pageParams = new HashMap<>();
     if (page != null) {
-      pageParams.put("page", page);
+      pageParams.put("page", page.toString());
     }
     return pageParams;
   }

@@ -43,7 +43,25 @@
                 </div>
             </div>   
         </div>
-        
+
+        <div class="pull-right">
+            <span class="text-muted"><b>{{start(messages)}}</b>–<b>{{end(messages)}}</b> of <b>{{totalCount()}}</b></span>
+            <div class="btn-group btn-group-sm">
+                <button type="button"
+                        class="btn btn-default"
+                        data-ng-disabled="!messages._links.previousPage"
+                        data-ng-click="loadPrevious()">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </button>
+                <button type="button"
+                        class="btn btn-default"
+                        data-ng-disabled="!messages._links.nextPage"
+                        data-ng-click="loadNext()">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
+            </div>
+        </div>
+
         <ul class="nav nav-tabs">
             <li class="active">
                 <a href="/#home" data-toggle="tab">
@@ -60,9 +78,9 @@
                                 display: inline-block;">{{message.from}}</span>                        
                         <span class="name" style="min-width: 120px;
                                 display: inline-block;">{{message.to}}</span>
-                        <span class="">{{message.text}}</span>
-                        <span class="text-muted" style="font-size: 11px;"></span>
                         <span class="badge">{{message.created | date:'yyyy-MM-dd HH:mm'}}</span>
+                        <span class="well top10 message-text">{{message.text}}</span>
+                        <span class="text-muted" style="font-size: 11px;"></span>
                         <span class="pull-right">
                             <span data-ng-show="message.state == 'unread'" class="glyphicon glyphicon-envelope"></span>
                         </span>

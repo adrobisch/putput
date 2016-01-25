@@ -88,6 +88,14 @@ public interface Message {
             return new Message.DeleteMessageByIdResponse(responseBuilder.build());
         }
 
+        /**
+         * 
+         */
+        public static Message.DeleteMessageByIdResponse withForbidden() {
+            Response.ResponseBuilder responseBuilder = Response.status(403);
+            return new Message.DeleteMessageByIdResponse(responseBuilder.build());
+        }
+
     }
 
     public class GetMessageByIdResponse
@@ -104,6 +112,14 @@ public interface Message {
          */
         public static Message.GetMessageByIdResponse withNotFound() {
             Response.ResponseBuilder responseBuilder = Response.status(404);
+            return new Message.GetMessageByIdResponse(responseBuilder.build());
+        }
+
+        /**
+         * 
+         */
+        public static Message.GetMessageByIdResponse withForbidden() {
+            Response.ResponseBuilder responseBuilder = Response.status(403);
             return new Message.GetMessageByIdResponse(responseBuilder.build());
         }
 

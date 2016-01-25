@@ -21,14 +21,14 @@ public interface HalSupport {
         .segment(paths).toTemplate());
   }
 
-  default HalLink link(Class<?> targetResource, Map<String, Object> queryParams, String... paths) {
+  default HalLink link(Class<?> targetResource, Map<String, String> queryParams, String... paths) {
     return new HalLink().withHref(withParams(getUriInfo().getBaseUriBuilder(), queryParams)
         .segment(FileHelper.getPathFromResource(targetResource))
         .scheme(getProtocol())
         .segment(paths).toTemplate());
   }
 
-  default UriBuilder withParams(UriBuilder baseUriBuilder, Map<String, Object> queryParams) {
+  default UriBuilder withParams(UriBuilder baseUriBuilder, Map<String, String> queryParams) {
     queryParams.entrySet().forEach(entry -> baseUriBuilder.queryParam(entry.getKey(), entry.getValue()));
     return baseUriBuilder;
   }
