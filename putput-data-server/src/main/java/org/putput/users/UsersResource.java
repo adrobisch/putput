@@ -51,7 +51,7 @@ public class UsersResource extends BaseResource implements Users {
 
   private Iterable<UserEntity> userPage(Optional<String> search, Pageable pageable) {
     if (search.isPresent()) {
-      return userRepository.findByUsernameContainingOrderByUsernameAsc(search.get());
+      return userRepository.findByUsernameContainingIgnoreCaseOrderByUsernameAsc(search.get());
     } else {
       return userRepository.findAllByOrderByUsername(pageable);
     }

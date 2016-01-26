@@ -1,31 +1,30 @@
 <div class="row inbox" data-ng-init="init()">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="panel panel-default animation" data-ng-cloak>
             <div class="panel-body">
-                <form class="form-horizontal" data-ng-submit="sendMessage()">
+                <form data-ng-submit="sendMessage()">
                     <div class="form-group">
-                        <label for="recipient" class="control-label col-md-1">To</label>
-                        <div class="col-md-11" id="recipient">
-                            <ui-select data-ng-model="newMessage.recipient" theme="bootstrap">
-                                <ui-select-match placeholder="Select recipient...">{{$select.selected.userName}}</ui-select-match>
-                                <ui-select-choices repeat="user in users | filter: $select.search track by user.userName"
-                                                   refresh="getUsers($select.search)"
-                                                   refresh-delay="500">
-                                    <img class="avatar" data-ng-src="avatar/{{user.userName}}" >
-                                    <div data-ng-bind-html="user.userName | highlight: $select.search"></div>
-                                    <div data-ng-bind-html="user.about | highlight: $select.search"></div>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
+                        <label>To</label>
+                        <ui-select id="recipient" data-ng-model="newMessage.recipient" theme="bootstrap">
+                            <ui-select-match placeholder="Select recipient...">
+                                <img style="width:20px; height: 20px" data-ng-src="avatar/{{$select.selected.userName}}" >
+                                <span>{{$select.selected.userName}}</span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="user in users | filter: $select.search track by user.userName"
+                                               refresh="getUsers($select.search)"
+                                               refresh-delay="700">
+                                <img class="avatar" data-ng-src="avatar/{{user.userName}}" >
+                                <div data-ng-bind-html="user.userName | highlight: $select.search"></div>
+                                <div data-ng-bind-html="user.about | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                     <div class="form-group">
-                        <label for="text" class="control-label col-md-1">Text</label>
-                        <div class="col-md-11">
-                                <textarea id="text"
-                                          data-ng-model="newMessage.message.text"
-                                          class="form-control"
-                                          placeholder="Enter text"></textarea>
-                        </div>
+                        <label>Text</label>
+                        <textarea id="text"
+                                  data-ng-model="newMessage.message.text"
+                                  class="form-control"
+                                  placeholder="Enter text"></textarea>
                     </div>
                     <button id="btn-send-message" type="submit" class="btn btn-primary">
                         <i class="glyphicon glyphicon-send"></i> Send
@@ -34,10 +33,15 @@
             </div>
         </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-8">
         <div class="pull-right">
             <span class="text-muted"><b>{{start(messages)}}</b>–<b>{{end(messages)}}</b> of <b>{{totalCount()}}</b></span>
             <div class="btn-group btn-group-sm">
+                <button type="button"
+                        class="btn btn-default"
+                        data-ng-click="getMessages()">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                </button>
                 <button type="button"
                         class="btn btn-default"
                         data-ng-disabled="!messages._links.previousPage"
@@ -52,7 +56,6 @@
                 </button>
             </div>
         </div>
-
         <div class="panel-body">
             <ul class="chat">
                 <li class="left clearfix" data-ng-repeat="message in messages.messages">
@@ -76,6 +79,22 @@
                     </div>
                 </li>
             </ul>
+        </div>
+        <div class="pull-right">
+            <div class="btn-group btn-group-sm">
+                <button type="button"
+                        class="btn btn-default"
+                        data-ng-disabled="!messages._links.previousPage"
+                        data-ng-click="loadPrevious()">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </button>
+                <button type="button"
+                        class="btn btn-default"
+                        data-ng-disabled="!messages._links.nextPage"
+                        data-ng-click="loadNext()">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
+            </div>
         </div>
     </div>
 </div>

@@ -9,7 +9,7 @@ inboxModule.service("messages", require('./MessagesApi'));
 inboxModule.controller("InboxController", InboxController);
 
 inboxModule.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/inbox', {
+  $routeProvider.when('/inbox/:page?', {
     controller: InboxController,
     template: require('./inbox.html')
   });

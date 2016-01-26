@@ -24,13 +24,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
     if (!registry.hasMappingForPattern("/**")) {
-      registry.addResourceHandler("/**").addResourceLocations(
-        ROOT_RESOURCES);
+      registry
+          .addResourceHandler("/**")
+          .addResourceLocations(ROOT_RESOURCES)
+          .setCachePeriod(60*60);
     }
 
     if (!registry.hasMappingForPattern("/static/**")) {
-      registry.addResourceHandler("/static/**").addResourceLocations(
-        CLASSPATH_RESOURCE_LOCATIONS);
+      registry
+          .addResourceHandler("/static/**")
+          .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS)
+          .setCachePeriod(3600*24);
     }
   }
 

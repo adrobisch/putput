@@ -1,6 +1,6 @@
 var emojify = require("emojify.js");
 
-var InboxController = function (scope, messages, hotkeys, users, interval) {
+var InboxController = function (scope, messages, hotkeys, users, routeParams, location) {
     scope.newMessage = {
         "recipient": null,
         "message": {
@@ -9,6 +9,7 @@ var InboxController = function (scope, messages, hotkeys, users, interval) {
     };
     
     scope.users = [];
+    scope.page = routeParams.page;
     
     scope.init = function () {
       scope.getUsers();
@@ -22,7 +23,7 @@ var InboxController = function (scope, messages, hotkeys, users, interval) {
     };
     
     scope.getMessages = function () {
-        messages.getMessages().success(function (messages) {
+        messages.getMessages(scope.page || (scope.messages ? scope.messages.currentPage : null)).success(function (messages) {
             scope.messages = messages.data;
         });
     };
@@ -32,15 +33,11 @@ var InboxController = function (scope, messages, hotkeys, users, interval) {
     };
 
     scope.loadNext = function () {
-        messages.nextPage(scope.messages).success(function (messages) {
-            scope.messages = messages;
-        });
+        location.path("/inbox/" + (scope.messages.currentPage + 1));
     };
 
     scope.loadPrevious = function () {
-        messages.previousPage(scope.messages).success(function (messages) {
-            scope.messages = messages;
-        });
+        location.path("/inbox/" + (scope.messages.currentPage - 1));
     };
 
     scope.start = function (messages) {
@@ -81,22 +78,20 @@ var InboxController = function (scope, messages, hotkeys, users, interval) {
         combo: 'ctrl+return',
         allowIn: ['TEXTAREA'],
         callback: scope.sendMessage
-    });
-
-    hotkeys.bindTo(scope).add({
+    }).add({
         description: "send message",
         combo: 'shift+return',
         allowIn: ['TEXTAREA'],
         callback: scope.sendMessage
+    }).add({
+        description: "reload messages",
+        combo: 'r',
+        allowIn: ['TEXTAREA'],
+        callback: scope.getMessages
     });
 
-    scope.reloadPromise = interval(scope.getMessages, 3000);
-
-    scope.$on('$destroy', function() {
-        interval.cancel(scope.reloadPromise);
-    });
 };
 
-InboxController.$inject = ["$scope", "messages", "hotkeys", "users", "$interval"];
+InboxController.$inject = ["$scope", "messages", "hotkeys", "users", "$routeParams", "$location"];
 
 module.exports = InboxController;

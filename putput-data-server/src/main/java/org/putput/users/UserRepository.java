@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface UserRepository extends PagingAndSortingRepository<UserEntity, String> {
   UserEntity findByUsername(String username);
   Optional<UserEntity> findByEmail(String email);
-  List<UserEntity> findByUsernameContainingOrderByUsernameAsc(String search);
+  List<UserEntity> findByUsernameContainingIgnoreCaseOrderByUsernameAsc(String search);
   Page<UserEntity> findAllByOrderByUsername(Pageable pageable);
 }
