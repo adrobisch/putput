@@ -3,7 +3,13 @@ function UsersApi(http, api) {
   var userSettingsRelation = "user-settings";
   var userFeedsRelation = "user-feeds";
   var userFeedRelation = "user-feed";
-
+  
+  this.addUser = function (user) {
+    return api.withLink("user", function (userLink) {
+      return http.post(userLink, user);
+    });
+  };
+  
   this.getUsers = function (userListCallback, search) {
     return api.withLink("users", this.getUsersFromUrl(userListCallback, search));
   };
@@ -16,7 +22,7 @@ function UsersApi(http, api) {
   };
 
   this.userInfo = function (userInfoCallback) {
-    return api.withLink("user", function (userLink) {
+    return api.withLink("user-info", function (userLink) {
       return http.get(userLink).success(userInfoCallback);
     });
   };

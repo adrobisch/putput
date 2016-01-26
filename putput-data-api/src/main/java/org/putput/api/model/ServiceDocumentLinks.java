@@ -25,9 +25,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "contact",
     "users",
     "user",
+    "user-info",
     "user-settings",
     "user-feeds",
     "user-feed",
+    "profile",
     "login",
     "logout",
     "password-reset",
@@ -105,6 +107,12 @@ public class ServiceDocumentLinks {
      * A HAL link
      * 
      */
+    @JsonProperty("user-info")
+    private HalLink userInfo;
+    /**
+     * A HAL link
+     * 
+     */
     @JsonProperty("user-settings")
     private HalLink userSettings;
     /**
@@ -119,6 +127,12 @@ public class ServiceDocumentLinks {
      */
     @JsonProperty("user-feed")
     private HalLink userFeed;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("profile")
+    private HalLink profile;
     /**
      * A HAL link
      * 
@@ -447,6 +461,33 @@ public class ServiceDocumentLinks {
      * A HAL link
      * 
      * @return
+     *     The userInfo
+     */
+    @JsonProperty("user-info")
+    public HalLink getUserInfo() {
+        return userInfo;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param userInfo
+     *     The user-info
+     */
+    @JsonProperty("user-info")
+    public void setUserInfo(HalLink userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public ServiceDocumentLinks withUserInfo(HalLink userInfo) {
+        this.userInfo = userInfo;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
      *     The userSettings
      */
     @JsonProperty("user-settings")
@@ -521,6 +562,33 @@ public class ServiceDocumentLinks {
 
     public ServiceDocumentLinks withUserFeed(HalLink userFeed) {
         this.userFeed = userFeed;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The profile
+     */
+    @JsonProperty("profile")
+    public HalLink getProfile() {
+        return profile;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param profile
+     *     The profile
+     */
+    @JsonProperty("profile")
+    public void setProfile(HalLink profile) {
+        this.profile = profile;
+    }
+
+    public ServiceDocumentLinks withProfile(HalLink profile) {
+        this.profile = profile;
         return this;
     }
 

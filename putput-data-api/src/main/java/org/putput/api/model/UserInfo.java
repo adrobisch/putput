@@ -1,7 +1,9 @@
 
 package org.putput.api.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -16,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "userName",
     "displayName",
-    "about"
+    "about",
+    "rssFeeds"
 })
 public class UserInfo {
 
@@ -26,6 +29,8 @@ public class UserInfo {
     private String displayName;
     @JsonProperty("about")
     private String about;
+    @JsonProperty("rssFeeds")
+    private List<RssFeed> rssFeeds = new ArrayList<RssFeed>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -101,6 +106,31 @@ public class UserInfo {
 
     public UserInfo withAbout(String about) {
         this.about = about;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The rssFeeds
+     */
+    @JsonProperty("rssFeeds")
+    public List<RssFeed> getRssFeeds() {
+        return rssFeeds;
+    }
+
+    /**
+     * 
+     * @param rssFeeds
+     *     The rssFeeds
+     */
+    @JsonProperty("rssFeeds")
+    public void setRssFeeds(List<RssFeed> rssFeeds) {
+        this.rssFeeds = rssFeeds;
+    }
+
+    public UserInfo withRssFeeds(List<RssFeed> rssFeeds) {
+        this.rssFeeds = rssFeeds;
         return this;
     }
 

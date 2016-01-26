@@ -373,7 +373,13 @@ schemas:
         "properties": {
           "userName": {"type": "string"},
           "displayName": {"type": "string"},
-          "about": {"type": "string"}
+          "about": {"type": "string"},
+          "rssFeeds": {
+            "type": "array",
+            "items": {
+                "$ref": "rssFeed"
+            }
+          }
         }
       }
   - userListLinks: |
@@ -501,9 +507,11 @@ schemas:
               "contact" : { "$ref": "halLink"},
               "users" : { "$ref": "halLink"},
               "user" : { "$ref": "halLink"},
+              "user-info" : { "$ref": "halLink"},
               "user-settings" : { "$ref": "halLink"},
               "user-feeds" : { "$ref": "halLink"},
               "user-feed" : { "$ref": "halLink"},
+              "profile" : { "$ref": "halLink"},
               "login" : { "$ref": "halLink"},
               "logout" : { "$ref": "halLink"},
               "password-reset": { "$ref": "halLink"},

@@ -1,29 +1,32 @@
 'use strict';
 
-var jQuery = window.jQuery = require("jquery");
-var flow = window.Flow = require("flow.js/dist/flow");
+var jQuery = window.jQuery = require('jquery');
+var flow = window.Flow = require('flow.js/dist/flow');
 var angular = window.angular = require('angular');
-var fullCalendar = require("fullcalendar");
+var fullCalendar = require('fullcalendar');
 
-
-require("ng-flow/dist/ng-flow");
+require('ng-flow/dist/ng-flow');
 require('angular-hotkeys');
-require("angular-ui-calendar");
+require('angular-ui-validate');
+require('angular-ui-calendar');
+require('angular-bootstrap-show-errors');
 require('bootstrap');
-require("ui-select");
-
+require('ui-select');
 
 var app = angular.module('app', [
-  "cfp.hotkeys",
-  "flow",
-  "ui.select",
+  'cfp.hotkeys',
+  'flow',
+  'ui.select',
+  'ui.validate',
   'ui.calendar',
-  require("angular-ui-bootstrap"),
-  require("angular-route"),
-  require("angular-animate"),
-  require("angular-loading-bar"),
-  require("angular-moment").name,
+  'ui.bootstrap.showErrors',
+  require('angular-ui-bootstrap'),
+  require('angular-route'),
+  require('angular-animate'),
+  require('angular-loading-bar'),
+  require('angular-moment').name,
   require('./login/LoginModule').name,
+  require('./signup/SignupModule').name,
   require('./home/HomeModule').name,
   require('./profile/ProfileModule').name,
   require('./navbar/NavbarModule').name,
@@ -35,8 +38,8 @@ var app = angular.module('app', [
   require('./user/SettingsModule').name,
   require('./password/PasswordResetModule').name,
   require('./file/FilesModule').name,
-  require("./search/SearchModule").name,
-  require("./media/MediaModule").name
+  require('./search/SearchModule').name,
+  require('./media/MediaModule').name
 ]);
 
 app.service('api', require('./common/ApiService'));
@@ -96,7 +99,7 @@ app.directive('ngConfirmClick', [
 ]);
 
 app.filter('emojify', function() {
-  var emojify = require("emojify.js");
+  var emojify = require('emojify.js');
 
   emojify.setConfig({
     ignore_emoticons: false,
@@ -109,7 +112,7 @@ app.filter('emojify', function() {
 });
 
 app.filter('markdown', function() {
-  var marked = require("marked");
+  var marked = require('marked');
 
   return function(input) {
     return marked(input);

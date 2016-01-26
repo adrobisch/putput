@@ -3,8 +3,8 @@ var profileController = function (scope, profile, route) {
     scope.profile = null;
 
     scope.getProfile = function () {
-        profile.getProfile(scope.userId).success(function (data) {
-            scope.resource = data;
+        profile.getProfile(scope.userId).success(function (response) {
+            scope.resource = response.data;
             scope.profile = scope.resource.profile;
             scope.following = scope.resource.following;
         });

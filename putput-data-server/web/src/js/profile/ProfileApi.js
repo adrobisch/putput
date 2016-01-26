@@ -1,6 +1,8 @@
-function ProfileApi(http) {
+function ProfileApi(api, http) {
     this.getProfile = function(userId) {
-        return http.get("/api/profile/" + userId);
+        return api.withLink("profile", function (profileLink) {
+            return http.get(profileLink.replace("{userName}", userId));
+        });
     };
 
     this.follow = function(profile) {
@@ -12,6 +14,6 @@ function ProfileApi(http) {
     };
 }
 
-ProfileApi.$inject = ["$http"];
+ProfileApi.$inject = ["api", "$http"];
 
 module.exports = ProfileApi;

@@ -31,13 +31,15 @@ public class UserResource extends BaseResource implements User {
   UuidService uuidService;
 
   @Override
-  public PostUserResponse postUser(UserRegistration entity) throws Exception {
-    UserEntity s = new UserEntity()
-        .setUsername(entity.getUserName())
+  public PostUserResponse postUser(UserRegistration userRegistration) throws Exception {
+    UserEntity newUser = new UserEntity()
+        .setUsername(userRegistration.getUserName())
         .setId(uuidService.uuid())
-        .setEmail(entity.getEmail())
-        .setPasswordHash(passwordService.hash(entity.getPassword()));
-    userRepository.save(s);
+        .setEmail(userRegistration.getEmail())
+        .setPasswordHash(passwordService.hash(userRegistration.getPassword()));
+    
+    userRepository.save(newUser);
+    
     return PostUserResponse.withOK();
   }
 
@@ -89,7 +91,7 @@ public class UserResource extends BaseResource implements User {
 
   @Override
   public PutUserRssFeedResponse putUserRssFeed() throws Exception {
-    return null;
+    throw new UnsupportedOperationException("not supported yet");
   }
 
   @Override

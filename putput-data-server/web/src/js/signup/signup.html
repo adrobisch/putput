@@ -1,0 +1,83 @@
+<div class="container">
+    <div id="signupbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">Sign Up</div>
+            </div>
+
+            <div class="panel-body">
+                <form id="signupForm" name="signupForm" role="form" data-ng-submit="signup()">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <div id="username" class="input-group" data-show-errors>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input id="signup-username"
+                                   type="text"
+                                   data-ng-model="newUser.userName"
+                                   class="form-control"
+                                   name="username"
+                                   data-ng-required="true"
+                                   required
+                                   placeholder="Enter your username">
+                        </div>    
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div id="password" class="input-group" data-show-errors>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+
+                            <input id="signup-password"
+                                   type="password"
+                                   data-ng-model="newUser.password"
+                                   class="form-control"
+                                   name="password"
+                                   data-ng-required="true"
+                                   required
+                                   placeholder="Enter your password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password-repeat">Repeat Password</label>
+                        <div id="password-repeat" class="input-group" data-show-errors>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+
+                            <input id="signup-password-repeat"
+                                   type="password"
+                                   data-ng-model="passwordRepeat"
+                                   class="form-control"
+                                   name="passwordRepeat"
+                                   data-ng-required="true"
+                                   required
+                                   placeholder="Repeat your password"
+                                   data-ui-validate="{matches: '$value == newUser.password'}"
+                                   data-ui-validate-watch="'newUser.password'">
+                        </div>
+                        <p data-ng-show="signupForm.passwordRepeat.$error.matches"
+                           class="help-block">Passwords must match</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">e-Mail</label>
+                        <div id="email" class="input-group" data-show-errors>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+
+                            <input id="signup-email"
+                                   type="email"
+                                   data-ng-required="true"
+                                   required
+                                   data-ng-model="newUser.email"
+                                   class="form-control"
+                                   name="email"
+                                   placeholder="Enter you email (for password recovery and notifications only)">
+                        </div>                        
+                    </div>
+                    <button id="btn-signup"
+                            type="submit"
+                            class="btn btn-primary"
+                            data-ng-disabled="signupForm.$invalid">
+                        <i class="glyphicon glyphicon-pencil"></i> Signup
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
