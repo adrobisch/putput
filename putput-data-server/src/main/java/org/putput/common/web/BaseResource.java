@@ -3,14 +3,17 @@ package org.putput.common.web;
 import org.putput.config.PutPutConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
+import java.math.BigDecimal;
 
-public class BaseResource implements HalSupport {
+public class BaseResource implements HalSupport, PagingSupport {
   @Context
   UriInfo uriInfo;
 
@@ -51,4 +54,5 @@ public class BaseResource implements HalSupport {
   public User user() {
     return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
+
 }

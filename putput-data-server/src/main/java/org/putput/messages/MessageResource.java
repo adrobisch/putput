@@ -25,8 +25,10 @@ public class MessageResource extends BaseResource implements Message {
         Optional<org.putput.api.model.Message> message = messageService.getById(id).map(toMessage());
         if (!message.isPresent()) {
             return GetMessageByIdResponse.withNotFound();
+        } else if (!message.get().getTo().equals(user().getUsername())){
+            return GetMessageByIdResponse.withForbidden();
         } else {
-            return GetMessageByIdResponse.withHaljsonOK(message.get());    
+            return GetMessageByIdResponse.withHaljsonOK(message.get());
         }
     }
 

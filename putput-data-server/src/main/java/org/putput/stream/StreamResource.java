@@ -45,21 +45,16 @@ public class StreamResource extends BaseResource implements Stream {
         .withSelf(link(Stream.class));
 
     if (streamItemPage.hasNext()) {
-      links.withNextPage(link(Stream.class,
-          nextPageParams(profile, type, streamItemPage)));
+      Map<String, String> params = nextPageParams(streamItemPage);
+      ofNullable(profile).map(profileValue -> params.put("profile", profileValue));
+      ofNullable(type).map(typeValue -> params.put("type", typeValue));
+
+      links.withNextPage(link(Stream.class, params));
     }
 
     return GetStreamResponse.withHaljsonOK(new StreamItemList()
         .withItems(streamItems)
         .withLinks(links));
-  }
-
-  private Map<String, Object> nextPageParams(String profile, String type, Page<StreamItemEntity> streamItemPage) {
-    Map<String, Object> params = new HashMap<>();
-    params.put("page", streamItemPage.nextPageable().getPageNumber());
-    ofNullable(profile).map(profileValue -> params.put("profile", profileValue));
-    ofNullable(type).map(typeValue -> params.put("type", typeValue));
-    return params;
   }
 
   private Page<StreamItemEntity> getItems(String profile, String type, BigDecimal page) {
@@ -79,10 +74,6 @@ public class StreamResource extends BaseResource implements Stream {
     } else {
       return streamItemService.getFollowedByUserName(user().getUsername(), pageable);
     }
-  }
-
-  Pageable pageable(BigDecimal page) {
-    return new PageRequest(page.intValue(), 15);
   }
 
   private Function<StreamItem, StreamItemResource> itemToItemResource() {

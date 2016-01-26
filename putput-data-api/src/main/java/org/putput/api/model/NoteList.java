@@ -22,6 +22,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
     "count",
+    "pageSize",
+    "currentPage",
     "notes",
     "_links"
 })
@@ -29,6 +31,10 @@ public class NoteList {
 
     @JsonProperty("count")
     private Integer count;
+    @JsonProperty("pageSize")
+    private Integer pageSize;
+    @JsonProperty("currentPage")
+    private Integer currentPage;
     @JsonProperty("notes")
     private List<Note> notes = new ArrayList<Note>();
     /**
@@ -62,6 +68,56 @@ public class NoteList {
 
     public NoteList withCount(Integer count) {
         this.count = count;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The pageSize
+     */
+    @JsonProperty("pageSize")
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    /**
+     * 
+     * @param pageSize
+     *     The pageSize
+     */
+    @JsonProperty("pageSize")
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public NoteList withPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The currentPage
+     */
+    @JsonProperty("currentPage")
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    /**
+     * 
+     * @param currentPage
+     *     The currentPage
+     */
+    @JsonProperty("currentPage")
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public NoteList withCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
         return this;
     }
 

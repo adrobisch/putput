@@ -19,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-    "self"
+    "self",
+    "nextPage",
+    "previousPage"
 })
 public class MessageListLinks {
 
@@ -29,6 +31,18 @@ public class MessageListLinks {
      */
     @JsonProperty("self")
     private HalLink self;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("nextPage")
+    private HalLink nextPage;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("previousPage")
+    private HalLink previousPage;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -56,6 +70,60 @@ public class MessageListLinks {
 
     public MessageListLinks withSelf(HalLink self) {
         this.self = self;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The nextPage
+     */
+    @JsonProperty("nextPage")
+    public HalLink getNextPage() {
+        return nextPage;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param nextPage
+     *     The nextPage
+     */
+    @JsonProperty("nextPage")
+    public void setNextPage(HalLink nextPage) {
+        this.nextPage = nextPage;
+    }
+
+    public MessageListLinks withNextPage(HalLink nextPage) {
+        this.nextPage = nextPage;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The previousPage
+     */
+    @JsonProperty("previousPage")
+    public HalLink getPreviousPage() {
+        return previousPage;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param previousPage
+     *     The previousPage
+     */
+    @JsonProperty("previousPage")
+    public void setPreviousPage(HalLink previousPage) {
+        this.previousPage = previousPage;
+    }
+
+    public MessageListLinks withPreviousPage(HalLink previousPage) {
+        this.previousPage = previousPage;
         return this;
     }
 

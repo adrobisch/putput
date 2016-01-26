@@ -1,12 +1,12 @@
 package org.putput.messages;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
-public interface MessageRepository extends CrudRepository<MessageEntity, String> {
+public interface MessageRepository extends PagingAndSortingRepository<MessageEntity, String> {
   @Query("select message from MessageEntity message where message.from = :username or message.to = :username order by message.created desc")
-  List<MessageEntity> findToOrFromUser(@Param("username") String username);
+  Page<MessageEntity> findToOrFromUser(@Param("username") String username, Pageable pageable);
 }
