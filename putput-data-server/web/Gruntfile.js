@@ -39,7 +39,9 @@ module.exports = function (grunt) {
             "<%= config.css %>",
             "<%= config.node_modules %>/bootstrap/less",
             "<%= config.node_modules %>/font-awesome/less",
-            "<%= config.node_modules %>/ui-select/dist"
+            "<%= config.node_modules %>/ui-select/dist",
+            "<%= config.node_modules %>/fullcalendar/dist",
+            "<%= config.node_modules %>/angular-hotkeys/build"
           ],
           cleancss: true
         },

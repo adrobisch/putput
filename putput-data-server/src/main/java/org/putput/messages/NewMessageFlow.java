@@ -64,7 +64,7 @@ public class NewMessageFlow extends FlowBuilder {
         if (ofNullable(foundUser.getEmail()).isPresent()) {
           SimpleMailMessage mentionMessage = new SimpleMailMessage();
           mentionMessage.setFrom("info@putput.org");
-          mentionMessage.setSubject("New Message from @" + messageEntity.getFrom());
+          mentionMessage.setSubject("New message from @" + messageEntity.getFrom());
           mentionMessage.setTo(foundUser.getEmail());
           mentionMessage.setText(new MailTemplates()
                   .create("message")

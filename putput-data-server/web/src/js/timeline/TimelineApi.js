@@ -1,13 +1,6 @@
-var emojify = require("emojify.js");
-
-function TimelineApi(http, sce, q) {
-    emojify.setConfig({
-       ignore_emoticons: false,
-       img_dir: '/vendor/emojify.js/dist/images/basic'
-    });
-
+function TimelineApi(http, sce, q, filter) {
     this.transformItemContent = function (item) {
-        item.streamItem.content = sce.trustAsHtml(emojify.replace(item.streamItem.content));
+        item.streamItem.content = sce.trustAsHtml(filter('emojify')(item.streamItem.content));
         return item;
     };
 
@@ -68,6 +61,6 @@ function TimelineApi(http, sce, q) {
     };
 }
 
-TimelineApi.$inject = ["$http", "$sce", "$q"];
+TimelineApi.$inject = ["$http", "$sce", "$q", "$filter"];
 
 module.exports = TimelineApi;

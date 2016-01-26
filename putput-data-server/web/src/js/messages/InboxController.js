@@ -1,4 +1,6 @@
-var InboxController = function (scope, messages, hotkeys, users) {
+var emojify = require("emojify.js");
+
+var InboxController = function (scope, messages, hotkeys, users, interval) {
     scope.newMessage = {
         "recipient": null,
         "message": {
@@ -23,6 +25,10 @@ var InboxController = function (scope, messages, hotkeys, users) {
         messages.getMessages().success(function (messages) {
             scope.messages = messages.data;
         });
+    };
+    
+    scope.formatText = function (text) {
+        return emojify.replace(text);
     };
 
     scope.loadNext = function () {
@@ -66,31 +72,31 @@ var InboxController = function (scope, messages, hotkeys, users) {
         scope.newMessage.message.to = scope.newMessage.recipient.userName;
         messages.sendMessage(scope.newMessage.message).success(function () {
             scope.getMessages();
-            scope.compose = false;
+            scope.newMessage.message.text = null;
         });
     };
     
-    scope.openCompose = function () {
-      scope.compose = true;  
-    };
-
-    scope.closeCompose = function () {
-        scope.compose = false;
-    };
-
-    hotkeys.add({
+    hotkeys.bindTo(scope).add({
+        description: "send message",
         combo: 'ctrl+return',
         allowIn: ['TEXTAREA'],
         callback: scope.sendMessage
     });
 
-    hotkeys.add({
+    hotkeys.bindTo(scope).add({
+        description: "send message",
         combo: 'shift+return',
         allowIn: ['TEXTAREA'],
         callback: scope.sendMessage
     });
+
+    scope.reloadPromise = interval(scope.getMessages, 3000);
+
+    scope.$on('$destroy', function() {
+        interval.cancel(scope.reloadPromise);
+    });
 };
 
-InboxController.$inject = ["$scope", "messages", "hotkeys", "users"];
+InboxController.$inject = ["$scope", "messages", "hotkeys", "users", "$interval"];
 
 module.exports = InboxController;

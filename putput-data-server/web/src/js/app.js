@@ -3,16 +3,21 @@
 var jQuery = window.jQuery = require("jquery");
 var flow = window.Flow = require("flow.js/dist/flow");
 var angular = window.angular = require('angular');
+var fullCalendar = require("fullcalendar");
+
 
 require("ng-flow/dist/ng-flow");
 require('angular-hotkeys');
+require("angular-ui-calendar");
 require('bootstrap');
 require("ui-select");
+
 
 var app = angular.module('app', [
   "cfp.hotkeys",
   "flow",
   "ui.select",
+  'ui.calendar',
   require("angular-ui-bootstrap"),
   require("angular-route"),
   require("angular-animate"),
@@ -26,6 +31,7 @@ var app = angular.module('app', [
   require('./note/NotesModule').name,
   require('./explore/ExploreModule').name,
   require('./messages/InboxModule').name,
+  require('./calendar/CalendarModule').name,
   require('./user/SettingsModule').name,
   require('./password/PasswordResetModule').name,
   require('./file/FilesModule').name,
@@ -88,5 +94,26 @@ app.directive('ngConfirmClick', [
     }
   }
 ]);
+
+app.filter('emojify', function() {
+  var emojify = require("emojify.js");
+
+  emojify.setConfig({
+    ignore_emoticons: false,
+    img_dir: '/vendor/emojify.js/dist/images/basic'
+  });
+  
+  return function(input) {
+    return emojify.replace(input);
+  };
+});
+
+app.filter('markdown', function() {
+  var marked = require("marked");
+
+  return function(input) {
+    return marked(input);
+  };
+});
 
 module.exports = app;

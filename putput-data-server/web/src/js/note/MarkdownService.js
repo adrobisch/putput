@@ -1,13 +1,11 @@
-var marked = require("marked");
-
-var MarkdownService = function (sce) {
+var MarkdownService = function (sce, filter) {
   return {
     render: function(markdownContent) {
-      return sce.trustAsHtml(marked(markdownContent));
+      return sce.trustAsHtml(filter('markdown')(markdownContent));
     }
   };
 };
 
-MarkdownService.$inject = ['$sce'];
+MarkdownService.$inject = ['$sce', '$filter'];
 
 module.exports = MarkdownService;
