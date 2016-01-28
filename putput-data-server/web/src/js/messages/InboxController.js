@@ -27,6 +27,10 @@ var InboxController = function (scope, messages, hotkeys, users, routeParams, lo
             scope.messages = messages.data;
         });
     };
+
+    scope.deleteMessage = function (message) {
+        messages.deleteMessage(message).success(scope.getMessages);
+    };
     
     scope.formatText = function (text) {
         return emojify.replace(text);

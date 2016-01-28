@@ -301,7 +301,8 @@ schemas:
         "javaType" : "org.putput.api.model.MessageLinks",
         "description": "The links of a tag",
         "properties": {
-          "self" : { "$ref": "halLink"}
+          "self" : { "$ref": "halLink"},
+          "delete" : { "$ref": "halLink"}
         }
       }
   - messageListLinks: |
@@ -764,6 +765,7 @@ traits:
         200:
     delete:
       responses:
+        404:
         200:
         403:
 
@@ -778,6 +780,13 @@ traits:
         description: the type of stream to receive
         type: string
         required: false
+  /rss:
+    /{userName}:
+      get:
+        responses:
+          200:
+            body:
+              application/atom+xml:
   /items:
     post:
       body:
@@ -855,7 +864,6 @@ traits:
       delete:
         responses:
           200:
-
 /users:
   get:
     is: [ halCollection: { id: userList, collectionJavaType: org.putput.api.model.UserList, itemsProperty: users, itemSchema: userInfo, collectionLinks: userListLinks}]

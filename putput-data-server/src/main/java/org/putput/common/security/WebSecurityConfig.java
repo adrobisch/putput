@@ -3,6 +3,7 @@ package org.putput.common.security;
 import org.putput.api.resource.Login;
 import org.putput.api.resource.Logout;
 import org.putput.api.resource.PasswordRequest;
+import org.putput.api.resource.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private static final String apiBasePath = "/api/";
   private static String loginPath = apiBasePath + getPathFromResource(Login.class);
   private static String logoutPath = apiBasePath + getPathFromResource(Logout.class);
+  private static String userPath = apiBasePath + getPathFromResource(User.class);
   public static final String passwordRequestPath = apiBasePath + getPathFromResource(PasswordRequest.class);
 
   @Override
@@ -50,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .and()
       .authorizeRequests()
       .requestMatchers(request -> request.getRequestURI().startsWith(loginPath)).anonymous()
+      .requestMatchers(request -> request.getRequestURI().equals(userPath) && request.getMethod().equalsIgnoreCase("POST")).anonymous()
       .requestMatchers(request -> request.getRequestURI().startsWith(passwordRequestPath)).permitAll()
       .requestMatchers(request -> request.getRequestURI().startsWith(apiBasePath + getPathFromResource(PasswordRequest.class))).anonymous()
       .requestMatchers(request -> request.getRequestURI().startsWith(apiBasePath)).authenticated()

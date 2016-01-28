@@ -32,7 +32,7 @@ public class MessagesResource extends BaseResource implements Messages {
     List<Message> messages = messagesPage
         .getContent()
         .stream()
-        .map(toMessage())
+        .map(toMessage(this, user().getUsername()))
         .collect(Collectors.toList());
 
     MessageListLinks messageListLinks = new MessageListLinks();

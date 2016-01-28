@@ -1,5 +1,8 @@
 package org.putput.stream;
 
+import com.rometools.rome.feed.synd.*;
+import com.rometools.rome.io.FeedException;
+import com.rometools.rome.io.SyndFeedOutput;
 import org.putput.api.model.*;
 import org.putput.api.resource.Stream;
 import org.putput.common.web.BaseResource;
@@ -9,14 +12,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
+import javax.ws.rs.core.StreamingOutput;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 @Controller
@@ -55,6 +59,48 @@ public class StreamResource extends BaseResource implements Stream {
     return GetStreamResponse.withHaljsonOK(new StreamItemList()
         .withItems(streamItems)
         .withLinks(links));
+  }
+
+  @Override
+  public GetStreamRssByUserNameResponse getStreamRssByUserName(String userName) throws Exception {
+    StreamingOutput rssOutput = outputStream -> {
+      PageRequest pageable = new PageRequest(0, 30);
+
+      SyndFeed feed = new SyndFeedImpl();
+      feed.setFeedType("rss_2.0");
+
+      feed.setTitle("PutPut RSS");
+      feed.setLink("https://putput.org/api/stream/rss/"+userName);
+      feed.setDescription("PutPut feed for @" + userName);
+
+      feed.setEntries(rssEntries(userName, pageable));
+      try {
+        outputStream.write(new SyndFeedOutput().outputString(feed, true).getBytes("UTF-8"));
+      } catch (FeedException e) {
+        throw new RuntimeException(e);
+      }
+    };
+
+    return GetStreamRssByUserNameResponse.withAtomxmlOK(rssOutput);
+  }
+
+  public List<SyndEntry> rssEntries(String userName, PageRequest pageable) {
+    return streamItemService
+        .getByUserName(userName, empty(), pageable)
+        .getContent()
+        .stream()
+        .map(item -> {
+          SyndEntry entry = new SyndEntryImpl();
+          entry.setTitle(item.getTitle());
+          entry.setAuthor(userName);
+          entry.setLink("https://www.putput.org/#/item/" + item.getId());
+          entry.setPublishedDate(item.getCreatedDate());
+          SyndContent description = new SyndContentImpl();
+          description.setType("text/plain");
+          description.setValue(item.getContent());
+          entry.setDescription(description);
+          return entry;
+        }).collect(Collectors.toList());
   }
 
   private Page<StreamItemEntity> getItems(String profile, String type, BigDecimal page) {

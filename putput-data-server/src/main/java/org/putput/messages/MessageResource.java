@@ -1,5 +1,6 @@
 package org.putput.messages;
 
+import org.putput.api.model.MessageLinks;
 import org.putput.api.resource.Message;
 import org.putput.common.web.BaseResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class MessageResource extends BaseResource implements Message {
 
     @Override
     public GetMessageByIdResponse getMessageById(String id) throws Exception {
-        Optional<org.putput.api.model.Message> message = messageService.getById(id).map(toMessage());
+        Optional<org.putput.api.model.Message> message = messageService.getById(id).map(toMessage(this, user().getUsername()));
         if (!message.isPresent()) {
             return GetMessageByIdResponse.withNotFound();
         } else if (!message.get().getTo().equals(user().getUsername())){
@@ -39,12 +40,20 @@ public class MessageResource extends BaseResource implements Message {
 
     @Override
     public DeleteMessageByIdResponse deleteMessageById(String id) throws Exception {
-        messageService.delete(id);
-        return DeleteMessageByIdResponse.withOK();
+        Optional<MessageEntity> message = messageService.getById(id);
+        if (!message.isPresent()) {
+            return DeleteMessageByIdResponse.withNotFound();
+        } else if (!message.get().getFrom().equals(user().getUsername())){
+            return DeleteMessageByIdResponse.withForbidden();
+        } else {
+            messageService.delete(id);
+            return DeleteMessageByIdResponse.withOK();
+        }
     }
 
-    public static Function<MessageEntity, org.putput.api.model.Message> toMessage() {
-        return messageEntity -> new org.putput.api.model.Message()
+    public static Function<MessageEntity, org.putput.api.model.Message> toMessage(BaseResource resource, String username) {
+        return messageEntity -> {
+            org.putput.api.model.Message message = new org.putput.api.model.Message()
                 .withId(messageEntity.getId())
                 .withCreated(messageEntity.getCreated().doubleValue())
                 .withFrom(messageEntity.getFrom())
@@ -52,5 +61,14 @@ public class MessageResource extends BaseResource implements Message {
                 .withState(messageEntity.getStatus())
                 .withText(messageEntity.getText())
                 .withType(messageEntity.getType());
+
+            MessageLinks messageLinks = new MessageLinks();
+
+            if (message.getFrom().equals(username)) {
+                messageLinks.withDelete(resource.link(Message.class, messageEntity.getId()));
+            }
+
+            return message.withLinks(messageLinks);
+        };
     }
 }

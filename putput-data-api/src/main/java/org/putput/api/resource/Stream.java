@@ -11,6 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 import org.putput.api.model.NewStreamItem;
 import org.putput.api.model.StreamItemList;
 import org.putput.api.model.StreamItemResource;
@@ -39,6 +40,22 @@ public interface Stream {
         String type,
         @QueryParam("page")
         BigDecimal page)
+        throws Exception
+    ;
+
+    /**
+     * 
+     * @param userName
+     *     
+     */
+    @GET
+    @Path("rss/{userName}")
+    @Produces({
+        "application/atom+xml"
+    })
+    Stream.GetStreamRssByUserNameResponse getStreamRssByUserName(
+        @PathParam("userName")
+        String userName)
         throws Exception
     ;
 
@@ -158,6 +175,28 @@ public interface Stream {
             Response.ResponseBuilder responseBuilder = Response.status(200).header("Content-Type", "application/hal+json");
             responseBuilder.entity(entity);
             return new Stream.GetStreamResponse(responseBuilder.build());
+        }
+
+    }
+
+    public class GetStreamRssByUserNameResponse
+        extends org.putput.api.support.ResponseWrapper
+    {
+
+
+        private GetStreamRssByUserNameResponse(Response delegate) {
+            super(delegate);
+        }
+
+        /**
+         * 
+         * @param entity
+         *     
+         */
+        public static Stream.GetStreamRssByUserNameResponse withAtomxmlOK(StreamingOutput entity) {
+            Response.ResponseBuilder responseBuilder = Response.status(200).header("Content-Type", "application/atom+xml");
+            responseBuilder.entity(entity);
+            return new Stream.GetStreamRssByUserNameResponse(responseBuilder.build());
         }
 
     }

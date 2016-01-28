@@ -83,6 +83,14 @@ public interface Message {
         /**
          * 
          */
+        public static Message.DeleteMessageByIdResponse withNotFound() {
+            Response.ResponseBuilder responseBuilder = Response.status(404);
+            return new Message.DeleteMessageByIdResponse(responseBuilder.build());
+        }
+
+        /**
+         * 
+         */
         public static Message.DeleteMessageByIdResponse withOK() {
             Response.ResponseBuilder responseBuilder = Response.status(200);
             return new Message.DeleteMessageByIdResponse(responseBuilder.build());

@@ -10,6 +10,10 @@ function MessagesApi(http, api) {
             return http.post(messageLink, message); 
         });  
     };
+
+    this.deleteMessage = function (message) {
+        return http.delete(message._links["delete"].href);
+    };
 }
 
 MessagesApi.$inject = ['$http', 'api'];

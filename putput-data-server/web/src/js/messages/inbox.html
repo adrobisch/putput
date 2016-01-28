@@ -59,15 +59,22 @@
         <div class="panel-body">
             <ul class="chat">
                 <li class="left clearfix" data-ng-repeat="message in messages.messages">
-                        <span class="chat-img pull-left">
-                            <img data-ng-src="avatar/{{message.from}}" alt="User Avatar" class="avatar img-circle" />
-                        </span>
+                    <span class="chat-img pull-left">
+                        <img data-ng-src="avatar/{{message.from}}" alt="User Avatar" class="avatar img-circle" />
+                    </span>
                     <div class="chat-body clearfix">
                         <div class="header">
                             <strong class="primary-font">{{message.from}}</strong><br>
                             <small class="text-muted">
                                 <span class="glyphicon glyphicon-circle-arrow-right"></span>
                                 {{message.to}}
+                            </small>
+                            <small class="text-muted"
+                                   data-ng-show="message._links.delete"
+                                   style="margin-left: 5px;"
+                                   data-ng-click="deleteMessage(message)"
+                                   data-ng-confirm-click="Are you sure you want to delete {{message.id}}?">
+                                <i class="glyphicon glyphicon-trash"></i>
                             </small>
                             <small class="text-muted pull-right">
                                 <span class="glyphicon glyphicon-time"></span>
