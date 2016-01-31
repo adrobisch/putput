@@ -17,7 +17,8 @@ public class InternetIdentifier extends BaseEntity<InternetIdentifier> {
     SKYPE,
     TWITTER,
     GITHUB,
-    GOOGLE
+    GOOGLE,
+    OTHER
   }
 
   @Column(name ="_TYPE")

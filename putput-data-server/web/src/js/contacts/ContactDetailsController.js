@@ -21,23 +21,17 @@ var ContactDetailsController =  function(scope, routeParams, contacts, alert) {
   };
 
   scope.addNewMail = function () {
-    if(scope.newMail) {
-      scope.contact.emails.push({
-        "address" : scope.newMail,
-        "type" : "HOME"
-      });
-      scope.newMail = null;
-    }
+    scope.contact.emails.push({
+      "address" : "mail@example.org",
+      "type" : "HOME"
+    });
   };
 
   scope.addNewPhoneNumber = function () {
-    if(scope.newPhoneNumber) {
-      scope.contact.phoneNumbers.push({
-        "number" : scope.newPhoneNumber,
-        "type" : "MOBILE"
-      });
-      scope.newPhoneNumber = null;
-    }
+    scope.contact.phoneNumbers.push({
+      "number" : "+49123456789",
+      "type" : "MOBILE"
+    });
   };
 
   scope.addNewAddress = function () {
@@ -45,7 +39,16 @@ var ContactDetailsController =  function(scope, routeParams, contacts, alert) {
       "city" : "City",
       "postalCode" : "Postal Code",
       "street" : "Street",
+      "houseNo": "42",
+      "country": "Germany",
       "type" : "HOME"
+    });
+  };
+
+  scope.addNewInternetIdentifier = function () {
+    scope.contact.internetIdentifiers.push({
+      "type" : "TWITTER",
+      "idValue" : ""
     });
   };
 

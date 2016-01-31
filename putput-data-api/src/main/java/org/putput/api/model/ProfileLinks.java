@@ -22,7 +22,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "self",
     "stream",
     "follow",
-    "unfollow"
+    "unfollow",
+    "rss"
 })
 public class ProfileLinks {
 
@@ -50,6 +51,12 @@ public class ProfileLinks {
      */
     @JsonProperty("unfollow")
     private HalLink unfollow;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("rss")
+    private HalLink rss;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -158,6 +165,33 @@ public class ProfileLinks {
 
     public ProfileLinks withUnfollow(HalLink unfollow) {
         this.unfollow = unfollow;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The rss
+     */
+    @JsonProperty("rss")
+    public HalLink getRss() {
+        return rss;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param rss
+     *     The rss
+     */
+    @JsonProperty("rss")
+    public void setRss(HalLink rss) {
+        this.rss = rss;
+    }
+
+    public ProfileLinks withRss(HalLink rss) {
+        this.rss = rss;
         return this;
     }
 

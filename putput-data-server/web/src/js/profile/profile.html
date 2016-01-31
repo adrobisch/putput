@@ -47,12 +47,20 @@
                     </div>
                     <div class="col-xs-12 text-center">
                         <div class="col-xs-12 col-sm-4">
-                            <div style="margin-top: 10px">
+                            <div class="top10">
                                 <button data-ng-cloak data-ng-hide="following" data-ng-click="follow()" class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Follow</button>
                                 <button data-ng-cloak data-ng-show="following" data-ng-click="unfollow()" class="btn btn-primary btn-block"><span class="fa fa-trash"></span> Unfollow</button>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-4">
+                            <div class="top10">
+                                <a data-ng-href="{{resource._links.rss.href}}"
+                                   data-ng-cloak
+                                   data-ng-show="resource._links.rss"
+                                   target="_blank"
+                                   class="btn btn-default btn-block">
+                                    <span class="fa fa-rss"></span> RSS</a>
+                            </div>
                         </div>
                         <div class="col-xs-12 col-sm-4 emphasis">
                         </div>

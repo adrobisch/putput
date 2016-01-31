@@ -3,9 +3,11 @@ package org.putput.profile;
 import org.putput.api.model.*;
 import org.putput.api.model.Follower;
 import org.putput.api.resource.Profile;
+import org.putput.api.resource.Stream;
 import org.putput.common.UuidService;
 import org.putput.common.web.BaseResource;
 import org.putput.stream.StreamItemRepository;
+import org.putput.stream.StreamResource;
 import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,8 @@ public class ProfileService {
     ProfileLinks profileLinks = new ProfileLinks()
         .withSelf(self)
         .withFollow(followLink)
-        .withUnfollow(followLink);
+        .withUnfollow(followLink)
+        .withRss(resource.link(Stream.class, "rss", profileUsername));
 
     List<Follower> followers = getFollowers(profileUsername);
 

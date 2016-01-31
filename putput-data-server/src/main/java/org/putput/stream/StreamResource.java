@@ -81,7 +81,7 @@ public class StreamResource extends BaseResource implements Stream {
       }
     };
 
-    return GetStreamRssByUserNameResponse.withAtomxmlOK(rssOutput);
+    return GetStreamRssByUserNameResponse.withRssxmlOK(rssOutput);
   }
 
   public List<SyndEntry> rssEntries(String userName, PageRequest pageable) {

@@ -19,44 +19,145 @@
                   <p class="form-control-static">{{contact.version}}</p>
               </div>
           </div>
-          <div class="form-group">
-              <label class="control-label">E-Mails</label>
-              <div data-ng-repeat="email in contact.emails">
-                  <span data-ng-click="remove(contact.emails, $index)" class="btn btn-default"><i class="glyphicon glyphicon-trash"></i></span>
-                  <span>{{email.address}}</span>
+          <h3>e-Mails</h3>
+           <div data-ng-repeat="email in contact.emails">
+              <div class="form-group">
+                  <label>Address</label>
+                  <input type="text" class="form-control" data-ng-model="email.address">
               </div>
-              <input class="form-control" type="email" data-ng-model="newMail">
-              <button data-ng-click="addNewMail()" class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+              <div class="form-group">
+                  <div class="btn-group">
+                      <button class="btn btn-default"
+                              data-ng-disabled="email.type == 'HOME'"
+                              data-ng-click="email.type='HOME'">Home</button>
+                      <button class="btn btn-default"
+                              data-ng-disabled="email.type == 'WORK'"
+                              data-ng-click="email.type='WORK'">Work</button>
+                      <button class="btn btn-default"
+                              data-ng-disabled="email.type == 'OTHER'"
+                              data-ng-click="email.type='OTHER'">Other</button>
+                  </div>
+                  <button data-ng-click="remove(contact.emails, $index)" class="btn btn-default" type="button">
+                      <i class="glyphicon glyphicon-trash"></i>
+                  </button>
+              </div>
           </div>
+          <button data-ng-click="addNewMail()" class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+          <h3>Addresses</h3>
           <div class="form-group">
-              <label class="control-label">Addresses</label>
               <div data-ng-repeat="address in contact.contactAddresses">
                   <div class="well">
-                      <label class="control-label">Street</label>
-                      <input class="form-control" type="text" data-ng-model="address.street">
-                        <label class="control-label">City</label>
-                      <input class="form-control" type="text" data-ng-model="address.city">
-                        <label class="control-label">Postal Code</label>
-                      <input class="form-control" type="text" data-ng-model="address.postalCode">
-                      <br> <div data-ng-click="remove(contact.contactAddresses, $index)" class="btn btn-default"><i class="glyphicon glyphicon-trash"></i></div>
+                      <div class="form-group">
+                          <label class="control-label">Street</label>
+                          <input class="form-control" type="text" data-ng-model="address.street">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">House No</label>
+                          <input class="form-control" type="text" data-ng-model="address.houseNo">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">City</label>
+                          <input class="form-control" type="text" data-ng-model="address.city">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">Postal Code</label>
+                          <input class="form-control" type="text" data-ng-model="address.postalCode">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">Country</label>
+                          <input class="form-control" type="text" data-ng-model="address.country">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">Type</label>
+                          <div class="btn-group">
+                              <button class="btn btn-default"
+                                      data-ng-disabled="address.type == 'HOME'"
+                                      data-ng-click="address.type='HOME'">Home</button>
+                              <button class="btn btn-default"
+                                      data-ng-disabled="address.type == 'WORK'"
+                                      data-ng-click="address.type='WORK'">Work</button>
+                              <button class="btn btn-default"
+                                      data-ng-disabled="address.type == 'SECONDARY_HOME'"
+                                      data-ng-click="address.type='SECONDARY_HOME'">Secondary Home</button>
+                              <button class="btn btn-default"
+                                      data-ng-disabled="address.type == 'OTHER'"
+                                      data-ng-click="address.type='OTHER'">Other</button>
+                          </div>
+                      </div>
+                      <button data-ng-click="remove(contact.contactAddresses, $index)"
+                           class="btn btn-default"
+                           type="button">
+                          <i class="glyphicon glyphicon-trash"></i>
+                      </button>
                   </div>
               </div>
               <button data-ng-click="addNewAddress()" class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i></button>
           </div>
-          <div class="form-group">
-              <label class="control-label">Phone Numbers</label>
-              <div data-ng-repeat="phoneNumber in contact.phoneNumbers">
-                  <span data-ng-click="remove(contact.phoneNumbers, $index)" class="btn btn-default"><i class="glyphicon glyphicon-trash"></i></span>
-                  <span>{{phoneNumber.number}} ({{phoneNumber.type}})</span>
+          <h3>Phone Numbers</h3>
+          <div data-ng-repeat="phoneNumber in contact.phoneNumbers">
+              <div class="form-group">
+                  <label>Number</label>
+                  <input class="form-control" type="text" data-ng-model="phoneNumber.number">
               </div>
-              <input class="form-control" type="text" data-ng-model="newPhoneNumber">
-              <button data-ng-click="addNewPhoneNumber()" class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+              <div class="form-group">
+                  <div class="btn-group">
+                      <button class="btn btn-default"
+                              data-ng-disabled="phoneNumber.type == 'MOBILE'"
+                              data-ng-click="phoneNumber.type='MOBILE'">Mobile</button>
+                      <button class="btn btn-default"
+                              data-ng-disabled="phoneNumber.type == 'HOME'"
+                              data-ng-click="phoneNumber.type='HOME'">Home</button>
+                      <button class="btn btn-default"
+                              data-ng-disabled="phoneNumber.type == 'WORK'"
+                              data-ng-click="phoneNumber.type='WORK'">Work</button>
+                      <button class="btn btn-default"
+                              data-ng-disabled="phoneNumber.type == 'OTHER'"
+                              data-ng-click="phoneNumber.type='OTHER'">Other</button>
+                  </div>
+                  <button data-ng-click="remove(contact.phoneNumbers, $index)"
+                          class="btn btn-default"
+                          type="button"><i class="glyphicon glyphicon-trash"></i></button>
+              </div>
+          </div>
+          <button data-ng-click="addNewPhoneNumber()" class="btn btn-default" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+          <h3>Internet Identifiers</h3>
+          <div data-ng-repeat="identifier in contact.internetIdentifiers">
+              <div class="form-group">
+                  <label>ID</label>
+                  <input class="form-control" type="text" data-ng-model="identifier.idValue">
+              </div>
+              <div class="form-group">
+                  <div class="btn-group">
+                      <button class="btn btn-default"
+                              data-ng-disabled="identifier.type == 'TWITTER'"
+                              data-ng-click="identifier.type='TWITTER'">Twitter</button>
+                      <button class="btn btn-default"
+                              data-ng-disabled="identifier.type == 'GITHUB'"
+                              data-ng-click="identifier.type='GITHUB'">Github</button>
+                      <button class="btn btn-default"
+                              data-ng-disabled="identifier.type == 'WORK'"
+                              data-ng-click="identifier.type='SKYPE'">Skype</button>
+                      <button class="btn btn-default"
+                              data-ng-disabled="identifier.type == 'GOOGLE'"
+                              data-ng-click="identifier.type='GOOGLE'">Google</button>
+                      <button class="btn btn-default"
+                              data-ng-disabled="identifier.type == 'JABBER'"
+                              data-ng-click="identifier.type='JABBER'">Jabber</button>
+                      <button class="btn btn-default"
+                              data-ng-disabled="identifier.type == 'OTHER'"
+                              data-ng-click="identifier.type='OTHER'">Other</button>
+                  </div>
+                  <button data-ng-click="remove(contact.internetIdentifiers, $index)"
+                          class="btn btn-default"
+                          type="button">
+                      <i class="glyphicon glyphicon-trash"></i>
+                  </button>
+              </div>
           </div>
           <div class="form-group">
-              <label class="control-label">Internet Identifiers</label>
-              <div data-ng-repeat="identifier in contact.internetIdentifiers">
-                  {{identifier}}
-              </div>
+              <button data-ng-click="addNewInternetIdentifier()" class="btn btn-default" type="button">
+                  <i class="glyphicon glyphicon-plus"></i>
+              </button>
           </div>
           <button type="submit" class="btn btn-success">Update</button>
       </form>

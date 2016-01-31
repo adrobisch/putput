@@ -51,7 +51,7 @@ public interface Stream {
     @GET
     @Path("rss/{userName}")
     @Produces({
-        "application/atom+xml"
+        "application/rss+xml"
     })
     Stream.GetStreamRssByUserNameResponse getStreamRssByUserName(
         @PathParam("userName")
@@ -193,8 +193,8 @@ public interface Stream {
          * @param entity
          *     
          */
-        public static Stream.GetStreamRssByUserNameResponse withAtomxmlOK(StreamingOutput entity) {
-            Response.ResponseBuilder responseBuilder = Response.status(200).header("Content-Type", "application/atom+xml");
+        public static Stream.GetStreamRssByUserNameResponse withRssxmlOK(StreamingOutput entity) {
+            Response.ResponseBuilder responseBuilder = Response.status(200).header("Content-Type", "application/rss+xml");
             responseBuilder.entity(entity);
             return new Stream.GetStreamRssByUserNameResponse(responseBuilder.build());
         }

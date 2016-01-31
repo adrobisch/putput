@@ -477,7 +477,8 @@ schemas:
           "self" : { "$ref": "halLink"},
           "stream" : { "$ref": "halLink"},
           "follow" : { "$ref": "halLink"},
-          "unfollow" : { "$ref": "halLink"}
+          "unfollow" : { "$ref": "halLink"},
+          "rss" : { "$ref": "halLink"}
         }
       }
   - followShip: |
@@ -786,7 +787,7 @@ traits:
         responses:
           200:
             body:
-              application/atom+xml:
+              application/rss+xml:
   /items:
     post:
       body:
