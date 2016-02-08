@@ -11,9 +11,27 @@ var ContactsController =  function(scope, contacts) {
   };
 
   scope.submitNewContact = function() {
+    scope.newContact.phoneNumbers = [
+      {
+        "type":  "MOBILE",
+        "number": scope.newContact.mobilePhone
+      }
+    ];
+
+    scope.newContact.emails = [
+      {
+        "type":  "HOME",
+        "address": scope.newContact.email
+      }
+    ];
+
     contacts
         .create(scope.newContact)
-        .success(scope.loadContacts);
+        .success(function () {
+          scope.loadContacts();
+          scope.newContact = {};
+          scope.showCreateForm = false;
+        });
   };
 
   scope.onUploadCompleted = function (file, message) {

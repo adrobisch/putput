@@ -10,7 +10,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import org.putput.api.model.NewContact;
 
 @Path("contact")
 public interface Contact {
@@ -23,7 +22,7 @@ public interface Contact {
      */
     @POST
     @Consumes("application/json")
-    Contact.PostContactResponse postContact(NewContact entity)
+    Contact.PostContactResponse postContact(org.putput.api.model.Contact entity)
         throws Exception
     ;
 

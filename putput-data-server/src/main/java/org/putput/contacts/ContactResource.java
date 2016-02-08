@@ -2,7 +2,6 @@ package org.putput.contacts;
 
 import ma.glasnost.orika.MapperFacade;
 import org.putput.api.model.ContactLinks;
-import org.putput.api.model.NewContact;
 import org.putput.api.resource.Contact;
 import org.putput.common.web.BaseResource;
 import org.putput.users.UserRepository;
@@ -22,23 +21,8 @@ public class ContactResource extends BaseResource implements Contact {
   MapperFacade beanMapper;
 
   @Override
-  public PostContactResponse postContact(NewContact newContact) throws Exception {
-    ContactEntity contactEntityToBeCreated = new ContactEntity()
-      .withFirstName(newContact.getFirstName())
-      .withLastName(newContact.getLastName());
-
-    String email = newContact.getEmail();
-    if (email != null && !email.isEmpty()) {
-      contactEntityToBeCreated.getEmails().add(new EMailAddress(EMailAddress.Type.HOME, email));
-    }
-
-    String mobilePhone = newContact.getMobilePhone();
-    if (mobilePhone != null && !mobilePhone.isEmpty()) {
-      contactEntityToBeCreated.getPhoneNumbers().add(new PhoneNumber(PhoneNumber.Type.MOBILE, mobilePhone));
-    }
-
-    ContactEntity newContactEntity = contactService.createContact(user().getUsername(), contactEntityToBeCreated);
-
+  public PostContactResponse postContact(org.putput.api.model.Contact newContact) throws Exception {
+    ContactEntity newContactEntity = contactService.createContact(user().getUsername(), newContact);
     return PostContactResponse.withCreated(link(Contact.class, newContactEntity.getId()).getHref());
   }
 

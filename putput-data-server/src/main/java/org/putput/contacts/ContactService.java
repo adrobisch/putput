@@ -50,6 +50,13 @@ public class ContactService {
     return contactEntity;
   }
 
+  @Transactional
+  public ContactEntity createContact(String userName, Contact newContact) {
+    UserEntity user = userRepository.findByUsername(userName);
+    ContactEntity newContactEntity = saveContact(new ContactEntity().withUser(user));
+    return mergeWithEntity(newContact).apply(newContactEntity);
+  }
+
   private ContactEntity withNewIds(ContactEntity contactEntity) {
     contactEntity.getInternetIdentifiers().stream()
       .forEach(id -> {
@@ -105,11 +112,11 @@ public class ContactService {
 
     return ofNullable(contactRepository.findOne(updatedContact.getId()))
         .filter(contactEntity -> contactEntity.getUser().getUsername().equals(user.getUsername()))
-        .map(mergeExistingWithUpdated(updatedContact))
+        .map(mergeWithEntity(updatedContact))
         .map(updatedContactEntity -> contactRepository.save(updatedContactEntity));
   }
 
-  Function<? super ContactEntity, ContactEntity> mergeExistingWithUpdated(Contact updatedContact) {
+  Function<? super ContactEntity, ContactEntity> mergeWithEntity(Contact updatedContact) {
     return contactEntity -> {
       contactEntity.setFirstName(updatedContact.getFirstName());
       contactEntity.setLastName(updatedContact.getLastName());
@@ -211,8 +218,14 @@ public class ContactService {
           Optional<T> existingItem = ofNullable(valuesMap.get(idFun.apply(newCollectionItem)))
               .flatMap(toFirst());
 
-          return repository.save(updateFunctionSupplier.apply(newCollectionItem).apply(existingItem
-              .orElseGet(newInstance)));
+          if (existingItem.isPresent()) {
+            return repository.save(updateFunctionSupplier.apply(newCollectionItem).apply(existingItem.get()));
+          } else {
+            T newItem = newInstance.get();
+            repository.save(updateFunctionSupplier.apply(newCollectionItem).apply(newItem));
+            currentValues.add(newItem);
+            return newItem;
+          }
         })
         .map(T::getId)
         .collect(Collectors.toList());
