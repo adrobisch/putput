@@ -165,7 +165,10 @@ public class RssFeedItemImportService {
   private SyndFeed getFeed(String url) {
     FeedFetcherCache feedCache = HashMapFeedInfoCache.getInstance();
     try {
-      return new HttpClientFeedFetcher(feedCache).retrieveFeed(userAgent, new URL(url));
+      HttpClientFeedFetcher httpClientFeedFetcher = new HttpClientFeedFetcher(feedCache);
+      httpClientFeedFetcher.setConnectTimeout(5000);
+      httpClientFeedFetcher.setReadTimeout(5000);
+      return httpClientFeedFetcher.retrieveFeed(userAgent, new URL(url));
     } catch (IOException | FeedException | FetcherException e) {
       throw new RuntimeException(e);
     }
