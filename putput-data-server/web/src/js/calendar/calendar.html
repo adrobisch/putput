@@ -1,6 +1,127 @@
+<div class="row">
+    <div class="col-md-12">
+        <form>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" 
+                       data-ng-model="title" 
+                       class="form-control" 
+                       id="title" 
+                       placeholder="Title">
+            </div>            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description"
+                          data-ng-model="description"
+                          class="form-control" 
+                          rows="3"></textarea>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <form>
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <div id="startDate" class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           uib-datepicker-popup
+                           ng-model="startDate"
+                           is-open="showStartDate"
+                           ng-required="true"
+                           close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button" 
+                                class="btn btn-default" 
+                                ng-click="showStartDate = !showStartDate">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>            
+            <div class="form-group">
+                <uib-timepicker ng-model="startTime"
+                                minute-step="15"
+                                show-meridian="false"></uib-timepicker>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <form>
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <div id="endDate" class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           uib-datepicker-popup
+                           ng-model="endDate"
+                           is-open="showEndDate"
+                           ng-required="true"
+                           close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="showEndDate = !showEndDate">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <uib-timepicker ng-model="endTime"
+                                minute-step="15"
+                                show-meridian="false"></uib-timepicker>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form>
+            <div class="checkbox">
+                <label>
+                    <input data-ng-model="allDay" type="checkbox"> all day event
+                </label>
+            </div>
+            <button type="submit" class="btn btn-default" data-ng-click="createEvent()">Submit</button>
+        </form>
+    </div>
+</div>
+
 <div class="row" data-ng-init="init()">
     <div class="col-md-12">
-        <p>Calendar</p>
+        <h3>Calendar</h3>
         <div data-ui-calendar="calendar" data-ng-model="eventSources"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Events</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Timezone</th>
+                <th>Type</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="event in events">
+                <td>{{event.title}}</td>
+                <td>{{event.description}}</td>
+                <td>{{event.start | date:'medium'}}</td>
+                <td>{{event.end | date:'medium'}}</td>
+                <td>{{event.timezone}}</td>
+                <td>{{event.type}}</td>
+            </tr>
+            </tbody>
+        </table>    
     </div>
 </div>

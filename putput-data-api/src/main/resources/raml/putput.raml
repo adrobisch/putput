@@ -299,7 +299,7 @@ schemas:
       { "$schema": "http://json-schema.org/schema",
         "type": "object",
         "javaType" : "org.putput.api.model.MessageLinks",
-        "description": "The links of a tag",
+        "description": "The links of a message",
         "properties": {
           "self" : { "$ref": "halLink"},
           "delete" : { "$ref": "halLink"}
@@ -310,6 +310,47 @@ schemas:
         "type": "object",
         "javaType" : "org.putput.api.model.MessageListLinks",
         "description": "The links of a message list",
+        "properties": {
+          "self" : { "$ref": "halLink"},
+          "nextPage" : { "$ref": "halLink"},
+          "previousPage" : { "$ref": "halLink"}
+        }
+      }  
+  - event: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "id": {"type": "string"},
+          "owner": {"type": "string"},
+          "start": {"type": "number"},
+          "end": {"type": "number"},
+          "type": {"type": "string"},
+          "recurrence": {"type": "string"},
+          "recurrenceEnd": {"type": "number"},
+          "timezone": {"type": "string"},
+          "title": {"type": "string"},
+          "description": {"type": "string"},
+          "created": {"type": "number"},
+          "_links": {
+            "$ref": "eventLinks"
+          }
+        }
+      }
+  - eventLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.EventLinks",
+        "description": "The links of a event",
+        "properties": {
+          "self" : { "$ref": "halLink"},
+          "delete" : { "$ref": "halLink"}
+        }
+      }
+  - eventListLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.EventListLinks",
+        "description": "The links of a event list",
         "properties": {
           "self" : { "$ref": "halLink"},
           "nextPage" : { "$ref": "halLink"},
@@ -501,6 +542,8 @@ schemas:
               "self" : { "$ref": "halLink"},
               "notes" : { "$ref": "halLink"},
               "note" : { "$ref": "halLink"},
+              "events" : { "$ref": "halLink"},
+              "event" : { "$ref": "halLink"},
               "messages" : { "$ref": "halLink"},
               "message" : { "$ref": "halLink"},
               "files" : { "$ref": "halLink"},
@@ -762,6 +805,40 @@ traits:
       body:
         application/json:
           schema: message
+      responses:
+        200:
+    delete:
+      responses:
+        404:
+        200:
+        403:
+
+/events:
+  get:
+    is: [ halCollection: { id: eventList, collectionJavaType: org.putput.api.model.EventList, itemsProperty: events, itemSchema: event, collectionLinks: eventListLinks}]
+
+/event:
+  post:
+    body:
+      application/json:
+        schema: event
+    responses:
+      201:
+        headers:
+          Location:
+  /{id}:
+    get:
+      responses:
+        404:
+        403:
+        200:
+          body:
+            application/hal+json:
+              schema: event
+    put:
+      body:
+        application/json:
+          schema: event
       responses:
         200:
     delete:

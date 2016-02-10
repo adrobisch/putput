@@ -13,16 +13,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * The links of a message
+ * The links of a event list
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
     "self",
-    "delete"
+    "nextPage",
+    "previousPage"
 })
-public class MessageLinks {
+public class EventListLinks {
 
     /**
      * A HAL link
@@ -34,8 +35,14 @@ public class MessageLinks {
      * A HAL link
      * 
      */
-    @JsonProperty("delete")
-    private HalLink delete;
+    @JsonProperty("nextPage")
+    private HalLink nextPage;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("previousPage")
+    private HalLink previousPage;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -61,7 +68,7 @@ public class MessageLinks {
         this.self = self;
     }
 
-    public MessageLinks withSelf(HalLink self) {
+    public EventListLinks withSelf(HalLink self) {
         this.self = self;
         return this;
     }
@@ -70,26 +77,53 @@ public class MessageLinks {
      * A HAL link
      * 
      * @return
-     *     The delete
+     *     The nextPage
      */
-    @JsonProperty("delete")
-    public HalLink getDelete() {
-        return delete;
+    @JsonProperty("nextPage")
+    public HalLink getNextPage() {
+        return nextPage;
     }
 
     /**
      * A HAL link
      * 
-     * @param delete
-     *     The delete
+     * @param nextPage
+     *     The nextPage
      */
-    @JsonProperty("delete")
-    public void setDelete(HalLink delete) {
-        this.delete = delete;
+    @JsonProperty("nextPage")
+    public void setNextPage(HalLink nextPage) {
+        this.nextPage = nextPage;
     }
 
-    public MessageLinks withDelete(HalLink delete) {
-        this.delete = delete;
+    public EventListLinks withNextPage(HalLink nextPage) {
+        this.nextPage = nextPage;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The previousPage
+     */
+    @JsonProperty("previousPage")
+    public HalLink getPreviousPage() {
+        return previousPage;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param previousPage
+     *     The previousPage
+     */
+    @JsonProperty("previousPage")
+    public void setPreviousPage(HalLink previousPage) {
+        this.previousPage = previousPage;
+    }
+
+    public EventListLinks withPreviousPage(HalLink previousPage) {
+        this.previousPage = previousPage;
         return this;
     }
 
@@ -103,7 +137,7 @@ public class MessageLinks {
         this.additionalProperties.put(name, value);
     }
 
-    public MessageLinks withAdditionalProperty(String name, Object value) {
+    public EventListLinks withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }

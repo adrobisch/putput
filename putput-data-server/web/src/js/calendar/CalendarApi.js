@@ -21,7 +21,7 @@ function CalendarApi(http, api) {
     
     this.createEvent = function(event) {
         return api.withLink('event', function (eventLink) {
-            return http.post(eventLink, event); 
+            return http.post(eventLink.replace("{id}", ""), event); 
         });  
     };
 }

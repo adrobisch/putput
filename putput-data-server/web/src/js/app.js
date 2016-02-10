@@ -4,6 +4,7 @@ var jQuery = window.jQuery = require('jquery');
 var flow = window.Flow = require('flow.js/dist/flow');
 var angular = window.angular = require('angular');
 var fullCalendar = require('fullcalendar');
+var moment = window.moment = require("moment");
 
 require('ng-flow/dist/ng-flow');
 require('angular-hotkeys');

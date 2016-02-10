@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * The links of a message
+ * The links of a event
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "self",
     "delete"
 })
-public class MessageLinks {
+public class EventLinks {
 
     /**
      * A HAL link
@@ -61,7 +61,7 @@ public class MessageLinks {
         this.self = self;
     }
 
-    public MessageLinks withSelf(HalLink self) {
+    public EventLinks withSelf(HalLink self) {
         this.self = self;
         return this;
     }
@@ -88,7 +88,7 @@ public class MessageLinks {
         this.delete = delete;
     }
 
-    public MessageLinks withDelete(HalLink delete) {
+    public EventLinks withDelete(HalLink delete) {
         this.delete = delete;
         return this;
     }
@@ -103,7 +103,7 @@ public class MessageLinks {
         this.additionalProperties.put(name, value);
     }
 
-    public MessageLinks withAdditionalProperty(String name, Object value) {
+    public EventLinks withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }

@@ -40,7 +40,7 @@ public class Message {
     @JsonProperty("created")
     private Double created;
     /**
-     * The links of a tag
+     * The links of a message
      * 
      */
     @JsonProperty("_links")
@@ -224,7 +224,7 @@ public class Message {
     }
 
     /**
-     * The links of a tag
+     * The links of a message
      * 
      * @return
      *     The Links
@@ -235,7 +235,7 @@ public class Message {
     }
 
     /**
-     * The links of a tag
+     * The links of a message
      * 
      * @param Links
      *     The _links

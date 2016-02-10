@@ -1,7 +1,6 @@
+var _ = require("lodash");
+
 var InboxController = function (scope, calendar, hotkeys) {
-    scope.newEvent = {
-    };
-    
     scope.calendar = {
         height: 450,
         editable: true,
@@ -12,23 +11,8 @@ var InboxController = function (scope, calendar, hotkeys) {
         }
     };
     
-    scope.eventSources = {
-        events: [
-            {
-                title: 'Event1',
-                start: '2016-01-25 12:00',
-                allDay: false
-            },
-            {
-                title: 'Event2',
-                start: '2016-01-25'
-            }
-        ],
-        color: 'yellow',
-        textColor: 'black'
-    };
-    
     scope.events = {};
+    scope.calendarEvents = [];
     
     scope.init = function () {
       scope.getEvents();  
@@ -36,7 +20,14 @@ var InboxController = function (scope, calendar, hotkeys) {
     
     scope.getEvents = function () {
         calendar.getEvents().success(function (response) {
-            scope.events = response.data;
+            scope.events = response.data.events;
+            _.forEach(scope.events, function (event) {
+               scope.calendarEvents.push({
+                   "title": event.title,
+                   "start": new Date(event.start),
+                   "allDay": event.type === "ALLDAY" 
+               }) 
+            });
         });
     };
 
@@ -53,17 +44,35 @@ var InboxController = function (scope, calendar, hotkeys) {
     };
 
     scope.createEvent = function () {
-        if (!scope.newEvent) {
+        if (!scope.title && !scope.startDate && !scope.endDate) {
             return;
         }
         
-        messages.sendMessage(scope.newEvent.message).success(function () {
-            scope.getMessages();
-            scope.compose = false;
+        if (scope.startTime) {
+            scope.startDate.setHours(scope.startTime.getHours());
+            scope.startDate.setMinutes(scope.startTime.getMinutes());
+        }
+        
+        if (scope.endTime) {
+            scope.endDate.setHours(scope.endTime.getHours());
+            scope.endDate.setMinutes(scope.endTime.getMinutes());
+        }
+        
+        var type = scope.allDay ? "ALLDAY" : "DEFAULT";
+
+        calendar.createEvent({
+            "start": scope.startDate.getTime(),
+            "end": scope.endDate.getTime(),
+            "type": type,
+            "title": scope.title
+        }).success(function () {
+            scope.getEvents();
         });
     };
+
+    scope.eventSources = [scope.calendarEvents];
 };
 
-InboxController.$inject = ["$scope", "messages", "hotkeys"];
+InboxController.$inject = ["$scope", "calendar", "hotkeys"];
 
 module.exports = InboxController;
