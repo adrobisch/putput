@@ -1,8 +1,12 @@
 package org.putput.files;
 
 import org.putput.common.UuidService;
+import org.putput.files.upload.UploadHandler;
+import org.putput.files.upload.UploadRequest;
+import org.putput.storage.Storage;
+import org.putput.storage.StorageReference;
+import org.putput.storage.StorageService;
 import org.putput.users.UserEntity;
-import org.putput.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -23,37 +27,26 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.putput.util.FileHelper.requireExistingDir;
-
 @Service
 @Transactional
-public class FileService {
+public class FileService implements UploadHandler<PutPutFile> {
     
     FileRepository fileRepository;
-    StorageConfigurationRepository storageConfigurationRepository;
-    StorageParameterRepository storageParameterRepository;
-    UserRepository userRepository;
     Environment environment;
-    Storages storages;
     UuidService uuidService;
+    StorageService storageService;
     MimeTypes mimeTypes;
 
     @Autowired
     public FileService(FileRepository fileRepository, 
-                       StorageConfigurationRepository storageConfigurationRepository,
-                       StorageParameterRepository storageParameterRepository,
-                       UserRepository userRepository, 
                        Environment environment,
-                       Storages storages,
                        UuidService uuidService,
+                       StorageService storageService,
                        MimeTypes mimeTypes) {
         this.fileRepository = fileRepository;
-        this.storageConfigurationRepository = storageConfigurationRepository;
-        this.storageParameterRepository = storageParameterRepository;
-        this.userRepository = userRepository;
         this.environment = environment;
-        this.storages = storages;
         this.uuidService = uuidService;
+        this.storageService = storageService;
         this.mimeTypes = mimeTypes;
     }
 
@@ -65,14 +58,13 @@ public class FileService {
             throw new IllegalArgumentException("unable to create file from folder");
         }
 
-        UserEntity user = userRepository.findByUsername(username);
-        Storage defaultStorage = getDefaultStorage(user);
+        Storage defaultStorage = storageService.getDefaultStorage(username);
 
         String fileName = sourceFile.getName();
 
         StorageReference<?> storageReference = parentId
                 .map(parentIdValue -> fileRepository.findOne(parentId.get()))
-                .map(saveInParentFolder(sourceFile, defaultStorage, fileName))
+                .map(saveInParentFolder(fileStream(sourceFile), defaultStorage, fileName))
                 .orElseGet(saveInContainerPath(sourceFile, containerPath, defaultStorage, fileName));
 
         Optional<PutPutFile> existingFile = Optional.ofNullable(fileRepository.findByFullReference(storageReference.getName(),
@@ -81,7 +73,7 @@ public class FileService {
         if (!existingFile.isPresent()) {
             PutPutFile putPutFile = createPutPutFile(sourceFile,
                     parentId,
-                    user,
+                    defaultStorage.getStorageConfiguration().getUser(),
                     fileName,
                     defaultStorage,
                     storageReference);
@@ -93,17 +85,13 @@ public class FileService {
     }
 
     private Supplier<StorageReference> saveInContainerPath(File sourceFile, Optional<String> containerPath, Storage defaultStorage, String fileName) {
-        return () -> {
-            return defaultStorage.store(fileName, containerPath, fileStream(sourceFile));
-        };
+        return () -> defaultStorage.store(fileName, containerPath, fileStream(sourceFile));
     }
 
-    private Function<PutPutFile, StorageReference> saveInParentFolder(File sourceFile, Storage defaultStorage, String fileName) {
-        return putputFile -> {
-            return defaultStorage.store(fileName,
-                    putputFile.getStorageContainerReference().map(containerRef -> containerRef + defaultStorage.containerSeparator() + putputFile.getName()),
-                    fileStream(sourceFile));
-        };
+    private Function<PutPutFile, StorageReference> saveInParentFolder(InputStream fileStream, Storage defaultStorage, String fileName) {
+        return putputFile -> defaultStorage.store(fileName,
+                putputFile.getStorageContainerReference().map(containerRef -> containerRef + defaultStorage.containerSeparator() + putputFile.getName()),
+                fileStream);
     }
 
     public PutPutFile createPutPutFile(File sourceFile, Optional<String> parentId, UserEntity user, String fileName, Storage defaultStorage, StorageReference<?> storageReference) {
@@ -153,10 +141,6 @@ public class FileService {
         }
     }
 
-    private Storage getDefaultStorage(UserEntity user) {
-        return storages.getStorage(getOrCreateDefaultStorageConfig(user));
-    }
-
     Function<? super String, Optional<PutPutFile>> toFileEntity() {
         return id -> {
             PutPutFile foundFile = fileRepository.findOne(id);
@@ -189,53 +173,25 @@ public class FileService {
     }
 
     InputStream getFileContentFromStorage(PutPutFile file) {
-        return storages.getStorage(file.getStorageConfiguration()).getContent(
+        return storageService.getContentFromStorage(file.getStorageConfiguration(),
                 file.getStorageContainerReference(), 
-                file.getStorageReference().get()
-        );
+                file.getStorageReference().get());
     }
 
     public void deleteUserFile(String id) {
         fileRepository.delete(id);
     }
 
-    public StorageConfiguration getOrCreateDefaultStorageConfig(UserEntity user) {
-        return storageConfigurationRepository.findDefaultByUser(user.getUsername()).orElseGet(newDefaultStorage(user));
+    @Override
+    public String handledType() {
+        return "file";
     }
 
-    private Supplier<? extends StorageConfiguration> newDefaultStorage(UserEntity user) {
-        return () -> {
-            StorageConfiguration newDefaultStorageConfiguration = createNewDefaultConfiguration(user);
-            StorageParameter baseDirParameter = createBaseDirParameter(user.getUsername(), newDefaultStorageConfiguration);
-            
-            newDefaultStorageConfiguration.getStorageParameters().put(FileSystemStorage.baseDirKey, baseDirParameter);
-            
-            return storageConfigurationRepository.save(newDefaultStorageConfiguration);
-        };
-    }
-
-    private StorageParameter createBaseDirParameter(String username, StorageConfiguration newDefaultStorageConfiguration) {
-        StorageParameter baseDirParameter = new StorageParameter()
-                .setKey(FileSystemStorage.baseDirKey)
-                .setValue(requireExistingDir(getFilesDir(username)).getAbsolutePath());
-
-        baseDirParameter.setId(uuidService.uuid());
-        baseDirParameter.setStorageConfiguration(newDefaultStorageConfiguration);
-
-        return storageParameterRepository.save(baseDirParameter);
-    }
-
-    private StorageConfiguration createNewDefaultConfiguration(UserEntity user) {
-        StorageConfiguration newDefaultStorageConfiguration = new StorageConfiguration();
-        newDefaultStorageConfiguration.setId(uuidService.uuid());
-        newDefaultStorageConfiguration.setIsDefault(1);
-        newDefaultStorageConfiguration.setUser(user);
-        newDefaultStorageConfiguration.setType(Storage.Type.FILE_SYSTEM.code());
-
-        return storageConfigurationRepository.save(newDefaultStorageConfiguration);
-    }
-
-    String getFilesDir(String username) {
-        return environment.getProperty("files.base.dir", "/var/putput/files") + File.separatorChar + username;
+    @Override
+    public PutPutFile handleUpload(String username, UploadRequest uploadRequest, File tempfile) {
+        return createUserFileFromSource(username,
+                tempfile,
+                Optional.ofNullable(uploadRequest.getResumableRelativePath()),
+                Optional.<String>empty());
     }
 }

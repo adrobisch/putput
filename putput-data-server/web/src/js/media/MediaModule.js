@@ -15,6 +15,8 @@ mediaModule.config(['$routeProvider', function($routeProvider) {
 }]);
 
 mediaModule.directive("mediaAction", require("./MediaActionDirective"));
+mediaModule.directive("youtube", require("./YoutubeDirective"));
+
 mediaModule.controller("SlideshowController", SlideshowController);
 
 require("./ngSlideShow")(mediaModule);

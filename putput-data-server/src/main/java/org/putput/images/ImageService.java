@@ -1,43 +1,55 @@
 package org.putput.images;
 
-import ezvcard.util.org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.putput.common.UuidService;
+import org.putput.files.FileSystemReference;
+import org.putput.storage.Storage;
+import org.putput.storage.StorageReference;
+import org.putput.storage.StorageService;
+import org.putput.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StreamUtils;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
 @Service
 public class ImageService {
+  public static final String IMAGES_CONTAINER = ".images";
+  
   @Autowired
   UuidService uuidService;
 
   @Autowired
+  UserRepository userRepository;
+
+  @Autowired
   ImageRepository imageRepository;
+  
+  @Autowired
+  StorageService storageService;
 
   @Transactional
-  public PutPutImage saveUserImage(String username, Optional<String> filename, String mimeType, InputStream inputStream, long size) {
+  public PutPutImage saveUserImage(String username, Optional<String> filename, String mimeType, InputStream inputStream) {
+    Storage<FileSystemReference> defaultStorage = storageService.getDefaultStorage(username);
+    
+    StorageReference reference = defaultStorage.store(filename.orElse(uuidService.uuid()), Optional.of(IMAGES_CONTAINER), inputStream);
+    
     PutPutImage file = new PutPutImage(mimeType)
       .withId(uuidService.uuid())
-      .withData(getBase64Data(inputStream));
-
-    if (filename.isPresent()) {
-      String filePath = String.format("/%s/%s", username, filename);
-      file.withPath(filePath);
-    }
+      .withPath(reference.getName())
+      .withUser(userRepository.findByUsername(username));
 
     return imageRepository.save(file);
   }
 
-  private String getBase64Data(InputStream inputStream) {
-    try {
-      return Base64.encodeBase64String(StreamUtils.copyToByteArray(inputStream));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  @Transactional
+  public Pair<PutPutImage, InputStream> getImage(String id) {
+    PutPutImage image = imageRepository.findOne(id);
+    Storage<FileSystemReference> defaultStorage = storageService.getDefaultStorage(image.getUser().getUsername());
+    InputStream imageContent = defaultStorage.getContent(Optional.of(".images"), image.getPath());
+    return new ImmutablePair<>(image, imageContent);
   }
 }

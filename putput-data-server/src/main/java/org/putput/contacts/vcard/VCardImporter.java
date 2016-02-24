@@ -119,8 +119,7 @@ public class VCardImporter {
         PutPutImage photoFile = imageService.saveUserImage(username,
                 Optional.<String>empty(),
                 photo.getContentType().getMediaType(),
-                new ByteArrayInputStream(photo.getData()),
-                photo.getData().length);
+                new ByteArrayInputStream(photo.getData()));
 
         contactEntity.getPhotos().add(photoFile);
       }

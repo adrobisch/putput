@@ -5,7 +5,7 @@ var InboxController = function (scope, calendar, hotkeys) {
         height: 450,
         editable: true,
         header: {
-            left: 'month basicWeek basicDay agendaWeek agendaDay',
+            left: 'month,agendaWeek,agendaDay',
             center: 'title',
             right: 'today prev,next'
         }
@@ -15,20 +15,25 @@ var InboxController = function (scope, calendar, hotkeys) {
     scope.calendarEvents = [];
     
     scope.init = function () {
-      scope.getEvents();  
     };
     
-    scope.getEvents = function () {
+    scope.getEvents = function (start, end, timezone, callback) {
         calendar.getEvents().success(function (response) {
             scope.events = response.data.events;
+            scope.calendarEvents = [];
             _.forEach(scope.events, function (event) {
-               scope.calendarEvents.push({
-                   "title": event.title,
-                   "start": new Date(event.start),
-                   "allDay": event.type === "ALLDAY" 
-               }) 
+                scope.calendarEvents.push(scope.serverEventToCalendarEvent(event));
             });
+            callback(scope.calendarEvents);
         });
+    };
+    
+    scope.serverEventToCalendarEvent = function (serverEvent) {
+        return {
+            "title": serverEvent.title,
+            "start": new Date(serverEvent.start),
+            "allDay": serverEvent.type === "ALLDAY"
+        };
     };
 
     scope.loadNext = function () {
@@ -60,17 +65,19 @@ var InboxController = function (scope, calendar, hotkeys) {
         
         var type = scope.allDay ? "ALLDAY" : "DEFAULT";
 
-        calendar.createEvent({
+        var newEvent = {
             "start": scope.startDate.getTime(),
             "end": scope.endDate.getTime(),
             "type": type,
             "title": scope.title
-        }).success(function () {
-            scope.getEvents();
+        };
+        
+        calendar.createEvent(newEvent).success(function () {
+            scope.calendarEvents.push(newEvent);
         });
     };
 
-    scope.eventSources = [scope.calendarEvents];
+    scope.eventSources = [scope.getEvents];
 };
 
 InboxController.$inject = ["$scope", "calendar", "hotkeys"];

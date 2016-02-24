@@ -4,7 +4,6 @@ import org.putput.common.UuidService;
 import org.putput.messages.MessageEntity;
 import org.putput.messages.MessageRepository;
 import org.putput.profile.ProfileService;
-import org.putput.rss.RssFeedInfoEntity;
 import org.putput.rss.RssFeedInfoRepository;
 import org.putput.stream.StreamItemService;
 import org.putput.users.UserEntity;
@@ -17,6 +16,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 @Service
@@ -63,7 +63,10 @@ public class TestDataService implements SmartLifecycle {
   private void addTestData() {
     if (!ofNullable(userRepository.findByUsername("johndoe")).isPresent()) {
       UserEntity testUser = addTestUser();
-      streamItemService.newItemEntity(testUser.getUsername(), "Test Put.", Optional.empty(), Optional.empty(), empty(), empty(), empty());
+      streamItemService.newItemEntity(testUser.getUsername(), "<img src=\"http://imgs.xkcd.com/comics/twitter_bot.png\" title=\"PYTHON FLAG ENABLE THREE LAWS\" alt=\"PYTHON FLAG ENABLE THREE LAWS\" />", 
+              Optional.of("Title"), 
+              Optional.of("RSS"), 
+              of("http://www.example.org"), empty(), empty());
       streamItemService.newItemEntity("user", "User Put.", Optional.empty(), Optional.empty(), empty(), empty(), empty());
 
       profileService.addFollower("user", "johndoe");
@@ -77,15 +80,10 @@ public class TestDataService implements SmartLifecycle {
           .setType("chat")
           .setStatus("new")
       );
-
-      /*rssFeedInfoRepository.save(new RssFeedInfoEntity()
-          .setId(uuidService.uuid())
-          .setOwner(testUser)
-          .setUrl("https://foreveregon.wordpress.com/feed"));*/
     }
   }
 
-  private UserEntity addTestUser() {
+  UserEntity addTestUser() {
     UserEntity userEntity = new UserEntity();
     userEntity.setId(uuidService.uuid());
     userEntity.setUsername("johndoe");

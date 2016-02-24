@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
-class StreamItemContentParser {
+public class StreamItemContentParser {
 
   public static abstract class ContentFragment {
     String fragment;

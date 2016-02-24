@@ -2,9 +2,14 @@ var _ = require("lodash");
 
 var FileListController =  function(scope, route, location, files, search, media) {
   scope.flow = {};
+  scope.flowConfig = {
+    query: {
+      "type" : "file"
+    }
+  };
   scope.tag = null;
   scope.playing = false;
-  scope.files = ["moo"];
+  scope.files = [];
   
   scope.parent = route.current.params.parent;
   

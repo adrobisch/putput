@@ -1,8 +1,12 @@
 package org.putput.images;
 
+import org.putput.users.UserEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,6 +16,10 @@ public class PutPutImage {
   @Id
   @Column(name = "_ID")
   String id;
+
+  @ManyToOne
+  @JoinColumn(name = "_USER_ID")
+  UserEntity user;
 
   @Column(name = "_PATH")
   String path;
@@ -54,6 +62,15 @@ public class PutPutImage {
 
   public String getType() {
     return type;
+  }
+
+  public UserEntity getUser() {
+    return user;
+  }
+
+  public PutPutImage withUser(UserEntity user) {
+    this.user = user;
+    return this;
   }
 
   @Override

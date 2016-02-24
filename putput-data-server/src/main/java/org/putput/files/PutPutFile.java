@@ -2,6 +2,7 @@ package org.putput.files;
 
 import org.putput.common.persistence.BaseEntity;
 import org.putput.images.PutPutImage;
+import org.putput.storage.StorageConfiguration;
 import org.putput.users.UserEntity;
 
 import javax.persistence.Column;

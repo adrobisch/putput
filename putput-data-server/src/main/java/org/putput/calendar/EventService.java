@@ -37,13 +37,17 @@ public class EventService {
                 .setRecurrence(newEvent.getRecurrence())
                 .setTimezone(Optional
                         .ofNullable(newEvent.getTimezone())
-                        .orElse(Calendar.getInstance().getTimeZone().getID()))
+                        .orElse(defaultTimeZone()))
                 .setStart(newEvent.getStart().longValue())
                 .setEnd(newEvent.getEnd().longValue());
         
         return eventRepository.save(newEventEntity);
     }
-    
+
+    private String defaultTimeZone() {
+        return "Europe/Berlin";
+    }
+
     public Optional<EventEntity> getEvent(String username, String id) {
         return ofNullable(eventRepository.findOne(id))
                 .filter(eventEntity -> eventEntity.getOwner().getUsername().equals(username));           

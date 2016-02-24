@@ -2,6 +2,10 @@ package org.putput.files;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.putput.common.persistence.BaseEntity;
+import org.putput.storage.Storage;
+import org.putput.storage.StorageConfigurationRepository;
+import org.putput.storage.StorageReference;
+import org.putput.storage.StorageService;
 import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
 import org.slf4j.Logger;
@@ -21,19 +25,19 @@ public class FileSystemSync {
 
     Logger log = LoggerFactory.getLogger(getClass());
 
-    Storages storages;
+    private StorageService storageService;
     StorageConfigurationRepository storageConfigurationRepository;
     FileRepository fileRepository;
     FileService fileService;
     UserRepository userRepository;
 
     @Autowired
-    public FileSystemSync(Storages storages,
+    public FileSystemSync(StorageService storageService,
                           StorageConfigurationRepository storageConfigurationRepository,
                           FileRepository fileRepository,
                           FileService fileService,
                           UserRepository userRepository) {
-        this.storages = storages;
+        this.storageService = storageService;
         this.storageConfigurationRepository = storageConfigurationRepository;
         this.fileRepository = fileRepository;
         this.fileService = fileService;
@@ -48,8 +52,7 @@ public class FileSystemSync {
         Iterable<UserEntity> users = userRepository.findAll();
         
         users.forEach(user -> {
-            StorageConfiguration storageConfiguration = fileService.getOrCreateDefaultStorageConfig(user);
-            Storage<FileSystemReference> storage = storages.getStorage(storageConfiguration);
+            Storage<FileSystemReference> storage = storageService.getDefaultStorage(user.getUsername());
 
             LinkedList<Pair<Optional<FileSystemReference>, FileSystemReference>> fileQueue = new LinkedList<>();
             

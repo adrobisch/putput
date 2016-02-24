@@ -1,4 +1,4 @@
-package org.putput.files;
+package org.putput.storage;
 
 import java.io.InputStream;
 import java.util.List;

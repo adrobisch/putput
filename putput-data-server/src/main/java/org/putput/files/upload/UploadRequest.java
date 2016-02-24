@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 public class UploadRequest {
   private String uploadFolder;
   private String path;
+  private String type;
   private long contentLength;
   private int resumableChunkSize;
   private long resumableTotalSize;
@@ -103,5 +104,13 @@ public class UploadRequest {
 
   public void setUploadFolder(String uploadFolder) {
     this.uploadFolder = uploadFolder;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 }

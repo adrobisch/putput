@@ -1,6 +1,6 @@
 'use strict';
 
-var jQuery = window.jQuery = require('jquery');
+var jQuery = window.$ = window.jQuery = require('jquery');
 var flow = window.Flow = require('flow.js/dist/flow');
 var angular = window.angular = require('angular');
 var fullCalendar = require('fullcalendar');

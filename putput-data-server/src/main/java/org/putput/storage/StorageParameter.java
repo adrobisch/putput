@@ -1,4 +1,4 @@
-package org.putput.files;
+package org.putput.storage;
 
 import org.putput.common.persistence.BaseEntity;
 

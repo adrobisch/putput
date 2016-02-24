@@ -1,5 +1,7 @@
-package org.putput.files;
+package org.putput.storage;
 
+import org.putput.files.FileSystemStorage;
+import org.putput.files.MimeTypes;
 import org.springframework.stereotype.Component;
 
 @Component

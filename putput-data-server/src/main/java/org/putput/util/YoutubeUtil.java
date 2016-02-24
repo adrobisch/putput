@@ -1,14 +1,19 @@
 package org.putput.util;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class YoutubeUtil {
 
-  static Pattern youtubeUrlPatter = Pattern.compile("(?:https?:\\/\\/)?(?:www\\.)?youtu(.be\\/|be\\.com\\/watch\\?v=)(.{11})");
+  static Pattern youtubeUrlPatter = Pattern.compile("(?:https?:\\/\\/)?(?:www\\.)?youtu(.be\\/|be\\.com\\/watch\\?v=)(.{11})(.*)");
 
-  public static Boolean isYoutubeUrl(String input) {
-    return youtubeUrlPatter.matcher(input).matches();
+  public static Optional<String> isYoutubeUrl(String input) {
+    Matcher matcher = youtubeUrlPatter.matcher(input);
+    if (matcher.find()) {
+      return Optional.of(matcher.group(2));
+    }
+    return Optional.empty();
   }
 
   public static String embed(String youtubeUrl) {

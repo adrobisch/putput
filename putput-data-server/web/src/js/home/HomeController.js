@@ -1,6 +1,6 @@
 var _ = require("lodash");
 
-var HomeController = function (scope, timeline, rootScope, hotkeys, users) {
+var HomeController = function (scope) {
     scope.stream = [];
     scope.imageUrl = null;
     scope.filter = "all";

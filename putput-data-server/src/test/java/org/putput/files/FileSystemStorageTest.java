@@ -1,6 +1,7 @@
 package org.putput.files;
 
 import org.junit.Test;
+import org.putput.storage.StorageConfiguration;
 
 import java.io.File;
 import java.util.List;

@@ -1,7 +1,9 @@
 
 package org.putput.api.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -20,7 +22,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "title",
     "content",
     "created",
-    "reference"
+    "externalReference",
+    "reference",
+    "media"
 })
 public class StreamItem {
 
@@ -36,8 +40,12 @@ public class StreamItem {
     private String content;
     @JsonProperty("created")
     private Double created;
+    @JsonProperty("externalReference")
+    private String externalReference;
     @JsonProperty("reference")
     private String reference;
+    @JsonProperty("media")
+    private List<StreamItemMedia> media = new ArrayList<StreamItemMedia>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -194,6 +202,31 @@ public class StreamItem {
     /**
      * 
      * @return
+     *     The externalReference
+     */
+    @JsonProperty("externalReference")
+    public String getExternalReference() {
+        return externalReference;
+    }
+
+    /**
+     * 
+     * @param externalReference
+     *     The externalReference
+     */
+    @JsonProperty("externalReference")
+    public void setExternalReference(String externalReference) {
+        this.externalReference = externalReference;
+    }
+
+    public StreamItem withExternalReference(String externalReference) {
+        this.externalReference = externalReference;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
      *     The reference
      */
     @JsonProperty("reference")
@@ -213,6 +246,31 @@ public class StreamItem {
 
     public StreamItem withReference(String reference) {
         this.reference = reference;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The media
+     */
+    @JsonProperty("media")
+    public List<StreamItemMedia> getMedia() {
+        return media;
+    }
+
+    /**
+     * 
+     * @param media
+     *     The media
+     */
+    @JsonProperty("media")
+    public void setMedia(List<StreamItemMedia> media) {
+        this.media = media;
+    }
+
+    public StreamItem withMedia(List<StreamItemMedia> media) {
+        this.media = media;
         return this;
     }
 

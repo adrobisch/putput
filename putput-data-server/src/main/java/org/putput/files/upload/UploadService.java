@@ -1,7 +1,5 @@
 package org.putput.files.upload;
 
-import org.putput.files.FileService;
-import org.putput.files.PutPutFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,27 +11,19 @@ import java.util.Optional;
 public class UploadService {
 
   UploadRepository uploadRepository;
-  FileService fileService;
 
   @Autowired
-  public UploadService(UploadRepository uploadRepository, FileService fileService) {
+  public UploadService(UploadRepository uploadRepository) {
     this.uploadRepository = uploadRepository;
-    this.fileService = fileService;
   }
 
-  public synchronized Optional<PutPutFile> upload(String username, UploadRequest uploadRequest, InputStream dataStream) {
+  public synchronized Optional<File> upload(UploadRequest uploadRequest, InputStream dataStream) {
     uploadRepository.writeChunk(uploadRequest, dataStream);
     uploadRepository.markUploaded(uploadRequest);
 
     if (isUploadFinished(uploadRequest)) {
       File completedFile = uploadRepository.complete(uploadRequest);
-      
-      PutPutFile newFile = fileService.createUserFileFromSource(username,
-              completedFile,
-              Optional.ofNullable(uploadRequest.getResumableRelativePath()),
-              Optional.<String>empty());
-      
-      return Optional.of(newFile);
+      return Optional.of(completedFile);
     }
     return Optional.empty();
   }
@@ -50,5 +40,4 @@ public class UploadService {
     }
     return true;
   }
-
 }

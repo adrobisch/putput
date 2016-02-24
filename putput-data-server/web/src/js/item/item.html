@@ -1,28 +1,44 @@
 <div class="message-item animation" id="m16">
     <div class="message-inner">
         <div class="message-head clearfix">
-            <div class="pull-left">
-                <a data-ng-href="#/profile/{{item.streamItem.creator}}">
-                    <img class="avatar" data-ng-src="avatar/{{item.streamItem.creator}}" >
-                </a>
-            </div>
-            <div class="user-detail">
-                <h5 class="handle">{{item.streamItem.creator}}</h5>
-                <div class="post-meta">
-                    <div class="asker-meta">
-                        <span class="qa-message-what"></span>
+            <div class="message-details">
+                <div class="pull-left">
+                    <a data-ng-href="/@{{item.streamItem.creator}}">
+                        <img class="avatar" data-ng-src="avatar/{{item.streamItem.creator}}" >
+                    </a>
+                </div>
+                <div class="user-detail">
+                    <h5 class="handle">{{item.streamItem.creator}}</h5>
+                    <div class="post-meta">
+                        <div class="asker-meta">
+                            <span class="qa-message-what"></span>
                         <span class="qa-message-when">
                             <span class="qa-message-when-data" data-am-time-ago="item.streamItem.created"></span>
                         </span>
                         <span class="qa-message-who">
                             <span class="qa-message-who-pad">by </span>
-                            <span class="qa-message-who-data"><a href="#/profile/{{item.streamItem.creator}}">@{{item.streamItem.creator}}</a></span>
+                            <span class="qa-message-who-data"><a href="/@{{item.streamItem.creator}}">@{{item.streamItem.creator}}</a></span>
                         </span>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="message-title" ng-cloak data-ng-show="item.streamItem.title">
+                <a target="_blank" data-ng-href="{{item.streamItem.externalReference}}"><strong>{{item.streamItem.title}}</strong></a>
+            </div>
         </div>
-        <div class="message-content" data-ng-bind-html="item.streamItem.content"></div>
+        <div class="message-content">
+            <div class="message-html" data-ng-bind-html="item.streamItem.content"></div>
+            <div class="message-media" ng-cloak data-ng-show="item.streamItem.media.length">
+                <div data-ng-repeat="media in item.streamItem.media"
+                     data-ng-switch data-on="media.type">
+                    <img class="animation" data-ng-switch-when="image" data-ng-src="{{media.url}}">
+                    <div data-ng-switch-when="youtube" 
+                         data-youtube 
+                         data-youtube-id="media.key"></div>
+                </div>
+            </div>
+        </div>
         <div class="message-foot clearfix">
             <ul class="actions" data-ng-show="!plain">
                 <li id="like-action" data-ng-click="toggleLike(item)"  data-ng-class="{'like-active': item.markerInfo.isLike}" class="action glyphicon glyphicon glyphicon-thumbs-up"><span class="likes-count">{{item.markerInfo.likes}}</span></li>

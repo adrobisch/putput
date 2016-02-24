@@ -203,9 +203,27 @@ schemas:
           "title": {"type": "string"},
           "content": {"type": "string"},
           "created": {"type": "number"},
-          "reference": {"type": "string"}
+          "externalReference": {"type": "string"},
+          "reference": {"type": "string"},
+          "media": {
+            "type": "array",
+            "items": {
+              "$ref": "media"
+            }
+          }
         }
       }
+  - media: |
+     {
+       "$schema": "http://json-schema.org/json-schema",
+       "type": "object",
+       "javaType" : "org.putput.api.model.StreamItemMedia",
+       "properties": {
+         "type": {"type": "string"},
+         "url": {"type": "string"},
+         "key": {"type": "string"}
+       }
+     }     
   - newMarker: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -778,6 +796,16 @@ traits:
         description: param to search only files tagged with specified text, disables parent parameter
         type: string
         required: false
+
+/image:
+  /{id}:
+    get:
+      responses:
+        200:
+          body:
+            image/jpeg:
+            image/png:
+            image/gif:
 
 /messages:
   get:

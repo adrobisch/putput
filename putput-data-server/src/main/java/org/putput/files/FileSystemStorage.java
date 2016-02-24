@@ -1,5 +1,7 @@
 package org.putput.files;
 
+import org.putput.storage.Storage;
+import org.putput.storage.StorageConfiguration;
 import org.springframework.util.StreamUtils;
 
 import java.io.File;

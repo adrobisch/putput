@@ -3,9 +3,11 @@ package org.putput.stream;
 import com.rometools.rome.feed.synd.*;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedOutput;
+import org.apache.commons.lang3.tuple.Pair;
 import org.putput.api.model.*;
 import org.putput.api.resource.Stream;
 import org.putput.common.web.BaseResource;
+import org.putput.stream.html.StreamItemHtmlProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -146,14 +148,20 @@ public class StreamResource extends BaseResource implements Stream {
   }
 
   Function<StreamItemEntity, StreamItem> entityToItem() {
-    return streamItemEntity -> new StreamItem()
-        .withId(streamItemEntity.getId())
-        .withContent(itemHtmlProcessor.itemHtml(streamItemEntity))
-        .withCreated(streamItemEntity.getCreated().doubleValue())
-        .withCreator(streamItemEntity.getAuthor().getUsername())
-        .withSource(streamItemEntity.getSource().map(StreamItemSource::value).orElse(null))
-        .withTitle(streamItemEntity.getTitle())
-        .withReference(streamItemEntity.getItemRef());
+    return streamItemEntity -> {
+      Pair<String, List<StreamItemMedia>> htmlAndMedia = itemHtmlProcessor.itemHtml(streamItemEntity);
+
+      return new StreamItem()
+              .withId(streamItemEntity.getId())
+              .withContent(htmlAndMedia.getKey())
+              .withMedia(htmlAndMedia.getValue())
+              .withCreated(streamItemEntity.getCreated().doubleValue())
+              .withCreator(streamItemEntity.getAuthor().getUsername())
+              .withSource(streamItemEntity.getSource().map(StreamItemSource::value).orElse(null))
+              .withTitle(streamItemEntity.getTitle())
+              .withExternalReference(streamItemEntity.getExternalRef().orElse(null))
+              .withReference(streamItemEntity.getItemRef());
+    };
   }
 
   @Override

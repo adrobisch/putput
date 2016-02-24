@@ -1,7 +1,7 @@
 package org.putput.files.upload;
 
-import org.putput.api.resource.File;
 import org.putput.common.web.BaseResource;
+import org.putput.files.FileService;
 import org.putput.files.PutPutFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -23,27 +26,49 @@ import static java.lang.Integer.parseInt;
 import static java.util.Optional.ofNullable;
 
 @Controller
-@Path("/upload")
+@Path("upload")
 public class UploadResource extends BaseResource {
 
     @Autowired
     UploadService uploadService;
+    
+    @Autowired
+    FileService fileService;
+    
+    @Autowired
+    UploadHandlers uploadHandlers;
 
     @POST
-    public Response postChunk() throws IOException {
+    public void postChunk(@Suspended final AsyncResponse asyncResponse) throws IOException {
         UploadRequest uploadRequest = uploadedFile(httpServletRequest);
-
+        
         if (!uploadRequest.vaild()) {
-            return Response.status(HttpStatus.BAD_REQUEST.value()).entity("Invalid upload parameters.").build();
+            respondWith(asyncResponse, Response.status(HttpStatus.BAD_REQUEST.value()).entity("Invalid upload parameters.").build());
         }
-
-        Optional<PutPutFile> completelyUploadedFile = uploadService.upload(user().getUsername(), uploadRequest, httpServletRequest.getInputStream());
+        
+        Optional<File> completelyUploadedFile = uploadService.upload(uploadRequest, httpServletRequest.getInputStream());
         
         if (!completelyUploadedFile.isPresent()) {
-            return Response.ok("Uploading...").build();
+            respondWith(asyncResponse, Response.ok("Uploading...").build());
         } else {
-            return Response.created(toUri(link(File.class, completelyUploadedFile.get().getId()).getHref())).build();
+            UploadHandler uploadHandler = uploadHandlers.getUploadHandlers().get(uploadRequest.getType());
+            Object handledUpload = uploadHandler.handleUpload(user().getUsername(), uploadRequest, completelyUploadedFile.get());
+            
+            if (handledUpload instanceof PutPutFile) {
+                respondWith(asyncResponse, Response.created(toUri(link(PutPutFile.class, ((PutPutFile) handledUpload).getId()).getHref())).build());                
+            } else {
+                respondWith(asyncResponse, Response.created(toUri(link(UploadResource.class, uploadRequest.getResumableIdentifier()).getHref())).build());
+            }
         }
+    }
+
+    private void respondWith(AsyncResponse asyncResponse, Response response) {
+        new Thread() {
+            @Override
+            public void run() {
+                asyncResponse.resume(response);
+            }
+        }.start();
     }
 
     private URI toUri(String href) {
@@ -66,6 +91,7 @@ public class UploadResource extends BaseResource {
     }
 
     UploadRequest uploadedFile(HttpServletRequest request) {
+        String type = ofNullable(request.getParameter("type")).orElse("file");
         int resumableChunkNumber = parseInt(ofNullable(request.getParameter("flowChunkNumber")).orElse("-1"));
         int totalChunks = parseInt(ofNullable(request.getParameter("flowTotalChunks")).orElse("-1"));
         int resumableChunkSize = parseInt(ofNullable(request.getParameter("flowChunkSize")).orElse("-1"));
@@ -77,6 +103,7 @@ public class UploadResource extends BaseResource {
 
         UploadRequest uploadRequest = new UploadRequest();
 
+        uploadRequest.setType(type);
         uploadRequest.setResumableChunkSize(resumableChunkSize);
         uploadRequest.setResumableTotalSize(resumableTotalSize);
         uploadRequest.setResumableIdentifier(resumableIdentifier);

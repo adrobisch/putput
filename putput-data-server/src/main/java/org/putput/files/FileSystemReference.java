@@ -1,5 +1,7 @@
 package org.putput.files;
 
+import org.putput.storage.StorageReference;
+
 import java.io.File;
 
 public class FileSystemReference extends StorageReference<FileSystemReference> {
