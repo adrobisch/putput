@@ -107,7 +107,8 @@ module.exports = function (grunt) {
             expand: true,
             cwd: '<%= config.node_modules %>',
             src: [
-              '**/fonts/**'
+              '**/fonts/**',
+              'emojify.js/dist/images/basic/**'
             ],
             dest: '<%= config.dist %>/vendor'
           }
