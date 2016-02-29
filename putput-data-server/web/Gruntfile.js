@@ -41,7 +41,9 @@ module.exports = function (grunt) {
             "<%= config.node_modules %>/font-awesome/less",
             "<%= config.node_modules %>/ui-select/dist",
             "<%= config.node_modules %>/fullcalendar/dist",
-            "<%= config.node_modules %>/angular-hotkeys/build"
+            "<%= config.node_modules %>/angular-hotkeys/build",
+            "<%= config.node_modules %>/emojify.js/dist/css/basic",
+            "<%= config.node_modules %>/angular-loading-bar/build"
           ],
           cleancss: true
         },
@@ -105,11 +107,7 @@ module.exports = function (grunt) {
             expand: true,
             cwd: '<%= config.node_modules %>',
             src: [
-              '**/*.min.js',
-              '**/*.min.css',
-              '**/fonts/**',
-              'js/**/*.min.js',
-              '**/dist/**/*'
+              '**/fonts/**'
             ],
             dest: '<%= config.dist %>/vendor'
           }

@@ -31,6 +31,7 @@
                            ng-model="startDate"
                            is-open="showStartDate"
                            ng-required="true"
+                           ng-change="onStartDate()"
                            close-text="Close" />
                     <span class="input-group-btn">
                         <button type="button" 
@@ -42,9 +43,10 @@
                 </div>
             </div>            
             <div class="form-group">
-                <uib-timepicker ng-model="startTime"
+                <uib-timepicker ng-model="startDate"
                                 minute-step="15"
-                                show-meridian="false"></uib-timepicker>
+                                show-meridian="false"
+                                ng-disabled="allDay"></uib-timepicker>
             </div>
         </form>
     </div>
@@ -70,9 +72,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <uib-timepicker ng-model="endTime"
+                <uib-timepicker ng-model="endDate"
                                 minute-step="15"
-                                show-meridian="false"></uib-timepicker>
+                                show-meridian="false"
+                                ng-disabled="allDay"></uib-timepicker>
             </div>
         </form>
     </div>
@@ -94,34 +97,46 @@
 <div class="row" data-ng-init="init()">
     <div class="col-md-12">
         <h3>Calendar</h3>
-        <div data-ui-calendar="calendar" data-ng-model="eventSources"></div>
+        <div data-ui-calendar="calendar"
+             data-ng-model="eventSources"
+             data-calendar="calendarInstance"></div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-12">
         <h3>Events</h3>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Timezone</th>
-                <th>Type</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr data-ng-repeat="event in events">
-                <td>{{event.title}}</td>
-                <td>{{event.description}}</td>
-                <td>{{event.start | date:'medium'}}</td>
-                <td>{{event.end | date:'medium'}}</td>
-                <td>{{event.timezone}}</td>
-                <td>{{event.type}}</td>
-            </tr>
-            </tbody>
-        </table>    
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Timezone</th>
+                    <th>Type</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="event in events">
+                    <td>{{event.title}}</td>
+                    <td>{{event.description}}</td>
+                    <td>{{event.start | date:'medium'}}</td>
+                    <td>{{event.end | date:'medium'}}</td>
+                    <td>{{event.timezone}}</td>
+                    <td>{{event.type}}</td>
+                    <td>
+                        <button class="btn btn-default"
+                                data-ng-click="deleteEvent(event)"
+                                data-ng-confirm-click="Really delete event {{event.title}}?">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

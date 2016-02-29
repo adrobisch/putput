@@ -1,9 +1,9 @@
 var _ = require("lodash");
 
-var InboxController = function (scope, calendar, hotkeys) {
+var InboxController = function (scope, calendar, hotkeys, uiCalendarConfig) {
     scope.calendar = {
         height: 450,
-        editable: true,
+        editable: false,
         header: {
             left: 'month,agendaWeek,agendaDay',
             center: 'title',
@@ -18,13 +18,15 @@ var InboxController = function (scope, calendar, hotkeys) {
     };
     
     scope.getEvents = function (start, end, timezone, callback) {
-        calendar.getEvents().success(function (response) {
+        return calendar.getEvents().success(function (response) {
             scope.events = response.data.events;
             scope.calendarEvents = [];
             _.forEach(scope.events, function (event) {
                 scope.calendarEvents.push(scope.serverEventToCalendarEvent(event));
             });
-            callback(scope.calendarEvents);
+            if (callback) {
+                callback(scope.calendarEvents);
+            }
         });
     };
     
@@ -32,6 +34,7 @@ var InboxController = function (scope, calendar, hotkeys) {
         return {
             "title": serverEvent.title,
             "start": new Date(serverEvent.start),
+            "end": new Date(serverEvent.end),
             "allDay": serverEvent.type === "ALLDAY"
         };
     };
@@ -49,18 +52,8 @@ var InboxController = function (scope, calendar, hotkeys) {
     };
 
     scope.createEvent = function () {
-        if (!scope.title && !scope.startDate && !scope.endDate) {
+        if (!scope.title || !scope.startDate || !scope.endDate) {
             return;
-        }
-        
-        if (scope.startTime) {
-            scope.startDate.setHours(scope.startTime.getHours());
-            scope.startDate.setMinutes(scope.startTime.getMinutes());
-        }
-        
-        if (scope.endTime) {
-            scope.endDate.setHours(scope.endTime.getHours());
-            scope.endDate.setMinutes(scope.endTime.getMinutes());
         }
         
         var type = scope.allDay ? "ALLDAY" : "DEFAULT";
@@ -72,14 +65,26 @@ var InboxController = function (scope, calendar, hotkeys) {
             "title": scope.title
         };
         
-        calendar.createEvent(newEvent).success(function () {
-            scope.calendarEvents.push(newEvent);
-        });
+        calendar.createEvent(newEvent).success(scope.reloadEvents);
+    };
+
+    scope.onStartDate = function () {
+        if (!scope.endDate || (scope.endDate.getTime()) < scope.startDate.getTime() ) {
+            scope.endDate = new Date(scope.startDate.getTime());
+        }
+    };
+
+    scope.deleteEvent = function (event) {
+        calendar.deleteEvent(event).success(scope.reloadEvents);
+    };
+
+    scope.reloadEvents = function () {
+        uiCalendarConfig.calendars["calendarInstance"].fullCalendar('refetchEvents');
     };
 
     scope.eventSources = [scope.getEvents];
 };
 
-InboxController.$inject = ["$scope", "calendar", "hotkeys"];
+InboxController.$inject = ["$scope", "calendar", "hotkeys", "uiCalendarConfig"];
 
 module.exports = InboxController;

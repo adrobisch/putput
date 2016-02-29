@@ -24,6 +24,12 @@ function CalendarApi(http, api) {
             return http.post(eventLink.replace("{id}", ""), event); 
         });  
     };
+
+    this.deleteEvent = function (event) {
+        return api.withLink('event', function (eventLink) {
+            return http.delete(eventLink.replace("{id}", event.id));
+        });
+    }
 }
 
 CalendarApi.$inject = ['$http', 'api'];
