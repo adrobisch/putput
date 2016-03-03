@@ -27,5 +27,6 @@
     <include file="db/changelog/create_rss_feed_info.xml" />
     <include file="db/changelog/create_message.xml" />
     <include file="db/changelog/create_event.xml" />
+    <include file="db/changelog/create_access_token.xml" />
 
 </databaseChangeLog>

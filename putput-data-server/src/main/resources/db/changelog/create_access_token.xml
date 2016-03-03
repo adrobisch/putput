@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="create_access_token.xml">
+
+    <changeSet id="1" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PP_ACCESS_TOKEN" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="PP_ACCESS_TOKEN">
+            <column name="_ID" type="varchar(40)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="_OWNER_ID" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_TOKEN" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_SECRET" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>            
+            <column name="_EXPIRY_DATE" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_VERSION" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="_CREATED" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="_UPDATED" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="PP_ACCESS_TOKEN"
+                     indexName="IDX_ACCESS_TOKEN">
+            <column name="_TOKEN" />
+        </createIndex>
+
+        <createIndex tableName="PP_ACCESS_TOKEN"
+                     indexName="IDX_ACCESS_SECRET">
+            <column name="_SECRET" />
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

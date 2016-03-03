@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -16,10 +17,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -36,8 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   AuthenticationProvider authenticationProvider;
 
-  public static final String tokenHeaderName = "X-PutPut-Token";
-
   private static final String apiBasePath = "/api/";
   private static String loginPath = apiBasePath + getPathFromResource(Login.class);
   private static String logoutPath = apiBasePath + getPathFromResource(Logout.class);
@@ -46,7 +46,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    AbstractPreAuthenticatedProcessingFilter accessTokenAuthenticationFilter = accessTokenAuthenticationFilter();
+    
     http
+      .addFilter(accessTokenAuthenticationFilter)
       .csrf().disable()
       .exceptionHandling().authenticationEntryPoint(getAuthenticationEntryPoint())
       .and()
@@ -94,13 +97,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
+  PreAuthenticatedAuthenticationProvider preAuthenticatedProvider() {
+    PreAuthenticatedAuthenticationProvider preAuthenticatedAuthenticationProvider = new PreAuthenticatedAuthenticationProvider();
+    preAuthenticatedAuthenticationProvider.setPreAuthenticatedUserDetailsService(new PreAuthenticatedGrantedAuthoritiesUserDetailsService());
+    return preAuthenticatedAuthenticationProvider;
+  }
+
+  @Bean
+  AccessTokenAuthenticationFilter accessTokenAuthenticationFilter() {
+    AccessTokenAuthenticationFilter ipAddressFilter = new AccessTokenAuthenticationFilter(rememberMeServices(), userDetailsService);
+    ipAddressFilter.setAuthenticationManager(authenticationManagerBean());
+    return ipAddressFilter;
+  }
+
+  @Bean(name="putputAuthenticationManager")
+  @Override
+  public AuthenticationManager authenticationManagerBean() {
+    try {
+      return super.authenticationManagerBean();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Bean
   @Profile({"production", "unit"})
-  public RememberMeServices rememberMeServices() {
-    TokenBasedRememberMeServices rememberMeServices = new HeaderBasedRememberMeTokenServices("token", userDetailsService);
-    rememberMeServices.setCookieName(tokenHeaderName);
-    rememberMeServices.setParameter("rememberMe"); // for the login form
-    rememberMeServices.setAlwaysRemember(true);
-    return rememberMeServices;
+  public PutPutRememberMeServices rememberMeServices() {
+    return new PutPutRememberMeServices("token", userDetailsService);
   }
 
   @Autowired
