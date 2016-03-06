@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
@@ -37,6 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   AuthenticationProvider authenticationProvider;
+
+  @Autowired
+  Environment environment;
 
   private static final String apiBasePath = "/api/";
   private static String loginPath = apiBasePath + getPathFromResource(Login.class);
@@ -105,7 +110,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   AccessTokenAuthenticationFilter accessTokenAuthenticationFilter() {
-    AccessTokenAuthenticationFilter ipAddressFilter = new AccessTokenAuthenticationFilter(rememberMeServices(), userDetailsService);
+    AccessTokenAuthenticationFilter ipAddressFilter = new AccessTokenAuthenticationFilter(userDetailsService, environment);
     ipAddressFilter.setAuthenticationManager(authenticationManagerBean());
     return ipAddressFilter;
   }
@@ -122,7 +127,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   @Profile({"production", "unit"})
-  public PutPutRememberMeServices rememberMeServices() {
+  public RememberMeServices rememberMeServices() {
     return new PutPutRememberMeServices("token", userDetailsService);
   }
 

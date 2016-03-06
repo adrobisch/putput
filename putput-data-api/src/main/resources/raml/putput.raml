@@ -160,6 +160,39 @@ schemas:
           "self" : { "$ref": "halLink"}
         }
       }
+  - accessToken: |
+      {
+        "$schema": "http://json-schema.org/json-schema",
+        "properties": {
+          "id": {"type": "string"},
+          "token": {"type": "string"},
+          "secret": {"type": "string"},
+          "created": {"type": "number"},
+          "updated": {"type": "number"},
+          "version": {"type": "integer"},
+          "_links": {
+            "$ref": "accessTokenLinks"
+          }
+        }
+      }
+  - accessTokenLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.AccessTokenLinks",
+        "description": "The links of a access token",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
+  - accessTokenListLinks: |
+      { "$schema": "http://json-schema.org/schema",
+        "type": "object",
+        "javaType" : "org.putput.api.model.AccessTokenListLinks",
+        "description": "The links of a access token list",
+        "properties": {
+          "self" : { "$ref": "halLink"}
+        }
+      }
   - streamItemResource: |
       {
         "$schema": "http://json-schema.org/json-schema",
@@ -558,6 +591,8 @@ schemas:
             "javaType" : "org.putput.api.model.ServiceDocumentLinks",
             "properties": {
               "self" : { "$ref": "halLink"},
+              "access-tokens" : { "$ref": "halLink"},
+              "access-token" : { "$ref": "halLink"},
               "notes" : { "$ref": "halLink"},
               "note" : { "$ref": "halLink"},
               "events" : { "$ref": "halLink"},
@@ -595,6 +630,7 @@ schemas:
           }
         }
       }
+
   - passwordResetConfirmation: |
       { "$schema": "http://json-schema.org/schema",
         "type": "object",
@@ -709,6 +745,36 @@ traits:
     delete:
       responses:
         200:
+
+/access-token:
+  post:
+    body:
+      application/json:
+        schema: accessToken
+    responses:
+      201:
+        headers:
+          Location:
+  /{id}:
+    get:
+      responses:
+        200:
+          body:
+            application/hal+json:
+              schema: accessToken
+    put:
+      body:
+        application/json:
+          schema: accessToken
+      responses:
+        200:
+    delete:
+      responses:
+        200:
+
+/access-tokens:
+  get:
+    is: [ halCollection: { id: accessTokenList, collectionJavaType: org.putput.api.model.AccessTokenList, itemsProperty: accessTokens, itemSchema: accessToken, collectionLinks: accessTokenLinks}]
 
 /note:
   post:

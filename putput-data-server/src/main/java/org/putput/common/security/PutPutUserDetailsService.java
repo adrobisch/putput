@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 
 @Service
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class PutPutUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
   @Autowired
   UserRepository userRepository;

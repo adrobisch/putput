@@ -32,8 +32,4 @@ public class PutPutRememberMeServices extends TokenBasedRememberMeServices {
 
     return tokenHeaderValue == null ? extractedCookie : tokenHeaderValue;
   }
-  
-  public String getTokenSignature(Long tokenExpiryTime, String username, String password) {
-    return this.makeTokenSignature(tokenExpiryTime, username, password);
-  }
 }

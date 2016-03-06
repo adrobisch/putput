@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
     "self",
+    "access-tokens",
+    "access-token",
     "notes",
     "note",
     "events",
@@ -45,6 +47,18 @@ public class ServiceDocumentLinks {
      */
     @JsonProperty("self")
     private HalLink self;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("access-tokens")
+    private HalLink accessTokens;
+    /**
+     * A HAL link
+     * 
+     */
+    @JsonProperty("access-token")
+    private HalLink accessToken;
     /**
      * A HAL link
      * 
@@ -198,6 +212,60 @@ public class ServiceDocumentLinks {
 
     public ServiceDocumentLinks withSelf(HalLink self) {
         this.self = self;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The accessTokens
+     */
+    @JsonProperty("access-tokens")
+    public HalLink getAccessTokens() {
+        return accessTokens;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param accessTokens
+     *     The access-tokens
+     */
+    @JsonProperty("access-tokens")
+    public void setAccessTokens(HalLink accessTokens) {
+        this.accessTokens = accessTokens;
+    }
+
+    public ServiceDocumentLinks withAccessTokens(HalLink accessTokens) {
+        this.accessTokens = accessTokens;
+        return this;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @return
+     *     The accessToken
+     */
+    @JsonProperty("access-token")
+    public HalLink getAccessToken() {
+        return accessToken;
+    }
+
+    /**
+     * A HAL link
+     * 
+     * @param accessToken
+     *     The access-token
+     */
+    @JsonProperty("access-token")
+    public void setAccessToken(HalLink accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public ServiceDocumentLinks withAccessToken(HalLink accessToken) {
+        this.accessToken = accessToken;
         return this;
     }
 

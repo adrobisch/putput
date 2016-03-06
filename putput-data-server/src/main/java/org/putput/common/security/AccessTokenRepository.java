@@ -1,7 +1,16 @@
 package org.putput.common.security;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
-public interface AccessTokenRepository extends CrudRepository<AccessToken, String> {
-    
+public interface AccessTokenRepository extends PagingAndSortingRepository<AccessTokenEntity, String> {
+    @Query("select accessToken from AccessTokenEntity accessToken " +
+        "where accessToken.owner.username = :username " +
+        "order by accessToken.created desc")
+    Page<AccessTokenEntity> findByOwner(@Param("username") String username, Pageable pageable);
+
+    AccessTokenEntity findByTokenAndSecret(String token, String secret);
 }

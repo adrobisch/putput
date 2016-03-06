@@ -1,18 +1,13 @@
 package org.putput.common.security;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesWebAuthenticationDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
@@ -23,14 +18,11 @@ import java.util.function.Function;
 
 @Component
 public class AccessTokenAuthenticationFilter extends AbstractPreAuthenticatedProcessingFilter {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    
-    private PutPutRememberMeServices rememberMeServices;
-    private org.springframework.security.core.userdetails.UserDetailsService userDetailsService;
+    private AccessTokenService accessTokenService;
 
-    public AccessTokenAuthenticationFilter(PutPutRememberMeServices rememberMeServices, org.springframework.security.core.userdetails.UserDetailsService userDetailsService) {
-        this.rememberMeServices = rememberMeServices;
-        this.userDetailsService = userDetailsService;
+    public AccessTokenAuthenticationFilter(AccessTokenService accessTokenService) {
+        this.accessTokenService = accessTokenService;
+
         setAuthenticationDetailsSource(detailsSource());
     }
 
@@ -43,51 +35,26 @@ public class AccessTokenAuthenticationFilter extends AbstractPreAuthenticatedPro
 
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        Optional<String> accessToken = getParameterValue(request, "token");
-        Optional<String> accessTokenSecret = getParameterValue(request, "secret");
-        
-        if (!(accessToken.isPresent() && accessTokenSecret.isPresent())) {
+        Optional<String> accessToken = getSingleParameterValue(request, "access_token");
+        Optional<String> accessTokenSecret = getSingleParameterValue(request, "secret");
+
+        if (accessToken.isPresent() && accessTokenSecret.isPresent()) {
+            return getAuthentication(accessToken.get(), accessTokenSecret.get());
+        } else {
             return null;
         }
-
-        String[] decodedToken = decodeAccessToken(accessToken.get());
-        
-        if (decodedToken.length != 3) {
-            throw new IllegalArgumentException("invalid token");
-        }
-        
-        String username = decodedToken[0];
-        Long expiryTime = Long.parseLong(decodedToken[1]);
-        String hash = decodedToken[2];
-        
-        if (tokenExpired(expiryTime)) {
-            throw new IllegalArgumentException("token expired");    
-        }
-        
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        String expectedHash = rememberMeServices.getTokenSignature(expiryTime, username, userDetails.getPassword());
-        
-        if (!expectedHash.equals(hash)) {
-            throw new IllegalArgumentException("invalid hash");
-        }
-        
-        return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword());
     }
 
-    private boolean tokenExpired(Long expiryTime) {
-        return expiryTime < System.currentTimeMillis();
-    }
-
-    String[] decodeAccessToken(String token) {
-        if(!Base64.isBase64(token.getBytes())) {
-            throw new IllegalArgumentException("Access token was not Base64 encoded; value was \'" + token + "\'");
+    private UsernamePasswordAuthenticationToken getAuthentication(String accessToken, String secret) {
+        Optional<AccessToken> validToken = accessTokenService.validateToken(accessToken, secret);
+        if (validToken.isPresent()) {
+            return new UsernamePasswordAuthenticationToken(validToken.get().getUsername(), "N/A");
         } else {
-            String base64Decoded = new String(Base64.decode(token.getBytes()));
-            return StringUtils.delimitedListToStringArray(base64Decoded, ":");
+            return null;
         }
     }
 
-    private Optional<String> getParameterValue(HttpServletRequest request, String name) {
+    private Optional<String> getSingleParameterValue(HttpServletRequest request, String name) {
         return request.getParameterMap()
                 .entrySet()
                 .stream()

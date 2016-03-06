@@ -1,44 +1,25 @@
 package org.putput.common.security;
 
-import org.putput.common.persistence.BaseEntity;
-import org.putput.users.UserEntity;
+public class AccessToken {
+  String username;
+  Long expiryDate;
+  String hash;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+  public AccessToken(String username, Long expiryDate, String hash) {
+    this.username = username;
+    this.expiryDate = expiryDate;
+    this.hash = hash;
+  }
 
-@Entity
-@Table(name = "PP_ACCESS_TOKEN")
-public class AccessToken extends BaseEntity<AccessToken> {
+  public String getUsername() {
+    return username;
+  }
 
-    @Column(name = "_TOKEN")
-    String token;
+  public Long getExpiryDate() {
+    return expiryDate;
+  }
 
-    @Column(name = "_SECRET")
-    String secret;
-
-    @Column(name = "_EXPIRY_DATE")
-    Long expiryDate;
-
-    @ManyToOne
-    @JoinColumn(name = "_OWNER_ID")
-    UserEntity user;
-
-    public String getToken() {
-        return token;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public Long getExpiryDate() {
-        return expiryDate;
-    }
+  public String getHash() {
+    return hash;
+  }
 }
