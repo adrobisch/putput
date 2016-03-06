@@ -15,8 +15,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
     "id",
+    "clientId",
     "token",
     "secret",
+    "expiryDate",
     "created",
     "updated",
     "version",
@@ -26,10 +28,14 @@ public class AccessToken {
 
     @JsonProperty("id")
     private String id;
+    @JsonProperty("clientId")
+    private String clientId;
     @JsonProperty("token")
     private String token;
     @JsonProperty("secret")
     private String secret;
+    @JsonProperty("expiryDate")
+    private Double expiryDate;
     @JsonProperty("created")
     private Double created;
     @JsonProperty("updated")
@@ -67,6 +73,31 @@ public class AccessToken {
 
     public AccessToken withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The clientId
+     */
+    @JsonProperty("clientId")
+    public String getClientId() {
+        return clientId;
+    }
+
+    /**
+     * 
+     * @param clientId
+     *     The clientId
+     */
+    @JsonProperty("clientId")
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public AccessToken withClientId(String clientId) {
+        this.clientId = clientId;
         return this;
     }
 
@@ -117,6 +148,31 @@ public class AccessToken {
 
     public AccessToken withSecret(String secret) {
         this.secret = secret;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The expiryDate
+     */
+    @JsonProperty("expiryDate")
+    public Double getExpiryDate() {
+        return expiryDate;
+    }
+
+    /**
+     * 
+     * @param expiryDate
+     *     The expiryDate
+     */
+    @JsonProperty("expiryDate")
+    public void setExpiryDate(Double expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public AccessToken withExpiryDate(Double expiryDate) {
+        this.expiryDate = expiryDate;
         return this;
     }
 

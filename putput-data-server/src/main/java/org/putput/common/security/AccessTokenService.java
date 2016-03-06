@@ -1,5 +1,9 @@
 package org.putput.common.security;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.putput.common.UuidService;
+import org.putput.users.UserEntity;
+import org.putput.users.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +31,29 @@ public class AccessTokenService {
 
   @Autowired
   UserDetailsService userDetailsService;
+  
+  @Autowired
+  UserRepository userRepository;
 
   @Autowired
   AccessTokenRepository accessTokenRepository;
+  
+  @Autowired
+  UuidService uuidService;
 
   public List<AccessTokenEntity> findByUsername(String username) {
     return accessTokenRepository
         .findByOwner(username, new PageRequest(0, Integer.MAX_VALUE))
         .getContent();
+  }
+
+  public Optional<AccessTokenEntity> findByUsernameAndId(String username, String id) {
+    return Optional.ofNullable(accessTokenRepository
+            .findByOwnerAndId(username, id));
+  }
+  
+  public void deleteToken(String id) {
+    accessTokenRepository.delete(id);
   }
 
   public Optional<AccessToken> validateToken(String accessToken, String secret) {
@@ -104,5 +123,31 @@ public class AccessTokenService {
 
   private boolean tokenExpired(Long expiryTime) {
     return expiryTime < System.currentTimeMillis();
+  }
+
+  public AccessTokenEntity createAccessToken(String username, String clientId, long expiryDate) {
+    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    UserEntity userEntity = userRepository.findByUsername(username);
+    
+    AccessTokenEntity accessTokenEntity = new AccessTokenEntity();
+    accessTokenEntity.setId(uuidService.uuid());
+    accessTokenEntity.setClientId(clientId);
+    accessTokenEntity.setOwner(userEntity);
+    accessTokenEntity.setToken(createToken(userDetails, expiryDate));
+    accessTokenEntity.setSecret(DigestUtils.sha256Hex(uuidService.uuid()));
+    accessTokenEntity.setExpiryDate(expiryDate);
+    
+    return accessTokenRepository.save(accessTokenEntity);
+  }
+
+  String createToken(UserDetails userDetails, long expiryDate) {
+    String hash = createHash(expiryDate, userDetails.getUsername(), userDetails.getPassword());
+    return new String(Base64.encode(String.format("%s:%s:%s", userDetails.getUsername(), "" + expiryDate, hash).getBytes()));
+  }
+  
+  public Optional<AccessTokenEntity> update(String username, org.putput.api.model.AccessToken entity) {
+    return findByUsernameAndId(username, entity.getId())
+            .map(tokenEntity -> tokenEntity.setClientId(entity.getClientId()).setExpiryDate(entity.getExpiryDate().longValue()))
+            .map(accessTokenRepository::save);
   }
 }

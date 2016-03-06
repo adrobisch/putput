@@ -21,6 +21,9 @@
             <column name="_OWNER_ID" type="varchar(40)">
                 <constraints nullable="false"/>
             </column>
+            <column name="_CLIENT_ID" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="_TOKEN" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>

@@ -12,7 +12,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PP_ACCESS_TOKEN")
 public class AccessTokenEntity extends BaseEntity<AccessTokenEntity> {
-
+    
+    @Column(name = "_CLIENT_ID")
+    String clientId;
+    
     @Column(name = "_TOKEN")
     String token;
 
@@ -40,5 +43,33 @@ public class AccessTokenEntity extends BaseEntity<AccessTokenEntity> {
 
     public Long getExpiryDate() {
         return expiryDate;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public AccessTokenEntity setClientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    public AccessTokenEntity setToken(String token) {
+        this.token = token;
+        return this;
+    }
+
+    public AccessTokenEntity setSecret(String secret) {
+        this.secret = secret;
+        return this;
+    }
+
+    public AccessTokenEntity setExpiryDate(Long expiryDate) {
+        this.expiryDate = expiryDate;
+        return this;
+    }
+
+    public void setOwner(UserEntity owner) {
+        this.owner = owner;
     }
 }

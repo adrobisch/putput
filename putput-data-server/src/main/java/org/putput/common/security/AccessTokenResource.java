@@ -1,26 +1,60 @@
 package org.putput.common.security;
 
-import org.putput.api.resource.*;
-import org.putput.api.resource.AccessToken;
+import org.putput.common.web.BaseResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class AccessTokenResource implements org.putput.api.resource.AccessToken {
+import java.util.Optional;
+import java.util.function.Function;
+
+@Component
+public class AccessTokenResource extends BaseResource implements org.putput.api.resource.AccessToken {
+  
+  @Autowired
+  AccessTokenService accessTokenService;
+  
   @Override
   public PostAccessTokenResponse postAccessToken(org.putput.api.model.AccessToken entity) throws Exception {
-    return null;
+    AccessTokenEntity accessTokenEntity = accessTokenService.createAccessToken(user().getUsername(), entity.getClientId(), entity.getExpiryDate().longValue());
+    return PostAccessTokenResponse.withCreated(link(org.putput.api.resource.AccessToken.class, accessTokenEntity.getId()).getHref());
   }
 
   @Override
   public GetAccessTokenByIdResponse getAccessTokenById(String id) throws Exception {
-    return null;
+    Optional<AccessTokenEntity> byUsernameAndId = accessTokenService.findByUsernameAndId(user().getUsername(), id);
+    
+    return byUsernameAndId
+            .map(accessTokenEntityToDto())
+            .map(GetAccessTokenByIdResponse::withHaljsonOK)
+            .orElseGet(GetAccessTokenByIdResponse::withNotFound);
   }
 
   @Override
   public PutAccessTokenByIdResponse putAccessTokenById(String id, org.putput.api.model.AccessToken entity) throws Exception {
-    return null;
+    return accessTokenService
+            .update(user().getUsername(), entity)
+            .map(accessTokenEntity -> PutAccessTokenByIdResponse.withOK())
+            .orElseGet(PutAccessTokenByIdResponse::withNotFound);
   }
 
   @Override
   public DeleteAccessTokenByIdResponse deleteAccessTokenById(String id) throws Exception {
-    return null;
+    Optional<AccessTokenEntity> byUsernameAndId = accessTokenService.findByUsernameAndId(user().getUsername(), id);
+    return byUsernameAndId
+            .map(accessTokenEntity -> {
+              accessTokenService.deleteToken(accessTokenEntity.getId());
+              return true;
+            }).map(result -> DeleteAccessTokenByIdResponse.withOK())
+            .orElseGet(DeleteAccessTokenByIdResponse::withNotFound);
+  }
+
+  public static Function<AccessTokenEntity, org.putput.api.model.AccessToken> accessTokenEntityToDto() {
+    return accessTokenEntity -> new org.putput.api.model.AccessToken()
+            .withId(accessTokenEntity.getId())
+            .withCreated(accessTokenEntity.getCreated().doubleValue())
+            .withClientId(accessTokenEntity.getClientId())
+            .withToken(accessTokenEntity.getToken())
+            .withExpiryDate(accessTokenEntity.getExpiryDate().doubleValue())
+            .withSecret(accessTokenEntity.getSecret());
   }
 }

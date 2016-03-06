@@ -165,8 +165,10 @@ schemas:
         "$schema": "http://json-schema.org/json-schema",
         "properties": {
           "id": {"type": "string"},
+          "clientId": {"type": "string"},
           "token": {"type": "string"},
           "secret": {"type": "string"},
+          "expiryDate": {"type": "number"},
           "created": {"type": "number"},
           "updated": {"type": "number"},
           "version": {"type": "integer"},
@@ -758,6 +760,7 @@ traits:
   /{id}:
     get:
       responses:
+        404:
         200:
           body:
             application/hal+json:
@@ -767,9 +770,11 @@ traits:
         application/json:
           schema: accessToken
       responses:
+        404:
         200:
     delete:
       responses:
+        404:
         200:
 
 /access-tokens:

@@ -12,5 +12,10 @@ public interface AccessTokenRepository extends PagingAndSortingRepository<Access
         "order by accessToken.created desc")
     Page<AccessTokenEntity> findByOwner(@Param("username") String username, Pageable pageable);
 
+    @Query("select accessToken from AccessTokenEntity accessToken " +
+            "where accessToken.owner.username = :username " +
+            "and accessToken.id = :id ")
+    AccessTokenEntity findByOwnerAndId(@Param("username") String username, @Param("id") String id);
+
     AccessTokenEntity findByTokenAndSecret(String token, String secret);
 }

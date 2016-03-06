@@ -83,6 +83,14 @@ public interface AccessToken {
         /**
          * 
          */
+        public static AccessToken.DeleteAccessTokenByIdResponse withNotFound() {
+            Response.ResponseBuilder responseBuilder = Response.status(404);
+            return new AccessToken.DeleteAccessTokenByIdResponse(responseBuilder.build());
+        }
+
+        /**
+         * 
+         */
         public static AccessToken.DeleteAccessTokenByIdResponse withOK() {
             Response.ResponseBuilder responseBuilder = Response.status(200);
             return new AccessToken.DeleteAccessTokenByIdResponse(responseBuilder.build());
@@ -97,6 +105,14 @@ public interface AccessToken {
 
         private GetAccessTokenByIdResponse(Response delegate) {
             super(delegate);
+        }
+
+        /**
+         * 
+         */
+        public static AccessToken.GetAccessTokenByIdResponse withNotFound() {
+            Response.ResponseBuilder responseBuilder = Response.status(404);
+            return new AccessToken.GetAccessTokenByIdResponse(responseBuilder.build());
         }
 
         /**
@@ -140,6 +156,14 @@ public interface AccessToken {
 
         private PutAccessTokenByIdResponse(Response delegate) {
             super(delegate);
+        }
+
+        /**
+         * 
+         */
+        public static AccessToken.PutAccessTokenByIdResponse withNotFound() {
+            Response.ResponseBuilder responseBuilder = Response.status(404);
+            return new AccessToken.PutAccessTokenByIdResponse(responseBuilder.build());
         }
 
         /**

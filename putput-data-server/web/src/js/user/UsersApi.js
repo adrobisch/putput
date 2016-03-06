@@ -40,6 +40,27 @@ function UsersApi(http, api) {
       return http.get(settingsLink);
     })
   };
+  
+  this.getAccessTokens = function () {
+    return api.withLink("access-tokens", function (accessTokensLinks) {
+      return http.get(accessTokensLinks);
+    })
+  };
+
+  this.addAccessToken = function(clientId, expiryDate) {
+    return api.withLink("access-token", function (accessTokenLink) {
+      return http.post(accessTokenLink.replace("{id}", ""), {
+        "clientId": clientId,
+        "expiryDate": expiryDate
+      });
+    })
+  };
+
+  this.deleteAccessToken = function(accessTokenId) {
+    return api.withLink("access-token", function (accessTokenLink) {
+      return http.delete(accessTokenLink.replace("{id}", accessTokenId));
+    })
+  };
 
   this.getRssFeeds = function() {
     return api.withLink(userFeedsRelation, function (userFeedsLink) {

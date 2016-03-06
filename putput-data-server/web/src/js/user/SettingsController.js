@@ -25,6 +25,22 @@ var SettingsController = function (scope, users, alertService) {
       scope.rssFeedList = response.data;
     });
   };
+  
+  scope.getAccessTokens = function () {
+    users.getAccessTokens().success(function (response){
+      scope.accessTokenList = response.data;
+    });
+  };
+
+  scope.addAccessToken = function () {
+    var expiryDate = new Date();
+    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+    users.addAccessToken(scope.newClientId, expiryDate.getTime()).success(scope.getAccessTokens);
+  };
+
+  scope.deleteAccessToken = function (id) {
+    users.deleteAccessToken(id).success(scope.getAccessTokens);
+  };
 
 };
 SettingsController.$inject = ["$scope", "users", "$alert"];

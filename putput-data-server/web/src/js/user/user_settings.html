@@ -48,3 +48,45 @@
         </form>
     </div>
 </div>
+
+<div class="panel panel-default animation" data-ng-show="accessTokenList" data-ng-init="getAccessTokens()">
+    <div class="panel-heading">Access Tokens</div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Client ID</th>
+                    <th>Token</th>
+                    <th>Secret</th>
+                    <th>Expiry Date</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="accessToken in accessTokenList.accessTokens">
+                    <td>{{accessToken.clientId}}</td>
+                    <td>{{accessToken.token}}</td>
+                    <td>{{accessToken.secret}}</td>
+                    <td>{{accessToken.expiryDate}}</td>
+                    <td>
+                        <button class="btn btn-default"
+                                data-ng-click="deleteAccessToken(accessToken.id)"
+                                data-ng-confirm-click="Are you sure you want to delete {{accessToken.id}}?">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>    
+        </div>
+        <p data-ng-hide="accessTokenList.accessTokens.length">No access tokens yet!</p>
+        <form name="accessTokenForm" novalidate role="form" data-ng-submit="addAccessToken()">
+            <div class="form-group">
+                <label for="clientId">Client ID</label>
+                <input type="text" data-ng-model="newClientId" class="form-control" id="clientId" placeholder="Enter client id">
+            </div>
+            <button type="submit" data-ng-disabled="!accessTokenForm.$valid" class="btn btn-default">Add</button>
+        </form>
+    </div>
+</div>

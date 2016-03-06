@@ -41,6 +41,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   AuthenticationProvider authenticationProvider;
 
   @Autowired
+  AccessTokenService accessTokenService;
+
+  @Autowired
   Environment environment;
 
   private static final String apiBasePath = "/api/";
@@ -110,7 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   AccessTokenAuthenticationFilter accessTokenAuthenticationFilter() {
-    AccessTokenAuthenticationFilter ipAddressFilter = new AccessTokenAuthenticationFilter(userDetailsService, environment);
+    AccessTokenAuthenticationFilter ipAddressFilter = new AccessTokenAuthenticationFilter(accessTokenService);
     ipAddressFilter.setAuthenticationManager(authenticationManagerBean());
     return ipAddressFilter;
   }
