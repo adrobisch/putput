@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col-md-12">
+        <form>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text"
+                       data-ng-model="event.title"
+                       class="form-control"
+                       id="title"
+                       placeholder="Title">
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text"
+                       data-ng-model="event.location"
+                       class="form-control"
+                       id="location"
+                       placeholder="Location">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description"
+                          data-ng-model="event.description"
+                          class="form-control"
+                          rows="3"></textarea>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <form>
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <div id="startDate" class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           uib-datepicker-popup
+                           ng-model="event.startDate"
+                           is-open="showStartDate"
+                           ng-required="true"
+                           ng-change="onDateTimeChange()"
+                           close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="showStartDate = !showStartDate">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <uib-timepicker ng-model="event.startDate"
+                                minute-step="15"
+                                show-meridian="false"
+                                ng-change="onDateTimeChange()"
+                                ng-hide="allDay"></uib-timepicker>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <form>
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <div id="endDate" class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           uib-datepicker-popup
+                           ng-model="event.endDate"
+                           is-open="showEndDate"
+                           ng-change="onDateTimeChange()"
+                           ng-required="true"
+                           close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="showEndDate = !showEndDate">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <uib-timepicker ng-model="event.endDate"
+                                minute-step="15"
+                                show-meridian="false"
+                                ng-change="onDateTimeChange()"
+                                ng-hide="allDay"></uib-timepicker>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form>
+            <div class="checkbox">
+                <label>
+                    <input data-ng-model="event.allDay" type="checkbox"> all day event
+                </label>
+            </div>
+            <button type="submit" class="btn btn-default" data-ng-click="submit()">Submit</button>
+        </form>
+    </div>
+</div>

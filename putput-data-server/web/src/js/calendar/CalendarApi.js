@@ -18,6 +18,12 @@ function CalendarApi(http, api) {
         }
         return http.get(eventsList._links.previousPage.href);
     };
+
+    this.getEvent = function(id) {
+        return api.withLink('event', function (eventLink) {
+            return http.get(eventLink.replace("{id}", id));
+        });
+    };
     
     this.createEvent = function(event) {
         return api.withLink('event', function (eventLink) {

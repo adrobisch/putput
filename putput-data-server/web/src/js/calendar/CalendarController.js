@@ -8,6 +8,9 @@ var InboxController = function (scope, calendar, hotkeys, uiCalendarConfig) {
             left: 'month,agendaWeek,agendaDay',
             center: 'title',
             right: 'today prev,next'
+        },
+        eventClick: function(date, jsEvent, view){
+            scope.onEventClick(date);
         }
     };
     
@@ -32,6 +35,7 @@ var InboxController = function (scope, calendar, hotkeys, uiCalendarConfig) {
     
     scope.serverEventToCalendarEvent = function (serverEvent) {
         return {
+            "serverId": serverEvent.id,
             "title": serverEvent.title,
             "start": new Date(serverEvent.start),
             "end": new Date(serverEvent.end),
@@ -50,30 +54,30 @@ var InboxController = function (scope, calendar, hotkeys, uiCalendarConfig) {
             scope.events = events;
         });
     };
+    
+    scope.onEventClick = function(date){
+        calendar.getEvent(date.serverId).success(function (response) {
+            scope.currentEvent = response.data;
+        });
+    };
 
-    scope.createEvent = function () {
-        if (!scope.title || !scope.startDate || !scope.endDate) {
+    scope.createEvent = function (event) {
+        if (!event.title || !event.startDate || !event.endDate) {
             return;
         }
         
-        var type = scope.allDay ? "ALLDAY" : "DEFAULT";
+        var type = event.allDay ? "ALLDAY" : "DEFAULT";
 
         var newEvent = {
-            "start": scope.startDate.getTime(),
-            "end": scope.endDate.getTime(),
+            "start": event.startDate.getTime(),
+            "end": event.endDate.getTime(),
             "type": type,
-            "title": scope.title,
-            "location": scope.location,
-            "description": scope.description
+            "title": event.title,
+            "location": event.location,
+            "description": event.description
         };
         
         calendar.createEvent(newEvent).success(scope.reloadEvents);
-    };
-
-    scope.onDateTimeChange = function () {
-        if (!scope.endDate || (scope.endDate.getTime()) < scope.startDate.getTime() ) {
-            scope.endDate = new Date(scope.startDate.getTime());
-        }
     };
 
     scope.deleteEvent = function (event) {

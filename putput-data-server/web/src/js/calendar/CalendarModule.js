@@ -15,4 +15,16 @@ calendarModule.config(['$routeProvider', function($routeProvider) {
   });
 }]);
 
+calendarModule.directive("eventForm", function () {
+  return {
+    controller: require('./EventFormController'),
+    scope: {
+      "event" : "=",
+      "onSubmit": "="
+    },
+    template: require('./event-form.html')
+  };
+});
+
+
 module.exports = calendarModule;
