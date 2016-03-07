@@ -28,20 +28,56 @@ public class EventService {
     UuidService uuidService;
     
     public EventEntity createEvent(String username, Event newEvent) {
+        EventEntity.Type type = EventEntity.Type.valueOf(newEvent.getType());
         EventEntity newEventEntity = new EventEntity()
                 .setId(uuidService.uuid())
                 .setOwner(userRepository.findByUsername(username))
                 .setTitle(newEvent.getTitle())
                 .setDescription(newEvent.getDescription())
-                .setType(EventEntity.Type.valueOf(newEvent.getType()))
+                .setLocation(newEvent.getLocation())
+                .setType(type)
                 .setRecurrence(newEvent.getRecurrence())
                 .setTimezone(Optional
                         .ofNullable(newEvent.getTimezone())
                         .orElse(defaultTimeZone()))
-                .setStart(newEvent.getStart().longValue())
-                .setEnd(newEvent.getEnd().longValue());
+                .setStart(getStartDate(newEvent, type))
+                .setEnd(getEndDate(newEvent, type));
         
         return eventRepository.save(newEventEntity);
+    }
+
+    private long getStartDate(Event newEvent, EventEntity.Type type) {
+        if (type == EventEntity.Type.ALLDAY) {
+            return zeroTime(newEvent.getStart().longValue()).getTimeInMillis();
+        }
+        return newEvent.getStart().longValue();
+    }
+
+    private Long getEndDate(Event newEvent, EventEntity.Type type) {
+        if (type == EventEntity.Type.ALLDAY && newEvent.getEnd() == null) {
+            return nextDay(zeroTime(newEvent.getStart().longValue()).getTimeInMillis()).getTimeInMillis();    
+        } else if (type == EventEntity.Type.ALLDAY) {
+            return nextDay(zeroTime(newEvent.getEnd().longValue()).getTimeInMillis()).getTimeInMillis();       
+        } else {
+            return newEvent.getEnd().longValue();    
+        }
+    }
+
+    private Calendar nextDay(long l) {
+        Calendar c = zeroTime(l);
+        c.add(Calendar.DATE, 1);
+        return c;
+    }
+
+    private Calendar zeroTime(long l) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(l);
+
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        
+        return c;
     }
 
     private String defaultTimeZone() {
@@ -64,6 +100,7 @@ public class EventService {
                                 .setTitle(updatedEvent.getTitle())
                                 .setDescription(updatedEvent.getDescription())
                                 .setStart(updatedEvent.getStart().longValue())
+                                .setLocation(updatedEvent.getLocation())
                                 .setEnd(updatedEvent.getEnd().longValue())
                                 .setType(EventEntity.Type.valueOf(updatedEvent.getType()))
                                 .setTimezone(updatedEvent.getTimezone())

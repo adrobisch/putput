@@ -38,6 +38,7 @@ public class EventResource extends BaseResource implements Event {
                 .withEnd(eventEntity.getEnd().doubleValue())
                 .withTitle(eventEntity.getTitle())
                 .withDescription(eventEntity.getDescription())
+                .withLocation(eventEntity.getLocation())
                 .withRecurrence(eventEntity.getRecurrence())
                 .withType(eventEntity.getType().name())
                 .withTimezone(eventEntity.getTimezone())

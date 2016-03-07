@@ -64,5 +64,14 @@
             <column name="_END"/>
         </createIndex>
     </changeSet>
+    
+    <changeSet id="2" author="adrobisch">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="PP_EVENT" />
+        </preConditions>
+        <addColumn tableName="PP_EVENT">
+            <column name="_LOCATION" type="VARCHAR(1024)" />
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

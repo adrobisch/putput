@@ -44,6 +44,9 @@ public class EventEntity extends BaseEntity<EventEntity> {
     
     @Column(name ="_TITLE")
     String title;
+
+    @Column(name ="_LOCATION")
+    String location;
     
     @Column(name = "_DESCRIPTION")
     @Lob
@@ -128,6 +131,15 @@ public class EventEntity extends BaseEntity<EventEntity> {
 
     public EventEntity setTimezone(String timezone) {
         this.timezone = timezone;
+        return this;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public EventEntity setLocation(String location) {
+        this.location = location;
         return this;
     }
 }

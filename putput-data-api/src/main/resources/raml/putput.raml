@@ -383,6 +383,7 @@ schemas:
           "timezone": {"type": "string"},
           "title": {"type": "string"},
           "description": {"type": "string"},
+          "location": {"type": "string"},
           "created": {"type": "number"},
           "_links": {
             "$ref": "eventLinks"
@@ -915,7 +916,16 @@ traits:
 /events:
   get:
     is: [ halCollection: { id: eventList, collectionJavaType: org.putput.api.model.EventList, itemsProperty: events, itemSchema: event, collectionLinks: eventListLinks}]
-
+    queryParameters:
+      format:
+        description: "the formatting of the events, implicitly set to 'json', also possible: 'ical'" 
+        type: string
+        required: false
+    responses:
+       400:
+       200:
+         body:
+           text/calendar:
 /event:
   post:
     body:

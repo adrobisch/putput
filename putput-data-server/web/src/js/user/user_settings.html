@@ -68,7 +68,7 @@
                     <td>{{accessToken.clientId}}</td>
                     <td>{{accessToken.token}}</td>
                     <td>{{accessToken.secret}}</td>
-                    <td>{{accessToken.expiryDate}}</td>
+                    <td>{{accessToken.expiryDate | date:'medium'}}</td>
                     <td>
                         <button class="btn btn-default"
                                 data-ng-click="deleteAccessToken(accessToken.id)"

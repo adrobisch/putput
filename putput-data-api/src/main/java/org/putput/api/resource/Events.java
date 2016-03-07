@@ -16,14 +16,19 @@ public interface Events {
 
     /**
      * 
+     * @param format
+     *     the formatting of the events, implicitly set to 'json', also possible: 'ical'
      * @param page
      *     The page to retrieve
      */
     @GET
     @Produces({
-        "application/hal+json"
+        "application/hal+json",
+        "text/calendar"
     })
     Events.GetEventsResponse getEvents(
+        @QueryParam("format")
+        String format,
         @QueryParam("page")
         BigDecimal page)
         throws Exception
@@ -36,6 +41,25 @@ public interface Events {
 
         private GetEventsResponse(Response delegate) {
             super(delegate);
+        }
+
+        /**
+         * 
+         */
+        public static Events.GetEventsResponse withBadRequest() {
+            Response.ResponseBuilder responseBuilder = Response.status(400);
+            return new Events.GetEventsResponse(responseBuilder.build());
+        }
+
+        /**
+         * 
+         * @param entity
+         *     
+         */
+        public static Events.GetEventsResponse withCalendarOK(String entity) {
+            Response.ResponseBuilder responseBuilder = Response.status(200).header("Content-Type", "text/calendar");
+            responseBuilder.entity(entity);
+            return new Events.GetEventsResponse(responseBuilder.build());
         }
 
         /**

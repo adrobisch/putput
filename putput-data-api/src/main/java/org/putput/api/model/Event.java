@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "timezone",
     "title",
     "description",
+    "location",
     "created",
     "_links"
 })
@@ -49,6 +50,8 @@ public class Event {
     private String title;
     @JsonProperty("description")
     private String description;
+    @JsonProperty("location")
+    private String location;
     @JsonProperty("created")
     private Double created;
     /**
@@ -307,6 +310,31 @@ public class Event {
 
     public Event withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The location
+     */
+    @JsonProperty("location")
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * 
+     * @param location
+     *     The location
+     */
+    @JsonProperty("location")
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Event withLocation(String location) {
+        this.location = location;
         return this;
     }
 

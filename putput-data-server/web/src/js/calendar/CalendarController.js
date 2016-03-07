@@ -62,13 +62,15 @@ var InboxController = function (scope, calendar, hotkeys, uiCalendarConfig) {
             "start": scope.startDate.getTime(),
             "end": scope.endDate.getTime(),
             "type": type,
-            "title": scope.title
+            "title": scope.title,
+            "location": scope.location,
+            "description": scope.description
         };
         
         calendar.createEvent(newEvent).success(scope.reloadEvents);
     };
 
-    scope.onStartDate = function () {
+    scope.onDateTimeChange = function () {
         if (!scope.endDate || (scope.endDate.getTime()) < scope.startDate.getTime() ) {
             scope.endDate = new Date(scope.startDate.getTime());
         }

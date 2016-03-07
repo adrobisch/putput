@@ -8,7 +8,15 @@
                        class="form-control" 
                        id="title" 
                        placeholder="Title">
-            </div>            
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text"
+                       data-ng-model="location"
+                       class="form-control"
+                       id="location"
+                       placeholder="Location">
+            </div>
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea id="description"
@@ -31,7 +39,7 @@
                            ng-model="startDate"
                            is-open="showStartDate"
                            ng-required="true"
-                           ng-change="onStartDate()"
+                           ng-change="onDateTimeChange()"
                            close-text="Close" />
                     <span class="input-group-btn">
                         <button type="button" 
@@ -46,7 +54,8 @@
                 <uib-timepicker ng-model="startDate"
                                 minute-step="15"
                                 show-meridian="false"
-                                ng-disabled="allDay"></uib-timepicker>
+                                ng-change="onDateTimeChange()"
+                                ng-hide="allDay"></uib-timepicker>
             </div>
         </form>
     </div>
@@ -60,6 +69,7 @@
                            uib-datepicker-popup
                            ng-model="endDate"
                            is-open="showEndDate"
+                           ng-change="onDateTimeChange()"
                            ng-required="true"
                            close-text="Close" />
                     <span class="input-group-btn">
@@ -75,7 +85,8 @@
                 <uib-timepicker ng-model="endDate"
                                 minute-step="15"
                                 show-meridian="false"
-                                ng-disabled="allDay"></uib-timepicker>
+                                ng-change="onDateTimeChange()"
+                                ng-hide="allDay"></uib-timepicker>
             </div>
         </form>
     </div>
@@ -112,6 +123,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Description</th>
+                    <th>Location</th>
                     <th>Start</th>
                     <th>End</th>
                     <th>Timezone</th>
@@ -123,6 +135,7 @@
                 <tr data-ng-repeat="event in events">
                     <td>{{event.title}}</td>
                     <td>{{event.description}}</td>
+                    <td>{{event.location}}</td>
                     <td>{{event.start | date:'medium'}}</td>
                     <td>{{event.end | date:'medium'}}</td>
                     <td>{{event.timezone}}</td>
