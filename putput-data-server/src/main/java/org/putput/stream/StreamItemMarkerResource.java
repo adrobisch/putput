@@ -14,7 +14,7 @@ public class StreamItemMarkerResource extends BaseResource implements Marker {
 
   @Override
   public PostMarkerResponse postMarker(NewMarker newMarker) throws Exception {
-    String newMarkerId = streamItemMarkerService.createNewMarker(user().getUsername(),
+    String newMarkerId = streamItemMarkerService.createNewMarker(user(),
         newMarker.getItemId(),
         newMarker.getMarkerType());
 
@@ -23,7 +23,7 @@ public class StreamItemMarkerResource extends BaseResource implements Marker {
 
   @Override
   public DeleteMarkerResponse deleteMarker(String itemId, String markerType) throws Exception {
-    streamItemMarkerService.deleteMarker(user().getUsername(), itemId, markerType);
+    streamItemMarkerService.deleteMarker(user(), itemId, markerType);
     return DeleteMarkerResponse.withOK();
   }
 }

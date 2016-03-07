@@ -22,7 +22,7 @@ public class ContactResource extends BaseResource implements Contact {
 
   @Override
   public PostContactResponse postContact(org.putput.api.model.Contact newContact) throws Exception {
-    ContactEntity newContactEntity = contactService.createContact(user().getUsername(), newContact);
+    ContactEntity newContactEntity = contactService.createContact(user(), newContact);
     return PostContactResponse.withCreated(link(Contact.class, newContactEntity.getId()).getHref());
   }
 

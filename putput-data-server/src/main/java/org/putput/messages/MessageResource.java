@@ -17,16 +17,16 @@ public class MessageResource extends BaseResource implements Message {
     
     @Override
     public PostMessageResponse postMessage(org.putput.api.model.Message message) throws Exception {
-        String savedMessageId = messageService.newMessage(user().getUsername(), message.getTo(), message.getText(), Optional.ofNullable(message.getType()));
+        String savedMessageId = messageService.newMessage(user(), message.getTo(), message.getText(), Optional.ofNullable(message.getType()));
         return PostMessageResponse.withCreated(link(Message.class, savedMessageId).getHref());
     }
 
     @Override
     public GetMessageByIdResponse getMessageById(String id) throws Exception {
-        Optional<org.putput.api.model.Message> message = messageService.getById(id).map(toMessage(this, user().getUsername()));
+        Optional<org.putput.api.model.Message> message = messageService.getById(id).map(toMessage(this, user()));
         if (!message.isPresent()) {
             return GetMessageByIdResponse.withNotFound();
-        } else if (!message.get().getTo().equals(user().getUsername())){
+        } else if (!message.get().getTo().equals(user())){
             return GetMessageByIdResponse.withForbidden();
         } else {
             return GetMessageByIdResponse.withHaljsonOK(message.get());
@@ -43,7 +43,7 @@ public class MessageResource extends BaseResource implements Message {
         Optional<MessageEntity> message = messageService.getById(id);
         if (!message.isPresent()) {
             return DeleteMessageByIdResponse.withNotFound();
-        } else if (!message.get().getFrom().equals(user().getUsername())){
+        } else if (!message.get().getFrom().equals(user())){
             return DeleteMessageByIdResponse.withForbidden();
         } else {
             messageService.delete(id);

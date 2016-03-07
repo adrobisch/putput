@@ -52,7 +52,7 @@ public class UploadResource extends BaseResource {
             respondWith(asyncResponse, Response.ok("Uploading...").build());
         } else {
             UploadHandler uploadHandler = uploadHandlers.getUploadHandlers().get(uploadRequest.getType());
-            Object handledUpload = uploadHandler.handleUpload(user().getUsername(), uploadRequest, completelyUploadedFile.get());
+            Object handledUpload = uploadHandler.handleUpload(user(), uploadRequest, completelyUploadedFile.get());
             
             if (handledUpload instanceof PutPutFile) {
                 respondWith(asyncResponse, Response.created(toUri(link(PutPutFile.class, ((PutPutFile) handledUpload).getId()).getHref())).build());                
@@ -112,7 +112,7 @@ public class UploadResource extends BaseResource {
         uploadRequest.setResumableChunkNumber(resumableChunkNumber);
         uploadRequest.setContentLength(request.getContentLength());
         uploadRequest.setTotalChunks(totalChunks);
-        uploadRequest.setUploadFolder(user().getUsername());
+        uploadRequest.setUploadFolder(user());
 
         return uploadRequest;
     }

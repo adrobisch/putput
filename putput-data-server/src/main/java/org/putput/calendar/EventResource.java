@@ -16,16 +16,16 @@ public class EventResource extends BaseResource implements Event {
     
     @Override
     public PostEventResponse postEvent(org.putput.api.model.Event newEvent) throws Exception {
-        EventEntity newEventEntity = eventService.createEvent(user().getUsername(), newEvent);
+        EventEntity newEventEntity = eventService.createEvent(user(), newEvent);
         return PostEventResponse.withCreated(link(Event.class, newEventEntity.getId()).getHref());
     }
 
     @Override
     public GetEventByIdResponse getEventById(String id) throws Exception {
-        Optional<EventEntity> optionalEvent = eventService.getEvent(user().getUsername(), id);
+        Optional<EventEntity> optionalEvent = eventService.getEvent(user(), id);
         
         return optionalEvent
-                .map(eventEntityToDto(user().getUsername()))
+                .map(eventEntityToDto(user()))
                 .map(GetEventByIdResponse::withHaljsonOK)
                 .orElse(GetEventByIdResponse.withNotFound());
     }
@@ -47,7 +47,7 @@ public class EventResource extends BaseResource implements Event {
 
     @Override
     public PutEventByIdResponse putEventById(String id, org.putput.api.model.Event updatedEvent) throws Exception {
-        return eventService.updateEvent(user().getUsername(), updatedEvent)
+        return eventService.updateEvent(user(), updatedEvent)
                 .map(eventEntity -> PutEventByIdResponse.withOK())
                 .orElse(PutEventByIdResponse.withOK());
     }
@@ -55,7 +55,7 @@ public class EventResource extends BaseResource implements Event {
     @Override
     public DeleteEventByIdResponse deleteEventById(String id) throws Exception {
         return eventService
-                .deleteEvent(user().getUsername(), id)
+                .deleteEvent(user(), id)
                 .map(deletedId -> DeleteEventByIdResponse.withOK())
                 .orElse(DeleteEventByIdResponse.withNotFound());
     }

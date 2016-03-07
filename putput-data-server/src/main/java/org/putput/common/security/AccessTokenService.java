@@ -92,7 +92,7 @@ public class AccessTokenService {
   }
 
   public Optional<AccessTokenEntity> findToken(String accessToken, String secret) {
-    return Optional.of(accessTokenRepository.findByTokenAndSecret(accessToken, secret));
+    return Optional.ofNullable(accessTokenRepository.findByTokenAndSecret(accessToken, secret));
   }
 
   String[] decodeAccessToken(String token) {

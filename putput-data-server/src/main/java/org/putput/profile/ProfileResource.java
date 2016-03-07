@@ -27,13 +27,13 @@ public class ProfileResource extends BaseResource implements Profile {
 
   @Override
   public PostProfileByUserNameFollowResponse postProfileByUserNameFollow(String profileUserName) throws Exception {
-    profileService.addFollower(user().getUsername(), profileUserName);
+    profileService.addFollower(user(), profileUserName);
     return PostProfileByUserNameFollowResponse.withOK();
   }
 
   @Override
   public DeleteProfileByUserNameFollowResponse deleteProfileByUserNameFollow(String profileUserName) throws Exception {
-    profileService.removeFollower(user().getUsername(), profileUserName);
+    profileService.removeFollower(user(), profileUserName);
     return DeleteProfileByUserNameFollowResponse.withOK();
   }
 

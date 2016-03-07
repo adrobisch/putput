@@ -21,7 +21,7 @@ public class AccessTokensResource extends BaseResource implements AccessTokens {
 
   @Override
   public GetAccessTokensResponse getAccessTokens(BigDecimal page) throws Exception {
-    List<AccessToken> accessTokens = accessTokenService.findByUsername(user().getUsername())
+    List<AccessToken> accessTokens = accessTokenService.findByUsername(user())
             .stream()
             .map(accessTokenEntityToDto())
             .collect(Collectors.toList());

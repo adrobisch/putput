@@ -22,7 +22,7 @@ public class NotesResource extends BaseResource implements Notes {
 
   @Override
   public GetNotesResponse getNotes(BigDecimal page) throws Exception {
-    NoteList noteList = mapper.map(noteService.getByUserName(user().getUsername()), NoteList.class);
+    NoteList noteList = mapper.map(noteService.getByUserName(user()), NoteList.class);
     noteList.getNotes().forEach(note -> note.withLinks(new NoteLinks().withSelf(link(Note.class, note.getId()))));
 
     return GetNotesResponse.withHaljsonOK(noteList.withLinks(new NoteListLinks().withSelf(link(Notes.class))));

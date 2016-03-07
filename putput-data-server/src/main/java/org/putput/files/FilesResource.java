@@ -28,7 +28,7 @@ public class FilesResource extends BaseResource implements Files, FileMapping {
         FileList fileList = new FileList()
                 .withLinks(new FileListLinks().withSelf(link(Files.class)));
 
-        List<File> userFiles = fileService.getUserFiles(user().getUsername(),
+        List<File> userFiles = fileService.getUserFiles(user(),
                 Optional.ofNullable(parentId),
                 Optional.ofNullable(tag))
                 .stream()

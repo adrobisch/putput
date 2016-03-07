@@ -27,12 +27,12 @@ public class MessagesResource extends BaseResource implements Messages {
     Pageable pageable = pageable(page);
 
     Page<MessageEntity> messagesPage = messageRepository
-        .findToOrFromUser(user().getUsername(), pageable);
+        .findToOrFromUser(user(), pageable);
 
     List<Message> messages = messagesPage
         .getContent()
         .stream()
-        .map(toMessage(this, user().getUsername()))
+        .map(toMessage(this, user()))
         .collect(Collectors.toList());
 
     MessageListLinks messageListLinks = new MessageListLinks();

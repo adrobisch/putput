@@ -28,12 +28,13 @@ public class VCardImporterTest extends SpringTest {
     assertThat(importResult.getImportedContactEntities())
       .hasSize(1);
 
-    ContactEntityAssert.assertThat(importResult.getImportedContactEntities().get(0))
+    ContactEntity contactEntity = importResult.getImportedContactEntities().get(0);
+
+    ContactEntityAssert.assertThat(contactEntity)
       .hasFirstName("Erika")
       .hasLastName("Mustermann")
       .hasOrganisation("Wikipedia")
       .hasSalutation("Oberleutnant")
-      .hasPhotos(new PutPutImage("image/jpg"))
       .hasContactAddressEntities(new ContactAddressEntity()
           .withCity("Köln")
           .withStreet("Heidestraße 17")
@@ -44,6 +45,8 @@ public class VCardImporterTest extends SpringTest {
       .hasPhoneNumbers(new PhoneNumber(PhoneNumber.Type.HOME, "+49-221-1234567"))
       .hasPhoneNumbers(new PhoneNumber(PhoneNumber.Type.WORK, "+49-221-9999123"))
       .hasEmails(new EMailAddress(EMailAddress.Type.HOME, "erika@mustermann.de"));
+
+    assertThat(contactEntity.getPhotos()).hasSize(1);
   }
 
   private File file(String s) {

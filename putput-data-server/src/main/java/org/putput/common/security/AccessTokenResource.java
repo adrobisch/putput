@@ -15,13 +15,13 @@ public class AccessTokenResource extends BaseResource implements org.putput.api.
   
   @Override
   public PostAccessTokenResponse postAccessToken(org.putput.api.model.AccessToken entity) throws Exception {
-    AccessTokenEntity accessTokenEntity = accessTokenService.createAccessToken(user().getUsername(), entity.getClientId(), entity.getExpiryDate().longValue());
+    AccessTokenEntity accessTokenEntity = accessTokenService.createAccessToken(user(), entity.getClientId(), entity.getExpiryDate().longValue());
     return PostAccessTokenResponse.withCreated(link(org.putput.api.resource.AccessToken.class, accessTokenEntity.getId()).getHref());
   }
 
   @Override
   public GetAccessTokenByIdResponse getAccessTokenById(String id) throws Exception {
-    Optional<AccessTokenEntity> byUsernameAndId = accessTokenService.findByUsernameAndId(user().getUsername(), id);
+    Optional<AccessTokenEntity> byUsernameAndId = accessTokenService.findByUsernameAndId(user(), id);
     
     return byUsernameAndId
             .map(accessTokenEntityToDto())
@@ -32,14 +32,14 @@ public class AccessTokenResource extends BaseResource implements org.putput.api.
   @Override
   public PutAccessTokenByIdResponse putAccessTokenById(String id, org.putput.api.model.AccessToken entity) throws Exception {
     return accessTokenService
-            .update(user().getUsername(), entity)
+            .update(user(), entity)
             .map(accessTokenEntity -> PutAccessTokenByIdResponse.withOK())
             .orElseGet(PutAccessTokenByIdResponse::withNotFound);
   }
 
   @Override
   public DeleteAccessTokenByIdResponse deleteAccessTokenById(String id) throws Exception {
-    Optional<AccessTokenEntity> byUsernameAndId = accessTokenService.findByUsernameAndId(user().getUsername(), id);
+    Optional<AccessTokenEntity> byUsernameAndId = accessTokenService.findByUsernameAndId(user(), id);
     return byUsernameAndId
             .map(accessTokenEntity -> {
               accessTokenService.deleteToken(accessTokenEntity.getId());

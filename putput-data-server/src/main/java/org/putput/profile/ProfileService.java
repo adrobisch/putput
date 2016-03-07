@@ -68,9 +68,9 @@ public class ProfileService {
   }
 
   private boolean followerOrSelf(String profileUsername, BaseResource resource, List<Follower> followers) {
-    return profileUsername.equals(resource.user().getUsername()) || followers
+    return profileUsername.equals(resource.user()) || followers
         .stream()
-        .filter(follower -> follower.getFollower().equals(resource.user().getUsername()) &&
+        .filter(follower -> follower.getFollower().equals(resource.user()) &&
             follower.getFollowed().equals(profileUsername))
         .findFirst()
         .isPresent();

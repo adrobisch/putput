@@ -24,9 +24,6 @@ public class PutPutImage {
   @Column(name = "_PATH")
   String path;
 
-  @Column(name = "_DATA", columnDefinition = "CLOB")
-  String data;
-
   @Column(name = "_TYPE")
   String type;
 
@@ -48,11 +45,6 @@ public class PutPutImage {
 
   public String getPath() {
     return path;
-  }
-
-  public PutPutImage withData(String base64Data) {
-    this.data = base64Data;
-    return this;
   }
 
   public PutPutImage withPath(String path) {

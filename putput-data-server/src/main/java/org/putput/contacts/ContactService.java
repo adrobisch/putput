@@ -105,13 +105,13 @@ public class ContactService {
   }
 
   @Transactional
-  public Optional<ContactEntity> update(org.putput.api.model.Contact updatedContact, User user) {
+  public Optional<ContactEntity> update(org.putput.api.model.Contact updatedContact, String username) {
     if (updatedContact.getId() == null || updatedContact.getId().isEmpty()) {
       throw new IllegalArgumentException("contact update without id given");
     }
 
     return ofNullable(contactRepository.findOne(updatedContact.getId()))
-        .filter(contactEntity -> contactEntity.getUser().getUsername().equals(user.getUsername()))
+        .filter(contactEntity -> contactEntity.getUser().getUsername().equals(username))
         .map(mergeWithEntity(updatedContact))
         .map(updatedContactEntity -> contactRepository.save(updatedContactEntity));
   }

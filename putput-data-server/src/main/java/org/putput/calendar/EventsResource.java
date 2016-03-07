@@ -27,7 +27,7 @@ public class EventsResource extends BaseResource implements Events {
     @Override
     public GetEventsResponse getEvents(BigDecimal page) throws Exception {
         Page<EventEntity> eventPage = eventService.getEvents(
-            user().getUsername(), 
+            user(),
             new PageRequest(ofNullable(page).map(BigDecimal::intValue).orElse(0), PAGE_SIZE)
         );
         
@@ -36,7 +36,7 @@ public class EventsResource extends BaseResource implements Events {
         List<Event> events = eventPage
                 .getContent()
                 .stream()
-                .map(eventEntityToDto(user().getUsername()))
+                .map(eventEntityToDto(user()))
                 .collect(Collectors.toList());
         
         EventList eventList =  new EventList()

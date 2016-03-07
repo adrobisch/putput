@@ -34,7 +34,7 @@ public class ContactsResource extends BaseResource implements Contacts {
 
   @Override
   public GetContactsResponse getContacts(BigDecimal page) throws Exception {
-    ContactList contactList = beanMapper.map(contactService.getByUserName(user().getUsername()), ContactList.class);
+    ContactList contactList = beanMapper.map(contactService.getByUserName(user()), ContactList.class);
     contactList.getContacts().forEach( contact -> {
       contact.withLinks(new ContactLinks().withSelf(link(Contact.class, contact.getId())));
     });
@@ -55,6 +55,6 @@ public class ContactsResource extends BaseResource implements Contacts {
 
   public ImportResult importContacts(InputStream vcardInput) throws Exception {
     counterService.increment("vcards.imported");
-    return cardImporter.importVCard(vcardInput, user().getUsername());
+    return cardImporter.importVCard(vcardInput, user());
   }
 }

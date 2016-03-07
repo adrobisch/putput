@@ -46,18 +46,18 @@ public class UserResource extends BaseResource implements User {
   @Secured("USER")
   @Override
   public GetUserInfoResponse getUserInfo() throws Exception {
-    return GetUserInfoResponse.withJsonOK(new UserInfo().withDisplayName(user().getUsername()));
+    return GetUserInfoResponse.withJsonOK(new UserInfo().withDisplayName(user()));
   }
 
   @Override
   public GetUserSettingsResponse getUserSettings() throws Exception {
-    UserEntity currentUser = userRepository.findByUsername(user().getUsername());
+    UserEntity currentUser = userRepository.findByUsername(user());
     return GetUserSettingsResponse.withJsonOK(new UserSettings().withEmail(currentUser.getEmail()));
   }
 
   @Override
   public PutUserSettingsResponse putUserSettings(UserSettingsUpdate settingsUpdate) throws Exception {
-    UserEntity userToUpdate = userRepository.findByUsername(user().getUsername());
+    UserEntity userToUpdate = userRepository.findByUsername(user());
 
     updateEmail(settingsUpdate, userToUpdate);
     updatePassword(settingsUpdate, userToUpdate);
@@ -67,7 +67,7 @@ public class UserResource extends BaseResource implements User {
 
   @Override
   public GetUserRssFeedsResponse getUserRssFeeds() throws Exception {
-    List<RssFeed> rssFeeds = rssFeedInfoRepository.findByUsername(user().getUsername())
+    List<RssFeed> rssFeeds = rssFeedInfoRepository.findByUsername(user())
         .stream()
         .map(rssFeedInfoEntity -> new RssFeed()
             .withId(rssFeedInfoEntity.getId())
@@ -80,7 +80,7 @@ public class UserResource extends BaseResource implements User {
   @Override
   public PostUserRssFeedsResponse postUserRssFeeds(RssFeed entity) throws Exception {
     RssFeedInfoEntity rssFeedInfoEntity = new RssFeedInfoEntity()
-        .setOwner(userRepository.findByUsername(user().getUsername()))
+        .setOwner(userRepository.findByUsername(user()))
         .setUrl(entity.getUrl())
         .setId(uuidService.uuid());
 

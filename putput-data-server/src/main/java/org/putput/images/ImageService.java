@@ -34,8 +34,8 @@ public class ImageService {
   @Transactional
   public PutPutImage saveUserImage(String username, Optional<String> filename, String mimeType, InputStream inputStream) {
     Storage<FileSystemReference> defaultStorage = storageService.getDefaultStorage(username);
-    
-    StorageReference reference = defaultStorage.store(filename.orElse(uuidService.uuid()), Optional.of(IMAGES_CONTAINER), inputStream);
+    FileSystemReference imagesContainer = defaultStorage.createContainer(IMAGES_CONTAINER);
+    StorageReference reference = defaultStorage.store(filename.orElse(uuidService.uuid()), Optional.of(imagesContainer.getName()), inputStream);
     
     PutPutImage file = new PutPutImage(mimeType)
       .withId(uuidService.uuid())

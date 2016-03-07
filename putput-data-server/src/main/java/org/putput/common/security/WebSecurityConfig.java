@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuc
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService;
+import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     AbstractPreAuthenticatedProcessingFilter accessTokenAuthenticationFilter = accessTokenAuthenticationFilter();
     
     http
-      .addFilter(accessTokenAuthenticationFilter)
+      .addFilterBefore(accessTokenAuthenticationFilter, RememberMeAuthenticationFilter.class)
       .csrf().disable()
       .exceptionHandling().authenticationEntryPoint(getAuthenticationEntryPoint())
       .and()
@@ -136,7 +137,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    auth.authenticationProvider(authenticationProvider);
+    auth.authenticationProvider(authenticationProvider)
+        .authenticationProvider(preAuthenticatedProvider());
   }
 
   @Override

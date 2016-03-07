@@ -116,18 +116,18 @@ public class StreamResource extends BaseResource implements Stream {
           optionalType,
           pageable);
     } else if (optionalType.isPresent()){
-      return streamItemService.getByUserName(optionalProfile.orElse(user().getUsername()),
+      return streamItemService.getByUserName(optionalProfile.orElse(user()),
           optionalType,
           pageable);
     } else {
-      return streamItemService.getFollowedByUserName(user().getUsername(), pageable);
+      return streamItemService.getFollowedByUserName(user(), pageable);
     }
   }
 
   private Function<StreamItem, StreamItemResource> itemToItemResource() {
     return item -> new StreamItemResource()
         .withStreamItem(item)
-        .withMarkerInfo(markerInfo(user().getUsername(), item))
+        .withMarkerInfo(markerInfo(user(), item))
         .withLinks(itemLinks(item));
   }
 
@@ -140,7 +140,7 @@ public class StreamResource extends BaseResource implements Stream {
     HalLink self = link(Stream.class, "item", item.getId());
 
     streamItemLinks.withSelf(self);
-    if (item.getCreator().equals(user().getUsername())) {
+    if (item.getCreator().equals(user())) {
       streamItemLinks.withDelete(self);
     }
 
@@ -167,7 +167,7 @@ public class StreamResource extends BaseResource implements Stream {
   @Override
   public PostStreamItemsResponse postStreamItems(NewStreamItem newItem) throws Exception {
     String newItemId = streamItemService.newUserItem(newItem,
-        user().getUsername(),
+        user(),
         Optional.ofNullable(newItem.getReference()));
     return PostStreamItemsResponse.withCreated(link(Stream.class, "item", newItemId).getHref());
   }
@@ -186,7 +186,7 @@ public class StreamResource extends BaseResource implements Stream {
   @Override
   public DeleteStreamItemByIdResponse deleteStreamItemById(String id) throws Exception {
     try {
-      streamItemService.deleteUserItem(user().getUsername(), id);
+      streamItemService.deleteUserItem(user(), id);
       return DeleteStreamItemByIdResponse.withOK();
     } catch (IllegalArgumentException illegalArgument) {
       return DeleteStreamItemByIdResponse.withBadRequest();

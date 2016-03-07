@@ -77,4 +77,11 @@
                                  referencedColumnNames="_ID"/>
     </changeSet>
 
+    <changeSet id="3" author="adrobisch">
+        <preConditions>
+            <columnExists tableName="PP_IMAGE" columnName="_DATA" />
+        </preConditions>
+        <dropColumn tableName="PP_IMAGE" columnName="_DATA" />
+    </changeSet>
+
 </databaseChangeLog>

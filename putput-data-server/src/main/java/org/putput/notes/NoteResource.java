@@ -18,7 +18,7 @@ public class NoteResource extends BaseResource implements Note {
 
   @Override
   public PostNoteResponse postNote(org.putput.api.model.Note note) throws Exception {
-    NoteEntity newNote = noteService.newNote(user().getUsername(), note.getShortText(), note.getContent());
+    NoteEntity newNote = noteService.newNote(user(), note.getShortText(), note.getContent());
     return PostNoteResponse.withCreated(link(Note.class, newNote.getId()).getHref());
   }
 
