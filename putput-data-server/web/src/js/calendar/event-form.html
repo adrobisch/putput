@@ -31,12 +31,12 @@
     <div class="col-md-6">
         <form>
             <div class="form-group">
-                <label for="startDate">Start Date</label>
-                <div id="startDate" class="input-group">
+                <label for="start">Start Date</label>
+                <div id="start" class="input-group">
                     <input type="text"
                            class="form-control"
                            uib-datepicker-popup
-                           ng-model="event.startDate"
+                           ng-model="event.start"
                            is-open="showStartDate"
                            ng-required="true"
                            ng-change="onDateTimeChange()"
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <uib-timepicker ng-model="event.startDate"
+                <uib-timepicker ng-model="event.start"
                                 minute-step="15"
                                 show-meridian="false"
                                 ng-change="onDateTimeChange()"
@@ -62,12 +62,12 @@
     <div class="col-md-6">
         <form>
             <div class="form-group">
-                <label for="endDate">End Date</label>
-                <div id="endDate" class="input-group">
+                <label for="end">End Date</label>
+                <div id="end" class="input-group">
                     <input type="text"
                            class="form-control"
                            uib-datepicker-popup
-                           ng-model="event.endDate"
+                           ng-model="event.end"
                            is-open="showEndDate"
                            ng-change="onDateTimeChange()"
                            ng-required="true"
@@ -82,7 +82,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <uib-timepicker ng-model="event.endDate"
+                <uib-timepicker ng-model="event.end"
                                 minute-step="15"
                                 show-meridian="false"
                                 ng-change="onDateTimeChange()"

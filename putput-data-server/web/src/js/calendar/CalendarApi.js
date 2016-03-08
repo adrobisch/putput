@@ -31,11 +31,17 @@ function CalendarApi(http, api) {
         });  
     };
 
+    this.updateEvent = function(event) {
+        return api.withLink('event', function (eventLink) {
+            return http.put(eventLink.replace("{id}", event.id), event);
+        });
+    };
+
     this.deleteEvent = function (event) {
         return api.withLink('event', function (eventLink) {
             return http.delete(eventLink.replace("{id}", event.id));
         });
-    }
+    };
 }
 
 CalendarApi.$inject = ['$http', 'api'];

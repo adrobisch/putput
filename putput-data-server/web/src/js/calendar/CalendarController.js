@@ -13,9 +13,11 @@ var InboxController = function (scope, calendar, hotkeys, uiCalendarConfig) {
             scope.onEventClick(date);
         }
     };
-    
+
     scope.events = {};
     scope.calendarEvents = [];
+    scope.showCreateForm = false;
+    scope.currentEvent = null;
     
     scope.init = function () {
     };
@@ -56,28 +58,31 @@ var InboxController = function (scope, calendar, hotkeys, uiCalendarConfig) {
     };
     
     scope.onEventClick = function(date){
-        calendar.getEvent(date.serverId).success(function (response) {
+        scope.editEvent(date.serverId);
+    };
+
+    scope.editEvent = function (id) {
+        calendar.getEvent(id).success(function (response) {
             scope.currentEvent = response.data;
         });
     };
 
     scope.createEvent = function (event) {
-        if (!event.title || !event.startDate || !event.endDate) {
+        if (!event.title || !event.start || !event.end) {
             return;
         }
         
-        var type = event.allDay ? "ALLDAY" : "DEFAULT";
+        calendar.createEvent(newEvent).success(function () {
+            scope.showCreateForm = false;
+            scope.reloadEvents();
+        });
+    };
 
-        var newEvent = {
-            "start": event.startDate.getTime(),
-            "end": event.endDate.getTime(),
-            "type": type,
-            "title": event.title,
-            "location": event.location,
-            "description": event.description
-        };
-        
-        calendar.createEvent(newEvent).success(scope.reloadEvents);
+    scope.updateEvent = function (event) {
+        calendar.updateEvent(event).success(function() {
+            scope.currentEvent = null;
+            scope.reloadEvents();
+        });
     };
 
     scope.deleteEvent = function (event) {

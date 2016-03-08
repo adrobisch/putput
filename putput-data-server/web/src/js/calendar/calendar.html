@@ -1,4 +1,15 @@
-<div data-event-form data-on-submit="createEvent"></div>
+<div data-event-form
+     data-on-submit="createEvent"
+     data-ng-show="showCreateForm">
+</div>
+
+<div class="row" data-ng-hide="showCreateForm">
+    <div class="col-md-12">
+        <button class="btn btn-default" data-ng-click="showCreateForm = !showCreateForm">
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+    </div>
+</div>
 
 <div class="row" data-ng-init="init()">
     <div class="col-md-12">
@@ -6,6 +17,16 @@
         <div data-ui-calendar="calendar"
              data-ng-model="eventSources"
              data-calendar="calendarInstance"></div>
+    </div>
+</div>
+
+<div class="row" data-ng-show="currentEvent">
+    <div class="col-md-12">
+        <h3>Edit Event</h3>
+        <div data-event-form
+             data-event="currentEvent"
+             data-on-submit="updateEvent">
+        </div>
     </div>
 </div>
 
@@ -36,6 +57,10 @@
                     <td>{{event.timezone}}</td>
                     <td>{{event.type}}</td>
                     <td>
+                        <button class="btn btn-default"
+                                data-ng-click="editEvent(event.id)">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </button>
                         <button class="btn btn-default"
                                 data-ng-click="deleteEvent(event)"
                                 data-ng-confirm-click="Really delete event {{event.title}}?">

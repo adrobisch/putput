@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static java.util.Optional.ofNullable;
 
@@ -95,18 +96,30 @@ public class EventService {
 
     public Optional<EventEntity> updateEvent(String username, Event updatedEvent) {
         return ofNullable(eventRepository.findByOwnerAndId(username, updatedEvent.getId()))
-                .map(eventEntity -> 
-                        eventRepository.save(eventEntity
-                                .setTitle(updatedEvent.getTitle())
-                                .setDescription(updatedEvent.getDescription())
-                                .setStart(updatedEvent.getStart().longValue())
-                                .setLocation(updatedEvent.getLocation())
-                                .setEnd(updatedEvent.getEnd().longValue())
-                                .setType(EventEntity.Type.valueOf(updatedEvent.getType()))
-                                .setTimezone(updatedEvent.getTimezone())
-                                .setRecurrenceEnd(updatedEvent.getRecurrenceEnd().longValue())
-                                .setRecurrence(updatedEvent.getRecurrence()))
-                );     
+                .map(updateEntity(updatedEvent));
+    }
+
+    public Function<EventEntity, EventEntity> updateEntity(Event updatedEvent) {
+        return eventEntity -> {
+            EventEntity updatedEntity = eventEntity
+                .setTitle(updatedEvent.getTitle())
+                .setDescription(updatedEvent.getDescription())
+                .setStart(updatedEvent.getStart().longValue())
+                .setLocation(updatedEvent.getLocation())
+                .setEnd(updatedEvent.getEnd().longValue())
+                .setType(EventEntity.Type.valueOf(updatedEvent.getType()))
+                .setTimezone(updatedEvent.getTimezone());
+
+            ofNullable(updatedEvent.getRecurrenceEnd()).ifPresent(recurrenceEnd -> {
+                eventEntity.setRecurrenceEnd(updatedEvent.getRecurrenceEnd().longValue());
+            });
+
+            ofNullable(updatedEvent.getRecurrence()).ifPresent(recurrence -> {
+                eventEntity.setRecurrence(updatedEvent.getRecurrence());
+            });
+
+            return eventRepository.save(updatedEntity);
+        };
     }
 
     public Optional<String> deleteEvent(String username, String id) {
