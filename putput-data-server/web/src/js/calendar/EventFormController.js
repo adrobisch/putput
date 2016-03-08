@@ -1,3 +1,9 @@
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
 function EventFormController(scope) {
     scope.event = scope.event || undefined;
 
@@ -12,6 +18,7 @@ function EventFormController(scope) {
 
         if (newValue && newValue.type === 'ALLDAY') {
             newValue.allDay = true;
+            newValue.end = addDays(newValue.end, -1);
         }
     });
 
@@ -36,6 +43,16 @@ function EventFormController(scope) {
         if (!scope.event.end || (scope.event.end.getTime()) < scope.event.start.getTime() ) {
             scope.event.end = new Date(scope.event.start.getTime());
         }
+    };
+
+    scope.validateForm = function() {
+        if (scope.event && 
+            scope.event.title && 
+            scope.event.start && 
+            scope.event.end) {
+            return true;
+        }
+        return false;
     };
 }
 

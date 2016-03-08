@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.function.Function;
 
 import static java.util.Optional.ofNullable;
@@ -30,6 +31,13 @@ public class EventService {
     
     public EventEntity createEvent(String username, Event newEvent) {
         EventEntity.Type type = EventEntity.Type.valueOf(newEvent.getType());
+        
+        String timezoneString = Optional
+                .ofNullable(newEvent.getTimezone())
+                .orElse(defaultTimeZone());
+
+        TimeZone timezone = TimeZone.getTimeZone(timezoneString);
+        
         EventEntity newEventEntity = new EventEntity()
                 .setId(uuidService.uuid())
                 .setOwner(userRepository.findByUsername(username))
@@ -38,47 +46,46 @@ public class EventService {
                 .setLocation(newEvent.getLocation())
                 .setType(type)
                 .setRecurrence(newEvent.getRecurrence())
-                .setTimezone(Optional
-                        .ofNullable(newEvent.getTimezone())
-                        .orElse(defaultTimeZone()))
-                .setStart(getStartDate(newEvent, type))
-                .setEnd(getEndDate(newEvent, type));
+                .setTimezone(timezoneString)
+                .setStart(getStartDate(newEvent, type, timezone))
+                .setEnd(getEndDate(newEvent, type, timezone));
         
         return eventRepository.save(newEventEntity);
     }
 
-    private long getStartDate(Event newEvent, EventEntity.Type type) {
+    private long getStartDate(Event newEvent, EventEntity.Type type, TimeZone timezone) {
         if (type == EventEntity.Type.ALLDAY) {
-            return zeroTime(newEvent.getStart().longValue()).getTimeInMillis();
+            return zeroTime(toCalendar(newEvent.getStart().longValue(), timezone)).getTimeInMillis();
         }
         return newEvent.getStart().longValue();
     }
 
-    private Long getEndDate(Event newEvent, EventEntity.Type type) {
+    private Long getEndDate(Event newEvent, EventEntity.Type type, TimeZone timezone) {
         if (type == EventEntity.Type.ALLDAY && newEvent.getEnd() == null) {
-            return nextDay(zeroTime(newEvent.getStart().longValue()).getTimeInMillis()).getTimeInMillis();    
+            return nextDay(zeroTime(toCalendar(newEvent.getStart().longValue(), timezone))).getTimeInMillis();    
         } else if (type == EventEntity.Type.ALLDAY) {
-            return nextDay(zeroTime(newEvent.getEnd().longValue()).getTimeInMillis()).getTimeInMillis();       
+            return nextDay(zeroTime(toCalendar(newEvent.getEnd().longValue(), timezone))).getTimeInMillis();       
         } else {
             return newEvent.getEnd().longValue();    
         }
     }
 
-    private Calendar nextDay(long l) {
-        Calendar c = zeroTime(l);
-        c.add(Calendar.DATE, 1);
-        return c;
+    private Calendar toCalendar(Long time, TimeZone timezone) {
+        Calendar calendar = Calendar.getInstance(timezone);
+        calendar.setTimeInMillis(time.longValue());
+        return calendar;
     }
 
-    private Calendar zeroTime(long l) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(l);
+    private Calendar nextDay(Calendar calendar) {
+        calendar.add(Calendar.DATE, 1);
+        return calendar;
+    }
 
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        
-        return c;
+    private Calendar zeroTime(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar;
     }
 
     private String defaultTimeZone() {
@@ -102,13 +109,13 @@ public class EventService {
     public Function<EventEntity, EventEntity> updateEntity(Event updatedEvent) {
         return eventEntity -> {
             EventEntity.Type type = EventEntity.Type.valueOf(updatedEvent.getType());
-
+            TimeZone timezone = TimeZone.getTimeZone(updatedEvent.getTimezone());
             EventEntity updatedEntity = eventEntity
                 .setTitle(updatedEvent.getTitle())
                 .setDescription(updatedEvent.getDescription())
-                .setStart(getStartDate(updatedEvent, type))
+                .setStart(getStartDate(updatedEvent, type, timezone))
                 .setLocation(updatedEvent.getLocation())
-                .setEnd(getEndDate(updatedEvent, type))
+                .setEnd(getEndDate(updatedEvent, type, timezone))
                 .setType(type)
                 .setTimezone(updatedEvent.getTimezone());
 
