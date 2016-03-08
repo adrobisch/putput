@@ -9,6 +9,10 @@ function EventFormController(scope) {
         if (newValue && typeof(newValue.end) === 'number') {
             newValue.end = new Date(newValue.end);
         }
+
+        if (newValue && newValue.type === 'ALLDAY') {
+            newValue.allDay = true;
+        }
     });
 
     scope.showStartDate = false;
@@ -18,6 +22,7 @@ function EventFormController(scope) {
       if (scope.onSubmit) {
           var type = scope.event.allDay ? "ALLDAY" : "DEFAULT";
 
+          scope.event.allDay = null;
           scope.event.type = type;
           scope.event.start = scope.event.start.getTime();
           scope.event.end = scope.event.end.getTime();

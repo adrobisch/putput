@@ -72,7 +72,7 @@ var InboxController = function (scope, calendar, hotkeys, uiCalendarConfig) {
             return;
         }
         
-        calendar.createEvent(newEvent).success(function () {
+        calendar.createEvent(event).success(function () {
             scope.showCreateForm = false;
             scope.reloadEvents();
         });

@@ -101,13 +101,15 @@ public class EventService {
 
     public Function<EventEntity, EventEntity> updateEntity(Event updatedEvent) {
         return eventEntity -> {
+            EventEntity.Type type = EventEntity.Type.valueOf(updatedEvent.getType());
+
             EventEntity updatedEntity = eventEntity
                 .setTitle(updatedEvent.getTitle())
                 .setDescription(updatedEvent.getDescription())
-                .setStart(updatedEvent.getStart().longValue())
+                .setStart(getStartDate(updatedEvent, type))
                 .setLocation(updatedEvent.getLocation())
-                .setEnd(updatedEvent.getEnd().longValue())
-                .setType(EventEntity.Type.valueOf(updatedEvent.getType()))
+                .setEnd(getEndDate(updatedEvent, type))
+                .setType(type)
                 .setTimezone(updatedEvent.getTimezone());
 
             ofNullable(updatedEvent.getRecurrenceEnd()).ifPresent(recurrenceEnd -> {
