@@ -109,13 +109,13 @@ app.directive('focusOn', function() {
   };
 });
 
-app.factory('focus', function ($rootScope, $timeout) {
+app.factory('focus', ["$rootScope", "$timeout", function ($rootScope, $timeout) {
   return function(name) {
     $timeout(function (){
       $rootScope.$broadcast('focusOn', name);
     });
   }
-});
+}]);
 
 app.filter('emojify', function() {
   var emojify = require('emojify.js');

@@ -109,7 +109,6 @@ var InboxController = function (scope, messages, hotkeys, users, routeParams, ro
         allowIn: ['TEXTAREA'],
         callback: scope.getMessages
     });
-
 };
 
 InboxController.$inject = ["$scope", "messages", "hotkeys", "users", "$routeParams", "$route", "$location", "focus"];
