@@ -15,7 +15,9 @@ var InboxController = function (scope, messages, hotkeys, users, routeParams, ro
     scope.init = function () {
       scope.getUsers();
       scope.getMessages();
-      focus("input");
+      if (routeParams.to) {
+        focus("input");
+      }  
     };
     
     scope.getUsers = function (search) {
@@ -108,6 +110,13 @@ var InboxController = function (scope, messages, hotkeys, users, routeParams, ro
         combo: 'r',
         allowIn: ['TEXTAREA'],
         callback: scope.getMessages
+    }).add({
+        description: "select recipient (to)",
+        combo: 't',
+        callback: function () {
+            console.log("to");
+            scope.$broadcast('focusRecipient');
+        }
     });
 };
 

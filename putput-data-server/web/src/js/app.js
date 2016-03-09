@@ -99,10 +99,10 @@ app.directive('ngConfirmClick', [
   }
 ]);
 
-app.directive('focusOn', function() {
+app.directive('focusEvent', function() {
   return function(scope, elem, attr) {
-    scope.$on('focusOn', function(e, name) {
-      if(name === attr.focusOn) {
+    scope.$on('focusEvent', function(e, name) {
+      if(name === attr.focusEvent) {
         elem[0].focus();
       }
     });
@@ -112,7 +112,7 @@ app.directive('focusOn', function() {
 app.factory('focus', ["$rootScope", "$timeout", function ($rootScope, $timeout) {
   return function(name) {
     $timeout(function (){
-      $rootScope.$broadcast('focusOn', name);
+      $rootScope.$broadcast('focusEvent', name);
     });
   }
 }]);

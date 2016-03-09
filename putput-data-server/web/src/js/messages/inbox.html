@@ -5,7 +5,7 @@
                 <form data-ng-submit="sendMessage()">
                     <div class="form-group">
                         <label>To</label>
-                        <ui-select id="recipient" data-ng-model="newMessage.recipient" theme="bootstrap">
+                        <ui-select id="recipient" data-focus-on="focusRecipient" data-ng-model="newMessage.recipient" theme="bootstrap">
                             <ui-select-match placeholder="Select recipient...">
                                 <img style="width:20px; height: 20px" data-ng-src="avatar/{{$select.selected.userName}}" >
                                 <span>{{$select.selected.userName}}</span>
@@ -26,7 +26,7 @@
                                   data-ng-required
                                   data-ng-model="newMessage.message.text"
                                   class="form-control"
-                                  data-focus-on="input"
+                                  data-focus-event="input"
                                   placeholder="Enter text"></textarea>
                     </div>
                     <button id="btn-send-message" type="submit" class="btn btn-primary"
