@@ -1,8 +1,8 @@
 var emojify = require("emojify.js");
 
-var InboxController = function (scope, messages, hotkeys, users, routeParams, location) {
+var InboxController = function (scope, messages, hotkeys, users, routeParams, route, location, focus) {
     scope.newMessage = {
-        "recipient": null,
+        "recipient": routeParams.to ? {"userName": routeParams.to} : null,
         "message": {
             "type": "chat"    
         }
@@ -10,10 +10,12 @@ var InboxController = function (scope, messages, hotkeys, users, routeParams, lo
     
     scope.users = [];
     scope.page = routeParams.page;
+    scope.withUser = routeParams.with;
     
     scope.init = function () {
       scope.getUsers();
-      scope.getMessages();  
+      scope.getMessages();
+      focus("input");
     };
     
     scope.getUsers = function (search) {
@@ -23,7 +25,8 @@ var InboxController = function (scope, messages, hotkeys, users, routeParams, lo
     };
     
     scope.getMessages = function () {
-        messages.getMessages(scope.page || (scope.messages ? scope.messages.currentPage : null)).success(function (messages) {
+        var page = scope.page || (scope.messages ? scope.messages.currentPage : null);
+        messages.getMessages(page, scope.withUser).success(function (messages) {
             scope.messages = messages.data;
         });
     };
@@ -65,8 +68,21 @@ var InboxController = function (scope, messages, hotkeys, users, routeParams, lo
         return scope.messages.count;
     };
 
+    scope.validateForm = function () {
+        if (scope.newMessage &&
+            scope.newMessage.recipient &&
+            scope.newMessage.message.text) {
+            return true;
+        }
+        return false;
+    };
+
+    scope.showMessagesWith = function (username) {
+        route.updateParams({"with": username, "to": username});
+    };
+
     scope.sendMessage = function () {
-        if (!scope.newMessage.recipient) {
+        if (!scope.validateForm()) {
             return;
         }
         
@@ -96,6 +112,6 @@ var InboxController = function (scope, messages, hotkeys, users, routeParams, lo
 
 };
 
-InboxController.$inject = ["$scope", "messages", "hotkeys", "users", "$routeParams", "$location"];
+InboxController.$inject = ["$scope", "messages", "hotkeys", "users", "$routeParams", "$route", "$location", "focus"];
 
 module.exports = InboxController;

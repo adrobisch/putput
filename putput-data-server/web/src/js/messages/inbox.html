@@ -22,11 +22,15 @@
                     <div class="form-group">
                         <label>Text</label>
                         <textarea id="text"
+                                  required
+                                  data-ng-required
                                   data-ng-model="newMessage.message.text"
                                   class="form-control"
+                                  data-focus-on="input"
                                   placeholder="Enter text"></textarea>
                     </div>
-                    <button id="btn-send-message" type="submit" class="btn btn-primary">
+                    <button id="btn-send-message" type="submit" class="btn btn-primary"
+                            data-ng-disabled="!validateForm()">
                         <i class="glyphicon glyphicon-send"></i> Send
                     </button>
                 </form>
@@ -59,7 +63,7 @@
         <div class="panel-body">
             <ul class="chat">
                 <li class="left clearfix" data-ng-repeat="message in messages.messages">
-                    <span class="chat-img pull-left">
+                    <span class="chat-img pull-left" data-ng-click="showMessagesWith(message.from)">
                         <img data-ng-src="avatar/{{message.from}}" alt="User Avatar" class="avatar img-circle" />
                     </span>
                     <div class="chat-body clearfix">

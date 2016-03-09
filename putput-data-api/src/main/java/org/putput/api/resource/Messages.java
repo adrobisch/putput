@@ -16,6 +16,8 @@ public interface Messages {
 
     /**
      * 
+     * @param with
+     *     show only messages from or to a specific user
      * @param page
      *     The page to retrieve
      */
@@ -24,6 +26,8 @@ public interface Messages {
         "application/hal+json"
     })
     Messages.GetMessagesResponse getMessages(
+        @QueryParam("with")
+        String with,
         @QueryParam("page")
         BigDecimal page)
         throws Exception

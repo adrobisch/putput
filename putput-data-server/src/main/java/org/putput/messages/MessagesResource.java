@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.putput.messages.MessageResource.*;
@@ -23,11 +24,10 @@ public class MessagesResource extends BaseResource implements Messages {
   MessageRepository messageRepository;
 
   @Override
-  public GetMessagesResponse getMessages(BigDecimal page) throws Exception {
+  public GetMessagesResponse getMessages(String with, BigDecimal page) throws Exception {
     Pageable pageable = pageable(page);
 
-    Page<MessageEntity> messagesPage = messageRepository
-        .findToOrFromUser(user(), pageable);
+    Page<MessageEntity> messagesPage = getMessagesList(Optional.ofNullable(with), pageable);
 
     List<Message> messages = messagesPage
         .getContent()
@@ -54,6 +54,11 @@ public class MessagesResource extends BaseResource implements Messages {
         .withPageSize(pageable.getPageSize());
 
     return GetMessagesResponse.withHaljsonOK(messageList);
+  }
+
+  private Page<MessageEntity> getMessagesList(Optional<String> with, Pageable pageable) {
+    return with.map(sender -> messageRepository.conversationWith(user(), sender, pageable))
+                .orElseGet(() -> messageRepository.findToOrFromUser(user(), pageable));
   }
 
 }

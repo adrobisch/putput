@@ -1,7 +1,7 @@
 function MessagesApi(http, api) {
-    this.getMessages = function (page) {
+    this.getMessages = function (page, withUser) {
         return api.withLink("messages", function (messagesLink) {
-            return http.get(messagesLink + (page ? '?page=' + page : ''));
+            return http.get(messagesLink + "?" + (page ? 'page=' + page : '') + (withUser ? '&with=' + withUser : ''));
         });
     };
 

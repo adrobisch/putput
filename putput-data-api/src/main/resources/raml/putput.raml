@@ -882,6 +882,11 @@ traits:
 /messages:
   get:
     is: [ halCollection: { id: messageList, collectionJavaType: org.putput.api.model.MessageList, itemsProperty: messages, itemSchema: message, collectionLinks: messageListLinks}]
+    queryParameters:
+      with:
+        description: show only messages from or to a specific user
+        type: string
+        required: false
 
 /message:
   post:
