@@ -4,13 +4,22 @@ import brainslug.flow.builder.FlowBuilder;
 import brainslug.flow.definition.Identifier;
 import brainslug.flow.expression.Property;
 import brainslug.flow.node.task.Task;
+import com.vdurmont.emoji.Emoji;
+import com.vdurmont.emoji.EmojiParser;
+import org.pegdown.PegDownProcessor;
+import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
 import org.putput.util.MailTemplates;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 
+import javax.mail.internet.MimeMessage;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
@@ -52,7 +61,7 @@ public class NewMessageFlow extends FlowBuilder {
 
   Task sendNotification() {
     return (context) -> {
-      MailSender mailSender = context.service(MailSender.class);
+      JavaMailSender mailSender = context.service(JavaMailSender.class);
       UserRepository userRepository = context.service(UserRepository.class);
 
       MessageEntity messageEntity = context
@@ -60,20 +69,39 @@ public class NewMessageFlow extends FlowBuilder {
               .getById(context.property(savedMessageId))
               .get();
       
-      Optional.ofNullable(userRepository.findByUsername(messageEntity.getTo())).ifPresent(foundUser -> {
-        if (ofNullable(foundUser.getEmail()).isPresent()) {
-          SimpleMailMessage mentionMessage = new SimpleMailMessage();
-          mentionMessage.setFrom("info@putput.org");
-          mentionMessage.setSubject("New message from @" + messageEntity.getFrom());
-          mentionMessage.setTo(foundUser.getEmail());
-          mentionMessage.setText(new MailTemplates()
-                  .create("message")
-                  .data("message", messageEntity)
-                  .getText()
-          );
-          mailSender.send(mentionMessage);
-        }
-      });
+      Optional.ofNullable(userRepository.findByUsername(messageEntity.getTo()))
+              .ifPresent(sendMail(mailSender, messageEntity));
     };
+  }
+
+  private Consumer<UserEntity> sendMail(JavaMailSender mailSender, final MessageEntity messageEntity) {
+    return foundUser -> {
+      if (ofNullable(foundUser.getEmail()).isPresent()) {
+        MimeMessagePreparator preparator = mimeMessage -> {
+          MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+          message.setFrom("info@putput.org");
+          message.setSubject("New message from @" + messageEntity.getFrom());
+          message.setTo(foundUser.getEmail());
+          
+          String textContent = new MailTemplates()
+                  .create("message")
+                  .data("text", messageEntity.getText())
+                  .getText();
+
+          String htmlContent = new MailTemplates()
+                  .create("message.html")
+                  .data("text", htmlContent(messageEntity))
+                  .getText();
+
+          message.setText(textContent, htmlContent);
+        };
+        
+        mailSender.send(preparator);
+      }
+    };
+  }
+
+  private String htmlContent(MessageEntity messageEntity) {
+    return new PegDownProcessor(5000).markdownToHtml(EmojiParser.parseToUnicode(messageEntity.getText()));
   }
 }

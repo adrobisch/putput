@@ -115,6 +115,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>de.androbit</groupId>
             <artifactId>brainslug-spring</artifactId>
             <version>${brainslug.version}</version>
