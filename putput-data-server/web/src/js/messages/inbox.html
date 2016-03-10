@@ -20,14 +20,12 @@
                         </ui-select>
                     </div>
                     <div class="form-group">
-                        <label>Text</label>
-                        <textarea id="text"
-                                  required
-                                  data-ng-required
-                                  data-ng-model="newMessage.message.text"
-                                  class="form-control"
-                                  data-focus-event="input"
-                                  placeholder="Enter text"></textarea>
+                        <div id="text"
+                             data-item-input
+                             data-bind="newMessage.message.text"
+                             data-label="Text"
+                             data-focus-event="input"
+                             data-placeholder="Enter text"></div>
                     </div>
                     <button id="btn-send-message" type="submit" class="btn btn-primary"
                             data-ng-disabled="!validateForm()">
