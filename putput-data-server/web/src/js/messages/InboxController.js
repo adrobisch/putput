@@ -16,7 +16,7 @@ var InboxController = function (scope, messages, hotkeys, users, routeParams, ro
       scope.getUsers();
       scope.getMessages();
       if (routeParams.to) {
-        focus("input");
+        focus("item-input");
       }  
     };
     

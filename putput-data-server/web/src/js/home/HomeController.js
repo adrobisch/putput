@@ -1,6 +1,6 @@
 var _ = require("lodash");
 
-var HomeController = function (scope, timeline, rootScope, hotkeys) {
+var HomeController = function (scope, timeline, rootScope, hotkeys, focus) {
     scope.stream = [];
     scope.imageUrl = null;
     scope.filter = "all";
@@ -32,6 +32,14 @@ var HomeController = function (scope, timeline, rootScope, hotkeys) {
     });
 
     hotkeys.bindTo(scope).add({
+        description: "focus on input",
+        combo: 'n',
+        callback: function () {
+            focus("item-input");
+        }
+    });
+
+    hotkeys.bindTo(scope).add({
         description: "send put",
         combo: 'shift+return',
         allowIn: ['TEXTAREA'],
@@ -39,6 +47,6 @@ var HomeController = function (scope, timeline, rootScope, hotkeys) {
     });
 };
 
-HomeController.$inject = ["$scope", "timeline", "$rootScope", "hotkeys"];
+HomeController.$inject = ["$scope", "timeline", "$rootScope", "hotkeys", "focus"];
 
 module.exports = HomeController;
