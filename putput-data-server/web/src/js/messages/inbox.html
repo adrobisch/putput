@@ -37,7 +37,15 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8" data-ng-show="totalCount() <= 0" data-ng-cloak>
+        <div class="alert alert-info" role="alert">
+            <p>
+                No messages yet <span data-ng-show="withUser">with <strong>{{withUser}}</strong></span>!
+                <a data-ng-href="#/inbox">Show all</a>
+            </p>
+        </div>
+    </div>
+    <div class="col-md-8" data-ng-show="totalCount()">
         <div class="pull-right">
             <span class="text-muted"><b>{{start(messages)}}</b>–<b>{{end(messages)}}</b> of <b>{{totalCount()}}</b></span>
             <div class="btn-group btn-group-sm">
