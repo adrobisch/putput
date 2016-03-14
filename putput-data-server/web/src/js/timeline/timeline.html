@@ -6,16 +6,25 @@
              data-ng-hide="item.streamItem.reference"></div>
         
         <div data-ng-cloak
-             data-ng-show="item.streamItem.reference">
+             data-ng-show="item.streamItem.reference && !item.streamItem.content">
             <div data-stream-item
                  data-item-id="item.streamItem.reference">
                 <ul class="list-group top10">
                     <li class="list-group-item list-group-item-success">
                         shared by <a data-ng-href="/@{{item.streamItem.creator}}">@{{item.streamItem.creator}}</a>
-                        <span data-ng-show="item.streamItem.content">:</span>
-                        <div style="display:inline" data-ng-show="item.streamItem.content" data-ng-bind-html="item.streamItem.content"></div>
                     </li>
                 </ul>
+            </div>
+        </div>
+
+        <div data-ng-cloak
+             data-ng-show="item.streamItem.reference && item.streamItem.content">
+            <div data-stream-item
+                 data-item="item">
+                <h5>commenting</h5>
+                <div data-stream-item
+                     data-item-id="item.streamItem.reference">
+                </div>
             </div>
         </div>
     </div>
