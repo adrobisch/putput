@@ -2,22 +2,18 @@ package org.putput.messages;
 
 import brainslug.flow.builder.FlowBuilder;
 import brainslug.flow.definition.Identifier;
+import brainslug.flow.execution.node.task.SimpleTask;
 import brainslug.flow.expression.Property;
-import brainslug.flow.node.task.Task;
-import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiParser;
 import org.pegdown.PegDownProcessor;
 import org.putput.users.UserEntity;
 import org.putput.users.UserRepository;
 import org.putput.util.MailTemplates;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 
-import javax.mail.internet.MimeMessage;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -44,7 +40,7 @@ public class NewMessageFlow extends FlowBuilder {
             .execute(task(id("send_notification"), sendNotification()));
   }
 
-  Task saveMessage() {
+  SimpleTask saveMessage() {
     return (context) -> {
       String fromUser = context.property(from);
       String toUser = context.property(to);
@@ -59,7 +55,7 @@ public class NewMessageFlow extends FlowBuilder {
     };
   }
 
-  Task sendNotification() {
+  SimpleTask sendNotification() {
     return (context) -> {
       JavaMailSender mailSender = context.service(JavaMailSender.class);
       UserRepository userRepository = context.service(UserRepository.class);

@@ -2,6 +2,7 @@ package org.putput.stream;
 
 import brainslug.flow.builder.FlowBuilder;
 import brainslug.flow.definition.Identifier;
+import brainslug.flow.execution.node.task.SimpleTask;
 import brainslug.flow.expression.Property;
 import brainslug.flow.node.TaskDefinition;
 import org.putput.util.MailTemplates;
@@ -29,18 +30,22 @@ public class NewMarkerFlow extends FlowBuilder {
     start(saveMarkerTask).execute(sendNotifications);
   }
 
-  TaskDefinition sendNotifications = task(id("send_notifications"), context -> {
-      MailSender mailSender = context.service(MailSender.class);
-      StreamItemRepository streamItemRepository = context.service(StreamItemRepository.class);
+  TaskDefinition sendNotifications = task(id("send_notifications"), notificationsTask());
 
-      String itemId = context.property(NewMarkerFlow.itemId);
-      Optional.ofNullable(streamItemRepository
-          .findOne(itemId))
-          .ifPresent(sendMailToAuthor(mailSender,
-              context.property(username),
-              itemId,
-              context.property(markerType)));
-  });
+  private SimpleTask notificationsTask() {
+    return context -> {
+        MailSender mailSender = context.service(MailSender.class);
+        StreamItemRepository streamItemRepository = context.service(StreamItemRepository.class);
+
+        String itemId = context.property(NewMarkerFlow.itemId);
+        Optional.ofNullable(streamItemRepository
+            .findOne(itemId))
+            .ifPresent(sendMailToAuthor(mailSender,
+                context.property(username),
+                itemId,
+                context.property(markerType)));
+    };
+  }
 
   private Consumer<StreamItemEntity> sendMailToAuthor(MailSender mailSender,
                                                       String markerAuthor,
@@ -80,13 +85,17 @@ public class NewMarkerFlow extends FlowBuilder {
         Math.min(foundItem.getContent().length() - 1, 300)) + "...";
   }
 
-  TaskDefinition saveMarkerTask = task(id("save_marker"), context -> {
-    StreamItemMarkerService markerService = context.service(StreamItemMarkerService.class);
+  TaskDefinition saveMarkerTask = task(id("save_marker"), saveMarkerTask());
 
-    StreamItemMarkerEntity newMarker = markerService.saveMarker(context.property(username),
-        context.property(itemId),
-        context.property(markerType));
+  private SimpleTask saveMarkerTask() {
+    return context -> {
+      StreamItemMarkerService markerService = context.service(StreamItemMarkerService.class);
 
-    context.setProperty(newMarkerId, newMarker.getId());
-  });
+      StreamItemMarkerEntity newMarker = markerService.saveMarker(context.property(username),
+          context.property(itemId),
+          context.property(markerType));
+
+      context.setProperty(newMarkerId, newMarker.getId());
+    };
+  }
 }

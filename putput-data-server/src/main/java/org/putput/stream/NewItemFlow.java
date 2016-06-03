@@ -3,9 +3,9 @@ package org.putput.stream;
 import brainslug.flow.builder.FlowBuilder;
 import brainslug.flow.context.ExecutionContext;
 import brainslug.flow.definition.Identifier;
+import brainslug.flow.execution.node.task.SimpleTask;
 import brainslug.flow.expression.Property;
 import brainslug.flow.node.TaskDefinition;
-import brainslug.flow.node.task.Task;
 import org.putput.api.model.NewStreamItem;
 import org.putput.users.UserRepository;
 import org.putput.util.MailTemplates;
@@ -34,7 +34,7 @@ public class NewItemFlow extends FlowBuilder {
 
   TaskDefinition saveItem = task(id("save_item"), saveItemTask());
 
-  Task saveItemTask() {
+  SimpleTask saveItemTask() {
     return (context) -> {
       StreamItemService streamItemService = context.service(StreamItemService.class);
       NewStreamItem newItem = context.property(NewItemFlow.newItem);
@@ -62,7 +62,7 @@ public class NewItemFlow extends FlowBuilder {
     start(saveItem).execute(task(id("process_content"), processContent()));
   }
 
-  Task processContent() {
+  SimpleTask processContent() {
     return taskContext -> {
       StreamItemEntity item = taskContext.property(savedItem);
       processFragments(item, taskContext);

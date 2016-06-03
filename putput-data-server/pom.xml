@@ -17,7 +17,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <brainslug.version>0.22-SNAPSHOT</brainslug.version>
+        <brainslug.version>0.22</brainslug.version>
         <docker.image.prefix>putput</docker.image.prefix>
         <docker.registry>registry</docker.registry>
         <docker.tag>dev</docker.tag>
@@ -121,13 +121,13 @@
         </dependency>
 
         <dependency>
-            <groupId>de.androbit</groupId>
+            <groupId>com.drobisch</groupId>
             <artifactId>brainslug-spring</artifactId>
             <version>${brainslug.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>de.androbit</groupId>
+            <groupId>com.drobisch</groupId>
             <artifactId>brainslug-jpa</artifactId>
             <version>${brainslug.version}</version>
         </dependency>

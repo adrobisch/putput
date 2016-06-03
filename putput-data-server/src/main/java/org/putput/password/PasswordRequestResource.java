@@ -1,9 +1,9 @@
 package org.putput.password;
 
 import brainslug.flow.context.BrainslugContext;
+import brainslug.flow.execution.instance.FlowInstance;
 import brainslug.flow.execution.instance.InstanceSelector;
 import brainslug.flow.expression.Value;
-import brainslug.flow.instance.FlowInstance;
 import org.putput.api.model.PasswordReset;
 import org.putput.api.model.PasswordResetConfirmation;
 import org.putput.api.resource.PasswordRequest;

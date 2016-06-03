@@ -1,7 +1,7 @@
 package org.putput.stream;
 
 import brainslug.flow.context.BrainslugContext;
-import brainslug.flow.instance.FlowInstance;
+import brainslug.flow.execution.instance.FlowInstance;
 import org.putput.common.UuidService;
 import org.putput.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

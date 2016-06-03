@@ -1,7 +1,7 @@
 package org.putput.stream;
 
 import brainslug.flow.context.BrainslugContext;
-import brainslug.flow.instance.FlowInstance;
+import brainslug.flow.execution.instance.FlowInstance;
 import org.putput.api.model.MarkerInfo;
 import org.putput.api.model.NewStreamItem;
 import org.putput.common.UuidService;
