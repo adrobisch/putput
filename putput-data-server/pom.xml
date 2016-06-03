@@ -220,18 +220,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-assertions-generator-maven-plugin</artifactId>
-                <version>1.5.0</version>
-                <configuration>
-                    <classes>
-                        <param>org.putput.contacts.ContactEntity</param>
-                        <param>org.putput.api.model.Contact</param>
-                    </classes>
-                    <targetDir>src/test/java</targetDir>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
