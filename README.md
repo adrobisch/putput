@@ -48,3 +48,5 @@ License
 
 PutPut is published under the terms of the GNU Lesser General Public License Version 3.
 See the [LICENSE](LICENSE) file.
+
+![LGPLV3](lgplv3.png)
