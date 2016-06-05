@@ -28,7 +28,7 @@ Run
     docker run adrobisch/putput
 
 Per default the datasource will be in-memory.
-You can use a local (relative to the container) PostgreSQL database by specifying the postgres profile:
+You can use a local (`jdbc:postgresql://postgres:postgres@localhost:5432/putput`) PostgreSQL database by specifying the postgres profile:
 
     ENV APP_OPTS "-Dspring.profiles.active=production,postgres"
 
