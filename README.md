@@ -1,7 +1,7 @@
 PutPut
 =====
 
-PutPut is a Twitter clone based on open source technologies:
+PutPut is a Twitter-like web application based on open source technologies:
 
 * Spring Boot
 * Twitter Bootstrap (obviously)
@@ -16,6 +16,11 @@ Features
 * User-level RSS Import / Feeds
 * PIM: Contacts, Calendar (WIP)
 * Files Upload (WIP)
+
+Screenshot
+==========
+
+![Screenshot](putput_screen.png "PutPut Home Screen")
 
 Build
 =====
