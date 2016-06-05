@@ -1,0 +1,11 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - mvn --fail-never dependency:go-offline || true
+
+test:
+  post:
+    - mvn -Pdocker docker:build

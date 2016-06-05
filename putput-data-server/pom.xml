@@ -18,9 +18,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <brainslug.version>0.22</brainslug.version>
-        <docker.image.prefix>putput</docker.image.prefix>
-        <docker.registry>registry</docker.registry>
-        <docker.tag>dev</docker.tag>
+        <docker.image>adrobisch/putput</docker.image>
+        <docker.tag>latest</docker.tag>
     </properties>
 
     <dependencies>
@@ -312,7 +311,15 @@
                         <artifactId>docker-maven-plugin</artifactId>
                         <version>0.3.6</version>
                         <configuration>
-                            <imageName>${docker.registry}/${docker.image.prefix}/${project.artifactId}:${docker.tag}</imageName>
+                            <imageName>${docker.image}:${docker.tag}</imageName>
+                            <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.build.directory}</directory>
+                                    <include>${project.build.finalName}.jar</include>
+                                </resource>
+                            </resources>
                         </configuration>
                         <executions>
                             <execution>
@@ -320,23 +327,6 @@
                                 <phase>package</phase>
                                 <goals>
                                     <goal>build</goal>
-                                </goals>
-                                <configuration>
-                                    <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
-                                    <resources>
-                                        <resource>
-                                            <targetPath>/</targetPath>
-                                            <directory>${project.build.directory}</directory>
-                                            <include>${project.build.finalName}.jar</include>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>push-image</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>push</goal>
                                 </goals>
                             </execution>
                         </executions>
