@@ -1,5 +1,5 @@
 PutPut
-=====
+======
 
 PutPut is a Twitter-like web application based on open source technologies:
 
@@ -33,11 +33,15 @@ Run
     docker run adrobisch/putput
 
 Per default the datasource will be in-memory.
-You can use a local (`jdbc:postgresql://postgres:postgres@localhost:5432/putput`) PostgreSQL database by specifying the postgres profile:
+You can use a local PostgreSQL database by specifying the postgres profile:
 
     ENV APP_OPTS "-Dspring.profiles.active=production,postgres"
 
+JDBC-URL: `jdbc:postgresql://postgres:postgres@localhost:5432/putput`
+
 Alternatively, you can add a `/etc/putput/putput.properties` file with your settings in a derived Dockerfile.
+
+The initial username is `user` with password `password`. This can be changed in the settings view.
 
 License
 =======
