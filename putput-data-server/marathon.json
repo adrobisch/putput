@@ -1,0 +1,68 @@
+{
+  "id": "putput",
+  "cmd": "java $JAVA_OPTS $APP_OPTS -jar /app.jar $APP_ARGS",
+  "args": null,
+  "user": null,
+  "env": {
+    "APP_ARGS": "--spring.config.location=/var/putput/putput.properties"
+  },
+  "instances": 1,
+  "cpus": 1,
+  "mem": 448,
+  "disk": 0,
+  "executor": "",
+  "constraints": [],
+  "uris": [],
+  "storeUrls": [],
+  "ports": [
+    8027
+  ],
+  "requirePorts": false,
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "/var/putput",
+        "hostPath": "/mnt/shared/putput",
+        "mode": "RW"
+      }
+    ],
+    "docker": {
+      "image": "registry:5000/putput-data:149",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 8027,
+          "hostPort": 0,
+          "servicePort": 8027,
+          "protocol": "tcp"
+        }
+      ],
+      "privileged": false,
+      "parameters": [],
+      "forcePullImage": false
+    }
+  },
+  "healthChecks": [
+    {
+      "path": "/health",
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "dependencies": [],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  },
+  "labels": {},
+  "acceptedResourceRoles": null
+}
