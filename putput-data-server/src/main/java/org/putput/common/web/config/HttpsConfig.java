@@ -10,9 +10,11 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @Configuration
 public class HttpsConfig {
@@ -57,8 +59,14 @@ public class HttpsConfig {
 
   private String getKeyStoreFilePath(String keystoreFile) {
     try {
-      return ResourceUtils.getFile(keystoreFile).getAbsolutePath();
-    } catch (FileNotFoundException e) {
+      
+      if (new ClassPathResource(keystoreFile).exists()) {
+        return new ClassPathResource(keystoreFile).getFile().getAbsolutePath();
+      } else {
+        return ResourceUtils.getFile(keystoreFile).getAbsolutePath();
+      }
+      
+    } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }

@@ -8,4 +8,5 @@ dependencies:
 
 test:
   post:
-    - mvn -Pdocker docker:build
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - mvn -Ddocker.tag=$CIRCLE_BUILD_NUM -Pdocker docker:build docker:push -pl putput-data-server
