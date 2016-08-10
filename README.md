@@ -1,7 +1,7 @@
 PutPut
 ======
 
-![ci](https://circleci.com/gh/adrobisch/putput-data.svg?&style=shield&circle-token=6fdcaf4a54e3afcaf89ea58fd34da9813110b702)
+![ci](https://circleci.com/gh/adrobisch/putput.svg?&style=shield&circle-token=6fdcaf4a54e3afcaf89ea58fd34da9813110b702)
 
 PutPut is a Twitter-like web application based on open source technologies:
 
